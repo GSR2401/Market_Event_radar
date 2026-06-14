@@ -15,10 +15,11 @@ from src.enricher import Enricher
 from src.event_fetcher import fetch_8k_filings, fetch_earnings, extract_8k_tickers
 from src.options_filter import OptionsFilter
 from src.ranker import rank
-from src.source_merger import merge_earnings, build_8k_events
+from src.source_merger import build_earnings_events, build_8k_events
 from src.sources.alphavantage_client import AlphaVantageClient
 from src.sources.edgar_client import EdgarClient
 from src.sources.finnhub_client import FinnhubClient
+from src.sources.nasdaq_client import NasdaqClient
 from src.sources.newsdata_client import NewsdataClient
 from src.sources.polygon_client import PolygonClient
 from src.sources.yfinance_client import YFinanceClient
@@ -62,11 +63,11 @@ def main() -> int:
     all_events: list[MarketEvent] = []
 
     # ── Initialise clients ───────────────────────────────────────────────────
+    nasdaq = NasdaqClient()
     finnhub = FinnhubClient()
     yf = YFinanceClient()
     edgar = EdgarClient(user_agent=edgar_ua)
     polygon = PolygonClient()
-    alphavantage = AlphaVantageClient()
     newsdata = NewsdataClient()
     enricher = Enricher(yf=yf, finnhub=finnhub, newsdata=newsdata, cache=cache)
     options_filter = OptionsFilter(
@@ -76,52 +77,56 @@ def main() -> int:
         min_avg_stock_vol=cfg["options_filter"]["min_avg_daily_stock_volume"],
     )
 
-    # ── Step 1: Fetch raw events ─────────────────────────────────────────────
-    log.info("Step 1: fetching raw events")
-    fh_earnings, _, earn_diag = fetch_earnings(finnhub, yf, today, window_end)
+    # ── Step 1: Fetch earnings (Nasdaq primary, Finnhub secondary) ───────────
+    log.info("Step 1: fetching earnings calendar")
+    merged_entries, earn_diag = fetch_earnings(nasdaq, finnhub, today, window_end)
     if earn_diag:
         section_errors["earnings"] = "; ".join(earn_diag)
 
+    # ── Step 2: Fetch 8-K filings ────────────────────────────────────────────
+    log.info("Step 2: fetching 8-K filings")
     filings_8k, filings_diag = fetch_8k_filings(edgar, finnhub)
     if filings_diag:
         section_errors["8k"] = "; ".join(filings_diag)
 
     edgar_tickers = extract_8k_tickers(filings_8k, edgar)
 
-    # ── Step 2: Build ticker universe ────────────────────────────────────────
-    log.info("Step 2: building universe")
+    # ── Step 3: Build ticker universe ────────────────────────────────────────
+    log.info("Step 3: building universe")
     universe = build_universe(
         watchlist_path=cfg["watchlist_path"],
-        finnhub_earnings=fh_earnings,
+        finnhub_earnings=merged_entries,   # already merged, reuse same format
         yf_earnings=[],
         edgar_8k_tickers=edgar_tickers,
         top_n=top_n,
     )
     log.info("Universe: %d tickers", len(universe))
 
-    # ── Step 3: Per-ticker: earnings merge ───────────────────────────────────
-    log.info("Step 3: merging earnings per ticker")
+    # ── Step 4: yfinance per-ticker date cross-check ─────────────────────────
+    log.info("Step 4: yfinance cross-check for %d tickers", len(universe))
+    yf_dates: dict[str, list] = {}
     for ticker in universe:
-        yf_cal = yf.get_earnings_dates(ticker)
-        yf_entry = yf_cal.data if yf_cal.ok else None
+        cached = cache.get(f"yf_cal_{ticker}")
+        if cached is not None:
+            yf_dates[ticker] = cached
+            continue
+        result = yf.get_earnings_dates(ticker)
+        if result.ok and result.data:
+            dates = result.data.get("dates", [])
+            yf_dates[ticker] = [str(d)[:10] for d in dates]
+            cache.set(f"yf_cal_{ticker}", yf_dates[ticker])
 
-        events = merge_earnings(
-            finnhub_entries=fh_earnings,
-            yf_entry=yf_entry,
-            ticker=ticker,
-            event_window_end=window_end,
-        )
-        all_events.extend(events)
+    # ── Step 5: Build MarketEvent objects ────────────────────────────────────
+    log.info("Step 5: building earnings events")
+    earnings_events = build_earnings_events(merged_entries, yf_dates, window_end)
+    all_events.extend(earnings_events)
 
-    log.info("Earnings events after merge: %d", len(all_events))
-
-    # ── Step 4: 8-K events ───────────────────────────────────────────────────
-    log.info("Step 4: building 8-K events")
+    log.info("Step 5b: building 8-K events")
     eightk_events = build_8k_events(filings_8k, edgar._ticker_cik_map)
     all_events.extend(eightk_events)
 
-    # ── Step 5: Options filter ───────────────────────────────────────────────
-    log.info("Step 5: options filter (%d candidates)", len(all_events))
+    # ── Step 6: Options filter ───────────────────────────────────────────────
+    log.info("Step 6: options filter (%d candidates)", len(all_events))
     passed: list[MarketEvent] = []
     for ev in all_events:
         if options_filter.evaluate(ev):
@@ -136,29 +141,28 @@ def main() -> int:
             "options",
             "All tickers failed the options gate — thresholds may be too high for today's universe."
         )
-        passed = all_events  # graceful: show everything with a warning
+        passed = all_events
 
-    # ── Step 6: Enrich ───────────────────────────────────────────────────────
-    log.info("Step 6: enriching %d events", len(passed))
+    # ── Step 7: Enrich ───────────────────────────────────────────────────────
+    log.info("Step 7: enriching %d events", len(passed))
     try:
         enricher.enrich_all(passed)
     except Exception as exc:
         log.error("enrichment error: %s", exc)
         section_errors["enrichment"] = str(exc)
 
-    # ── Step 7: Dedup ────────────────────────────────────────────────────────
-    log.info("Step 7: dedup")
+    # ── Step 8: Dedup ────────────────────────────────────────────────────────
+    log.info("Step 8: dedup")
     passed = dedup.tag_and_update(passed)
-    dedup_mode = cfg["settings"]["dedup_mode"]
-    if dedup_mode == "suppress":
+    if cfg["settings"]["dedup_mode"] == "suppress":
         passed = [e for e in passed if not e.previously_reported]
 
-    # ── Step 8: Rank ─────────────────────────────────────────────────────────
-    log.info("Step 8: ranking")
+    # ── Step 9: Rank ─────────────────────────────────────────────────────────
+    log.info("Step 9: ranking")
     ranked = rank(passed)
 
-    # ── Step 9: Write digest ─────────────────────────────────────────────────
-    log.info("Step 9: writing digest")
+    # ── Step 10: Write digest ────────────────────────────────────────────────
+    log.info("Step 10: writing digest")
     writer = DigestWriter(template_dir="templates", output_dir=cfg["output_dir"])
     out_path = writer.write(
         events=ranked,
