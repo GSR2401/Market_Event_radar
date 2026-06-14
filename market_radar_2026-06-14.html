@@ -18,31 +18,93 @@
   --text:    #1a1a2e;
   --muted:   #6b7280;
 }
-* { box-sizing: border-box; margin: 0; padding: 0; }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  background: var(--bg);
-  color: var(--text);
-  font-size: 14px;
-  line-height: 1.5;
+  background: var(--bg); color: var(--text); font-size: 14px; line-height: 1.5;
 }
 a { color: var(--blue-lt); text-decoration: none; }
 a:hover { text-decoration: underline; }
 
 /* ── Header ── */
-.header {
-  background: var(--blue);
-  color: #fff;
-  padding: 20px 24px 16px;
-}
+.header { background: var(--blue); color: #fff; padding: 20px 24px 16px; }
 .header h1 { font-size: 22px; font-weight: 700; letter-spacing: .5px; }
 .header .sub { opacity: .75; font-size: 13px; margin-top: 2px; }
-.header-meta {
-  display: flex; gap: 24px; margin-top: 12px; flex-wrap: wrap;
-}
+.header-meta { display: flex; gap: 24px; margin-top: 12px; flex-wrap: wrap; }
 .header-meta span {
-  background: rgba(255,255,255,.12);
-  border-radius: 4px; padding: 3px 10px; font-size: 12px;
+  background: rgba(255,255,255,.12); border-radius: 4px; padding: 3px 10px; font-size: 12px;
+}
+
+/* ── Sticky Filter Bar ── */
+.filter-bar {
+  position: sticky; top: 0; z-index: 200;
+  background: #fff; border-bottom: 1px solid var(--border);
+  box-shadow: 0 2px 10px rgba(0,0,0,.07);
+  padding: 10px 24px;
+  display: flex; flex-direction: column; gap: 8px;
+}
+.filter-row {
+  display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+}
+.filter-label {
+  font-size: 10px; font-weight: 700; letter-spacing: .8px;
+  text-transform: uppercase; color: var(--muted); min-width: 38px;
+}
+.filter-sep { width: 1px; height: 22px; background: var(--border); margin: 0 4px; }
+
+/* Toggle buttons */
+.tb {
+  font-size: 11px; font-weight: 600; letter-spacing: .3px;
+  padding: 4px 12px; border-radius: 20px; border: 1px solid var(--border);
+  background: var(--bg); color: var(--muted); cursor: pointer;
+  transition: all .15s; white-space: nowrap;
+}
+.tb:hover { border-color: var(--blue-lt); color: var(--blue); }
+.tb.active { background: var(--blue); color: #fff; border-color: var(--blue); }
+
+/* Confirmation checkboxes */
+.cb-wrap {
+  display: flex; align-items: center; gap: 5px;
+  font-size: 11px; font-weight: 600; cursor: pointer;
+  padding: 4px 10px; border-radius: 20px; border: 1px solid var(--border);
+  background: var(--bg); color: var(--muted);
+  transition: all .15s; user-select: none;
+}
+.cb-wrap:hover { border-color: var(--blue-lt); }
+.cb-wrap input[type=checkbox] { width: 13px; height: 13px; accent-color: var(--blue); cursor: pointer; }
+.cb-wrap.confirmed { color: #065f46; border-color: #6ee7b7; background: #f0fdf4; }
+.cb-wrap.estimated { color: #92400e; border-color: #fcd34d; background: #fffbeb; }
+
+/* Market cap inputs */
+.mcap-wrap { display: flex; align-items: center; gap: 6px; }
+.mcap-input {
+  width: 72px; padding: 4px 8px; font-size: 11px; font-weight: 600;
+  border: 1px solid var(--border); border-radius: 20px;
+  background: var(--bg); color: var(--text);
+  outline: none; transition: border-color .15s; text-align: center;
+}
+.mcap-input:focus { border-color: var(--blue-lt); }
+.mcap-input::placeholder { color: var(--muted); font-weight: 400; }
+.mcap-dash { font-size: 11px; color: var(--muted); }
+
+/* Search */
+.search-wrap { position: relative; flex: 1; max-width: 220px; }
+.search-icon {
+  position: absolute; left: 10px; top: 50%; transform: translateY(-50%);
+  font-size: 12px; color: var(--muted); pointer-events: none;
+}
+.search-input {
+  width: 100%; padding: 5px 10px 5px 28px; font-size: 12px;
+  border: 1px solid var(--border); border-radius: 20px;
+  background: var(--bg); color: var(--text); outline: none;
+  transition: border-color .15s;
+}
+.search-input:focus { border-color: var(--blue-lt); }
+
+/* Results counter */
+.filter-count {
+  font-size: 11px; color: var(--muted); margin-left: auto;
+  white-space: nowrap;
 }
 
 /* ── Layout ── */
@@ -53,12 +115,12 @@ a:hover { text-decoration: underline; }
 .section-title {
   font-size: 13px; font-weight: 700; letter-spacing: 1px;
   text-transform: uppercase; color: var(--blue);
-  border-bottom: 2px solid var(--blue);
-  padding-bottom: 6px; margin-bottom: 12px;
+  border-bottom: 2px solid var(--blue); padding-bottom: 6px; margin-bottom: 12px;
 }
-.section-empty {
+.section-empty, .section-filter-empty {
   color: var(--muted); font-style: italic; font-size: 13px; padding: 8px 0;
 }
+.section-filter-empty { display: none; }
 .section-error {
   background: #fff3cd; border: 1px solid #ffc107;
   border-radius: 6px; padding: 10px 14px; font-size: 13px;
@@ -67,28 +129,25 @@ a:hover { text-decoration: underline; }
 
 /* ── Event Card ── */
 .card {
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-left: 4px solid var(--blue);
-  border-radius: 6px;
-  padding: 14px 16px;
-  margin-bottom: 10px;
+  background: var(--card); border: 1px solid var(--border);
+  border-left: 4px solid var(--blue); border-radius: 6px;
+  padding: 14px 16px; margin-bottom: 10px;
   box-shadow: 0 1px 3px rgba(0,0,0,.04);
+  transition: box-shadow .15s;
 }
-.card.earnings  { border-left-color: var(--blue); }
-.card.ipo       { border-left-color: var(--green); }
-.card.eightk    { border-left-color: var(--orange); }
-.card.news      { border-left-color: var(--purple); }
-.card.prev-reported { opacity: .65; }
+.card:hover { box-shadow: 0 3px 10px rgba(0,0,0,.09); }
+.card.earnings { border-left-color: var(--blue); }
+.card.ipo      { border-left-color: var(--green); }
+.card.eightk   { border-left-color: var(--orange); }
+.card.news     { border-left-color: var(--purple); }
+.card.prev-reported { opacity: .6; }
 
 .card-top {
   display: flex; align-items: flex-start;
   justify-content: space-between; gap: 12px; flex-wrap: wrap;
 }
 .ticker-block { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
-.ticker {
-  font-size: 17px; font-weight: 700; color: var(--blue);
-}
+.ticker { font-size: 17px; font-weight: 700; color: var(--blue); }
 .company { font-size: 13px; color: var(--muted); }
 
 /* ── Badges ── */
@@ -97,15 +156,15 @@ a:hover { text-decoration: underline; }
   font-size: 10px; font-weight: 700; letter-spacing: .4px;
   padding: 2px 7px; text-transform: uppercase;
 }
-.badge-large   { background: #dbeafe; color: #1e40af; }
-.badge-mid     { background: #dcfce7; color: #166534; }
-.badge-small   { background: #fef9c3; color: #7c5f00; }
-.badge-confirmed { background: #d1fae5; color: #065f46; }
-.badge-estimated { background: #fef3c7; color: #92400e; border: 1px solid #fcd34d; }
-.badge-strong  { background: #fee2e2; color: #991b1b; }
-.badge-moderate { background: #ffedd5; color: #9a3412; }
+.badge-large         { background: #dbeafe; color: #1e40af; }
+.badge-mid           { background: #dcfce7; color: #166534; }
+.badge-small         { background: #fef9c3; color: #7c5f00; }
+.badge-confirmed     { background: #d1fae5; color: #065f46; }
+.badge-estimated     { background: #fef3c7; color: #92400e; border: 1px solid #fcd34d; }
+.badge-strong        { background: #fee2e2; color: #991b1b; }
+.badge-moderate      { background: #ffedd5; color: #9a3412; }
 .badge-single-source { background: #f3e8ff; color: #581c87; }
-.badge-prev    { background: #e5e7eb; color: #374151; }
+.badge-prev          { background: #e5e7eb; color: #374151; }
 
 /* ── Card body ── */
 .card-body { margin-top: 10px; }
@@ -115,19 +174,15 @@ a:hover { text-decoration: underline; }
 }
 .metric-label { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: .5px; }
 .metric-value { font-size: 13px; font-weight: 600; color: var(--text); }
-
 .summary-text {
   margin-top: 10px; font-size: 12px; color: var(--muted);
   border-top: 1px solid var(--border); padding-top: 8px;
 }
-
 .sources-row { margin-top: 8px; display: flex; gap: 5px; flex-wrap: wrap; align-items: center; }
 .source-badge {
   font-size: 10px; background: var(--bg); border: 1px solid var(--border);
   border-radius: 3px; padding: 1px 6px; color: var(--muted);
 }
-
-/* ── Right meta ── */
 .event-meta { text-align: right; }
 .event-date { font-size: 13px; font-weight: 600; }
 .days-away  { font-size: 11px; color: var(--muted); }
@@ -141,19 +196,22 @@ a:hover { text-decoration: underline; }
 .footer-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
 .footer-item { font-size: 12px; }
 .footer-item strong { display: block; color: var(--text); }
-
 .unavailable-list { font-size: 12px; color: var(--red); margin-top: 6px; }
 
 /* ── Responsive ── */
-@media(max-width:600px) {
+@media(max-width:640px) {
+  .filter-bar { padding: 8px 14px; }
+  .search-wrap { max-width: 100%; }
   .card-top { flex-direction: column; }
   .event-meta { text-align: left; }
   .footer-grid { grid-template-columns: 1fr; }
+  .mcap-input { width: 60px; }
 }
 </style>
 </head>
 <body>
 
+<!-- ══ HEADER ══════════════════════════════════════════════════════ -->
 <div class="header">
   <h1>📡 Market Event Radar</h1>
   <div class="sub">Weekly Catalyst Digest &nbsp;·&nbsp; US Equities (NYSE / NASDAQ)</div>
@@ -165,19 +223,79 @@ a:hover { text-decoration: underline; }
   </div>
 </div>
 
+<!-- ══ STICKY FILTER BAR ════════════════════════════════════════════ -->
+<div class="filter-bar">
+
+  <!-- Row 1: Search · Event type · Cap tier -->
+  <div class="filter-row">
+    <div class="search-wrap">
+      <span class="search-icon">🔍</span>
+      <input class="search-input" id="search-input" type="text"
+             placeholder="Search ticker or company…" autocomplete="off">
+    </div>
+
+    <div class="filter-sep"></div>
+
+    <span class="filter-label">Type</span>
+    <button class="tb active" data-type="all">All</button>
+    <button class="tb" data-type="earnings">Earnings</button>
+    <button class="tb" data-type="ipo">IPO</button>
+    <button class="tb" data-type="8k">8-K</button>
+    <button class="tb" data-type="news">News</button>
+
+    <div class="filter-sep"></div>
+
+    <span class="filter-label">Cap</span>
+    <button class="tb active" data-cap="all">All</button>
+    <button class="tb" data-cap="large">Large</button>
+    <button class="tb" data-cap="mid">Mid</button>
+    <button class="tb" data-cap="small">Small</button>
+
+    <span class="filter-count" id="filter-count">31 results</span>
+  </div>
+
+  <!-- Row 2: Market cap range · Confirmation status -->
+  <div class="filter-row">
+    <span class="filter-label">MCap</span>
+    <div class="mcap-wrap">
+      <input class="mcap-input" id="mcap-min" type="number" min="0" step="0.5" placeholder="Min $B">
+      <span class="mcap-dash">—</span>
+      <input class="mcap-input" id="mcap-max" type="number" min="0" step="0.5" placeholder="Max $B">
+    </div>
+
+    <div class="filter-sep"></div>
+
+    <span class="filter-label">Date</span>
+    <label class="cb-wrap confirmed">
+      <input type="checkbox" id="cb-confirmed" checked>
+      Confirmed
+    </label>
+    <label class="cb-wrap estimated">
+      <input type="checkbox" id="cb-estimated" checked>
+      Estimated
+    </label>
+  </div>
+
+</div><!-- /filter-bar -->
+
 <div class="container">
 
-<!-- ═══════════════════════ SECTION A: EARNINGS ═══════════════════════ -->
-<div class="section">
+<!-- ══ SECTION A: EARNINGS ══════════════════════════════════════════ -->
+<div class="section" data-section="earnings">
   <div class="section-title">A — Earnings This Week</div>
+  
+  
+  <div class="section-filter-empty">No earnings match your current filters.</div>
 
   
-
   
-
-  
-  
-  <div class="card earnings ">
+  <div class="card earnings prev-reported"
+       data-type="earnings"
+       data-cap="large"
+       data-confirmation="confirmed"
+       data-ticker="WDS"
+       data-company="woodside energy group limited"
+       data-mcap="58.307">
     <div class="card-top">
       <div class="ticker-block">
         <span class="ticker">WDS</span>
@@ -188,7 +306,7 @@ a:hover { text-decoration: underline; }
           <span class="badge badge-confirmed">Confirmed</span>
         
         
-        
+        <span class="badge badge-prev">Previously Reported</span>
         
       </div>
       <div class="event-meta">
@@ -198,46 +316,37 @@ a:hover { text-decoration: underline; }
     </div>
     <div class="card-body">
       <div class="card-grid">
-        <div>
-          <div class="metric-label">Market Cap</div>
-          <div class="metric-value">$58.3B</div>
-        </div>
+        <div><div class="metric-label">Market Cap</div><div class="metric-value">$58.3B</div></div>
         
         
-        <div>
-          <div class="metric-label">Open Interest</div>
-          <div class="metric-value">13.7K</div>
-        </div>
+        <div><div class="metric-label">Open Interest</div><div class="metric-value">13.7K</div></div>
         
         
-        <div>
-          <div class="metric-label">Options Vol Today</div>
-          <div class="metric-value">3.5K</div>
-        </div>
+        <div><div class="metric-label">Options Vol Today</div><div class="metric-value">3.5K</div></div>
         
         
-        <div>
-          <div class="metric-label">Put/Call Ratio</div>
-          <div class="metric-value">0.64</div>
-        </div>
+        <div><div class="metric-label">Put/Call Ratio</div><div class="metric-value">0.64</div></div>
         
         
-        <div>
-          <div class="metric-label">Avg Stock Vol (20d)</div>
-          <div class="metric-value">955.2K</div>
-        </div>
+        <div><div class="metric-label">Avg Stock Vol (20d)</div><div class="metric-value">955.2K</div></div>
         
       </div>
       
       <div class="sources-row">
         <span style="font-size:10px;color:var(--muted)">Sources:</span>
-        <span class="source-badge">nasdaq</span><span class="source-badge">yfinance</span>
+        <span class="source-badge">nasdaq</span><span class="source-badge">cache</span>
       </div>
     </div>
   </div>
   
   
-  <div class="card earnings ">
+  <div class="card earnings prev-reported"
+       data-type="earnings"
+       data-cap="small"
+       data-confirmation="confirmed"
+       data-ticker="AIOT"
+       data-company="powerfleet, inc."
+       data-mcap="0.566">
     <div class="card-top">
       <div class="ticker-block">
         <span class="ticker">AIOT</span>
@@ -247,194 +356,7 @@ a:hover { text-decoration: underline; }
           <span class="badge badge-confirmed">Confirmed</span>
         
         
-        
-        
-      </div>
-      <div class="event-meta">
-        <div class="event-date">Mon Jun 15 · BMO</div>
-        <div class="days-away">Tomorrow</div>
-      </div>
-    </div>
-    <div class="card-body">
-      <div class="card-grid">
-        <div>
-          <div class="metric-label">Market Cap</div>
-          <div class="metric-value">$566M</div>
-        </div>
-        
-        <div>
-          <div class="metric-label">EPS Estimate</div>
-          <div class="metric-value">$0.00</div>
-        </div>
-        
-        
-        <div>
-          <div class="metric-label">Open Interest</div>
-          <div class="metric-value">9.7K</div>
-        </div>
-        
-        
-        <div>
-          <div class="metric-label">Options Vol Today</div>
-          <div class="metric-value">1.7K</div>
-        </div>
-        
-        
-        <div>
-          <div class="metric-label">Put/Call Ratio</div>
-          <div class="metric-value">0.21</div>
-        </div>
-        
-        
-        <div>
-          <div class="metric-label">Avg Stock Vol (20d)</div>
-          <div class="metric-value">$2M</div>
-        </div>
-        
-      </div>
-      
-      <div class="sources-row">
-        <span style="font-size:10px;color:var(--muted)">Sources:</span>
-        <span class="source-badge">nasdaq</span><span class="source-badge">finnhub</span><span class="source-badge">yfinance</span>
-      </div>
-    </div>
-  </div>
-  
-  
-  <div class="card earnings ">
-    <div class="card-top">
-      <div class="ticker-block">
-        <span class="ticker">DOMO</span>
-        <span class="company">Domo, Inc.</span>
-        
-        
-          <span class="badge badge-confirmed">Confirmed</span>
-        
-        
-        
-        
-      </div>
-      <div class="event-meta">
-        <div class="event-date">Mon Jun 15 · AMC</div>
-        <div class="days-away">Tomorrow</div>
-      </div>
-    </div>
-    <div class="card-body">
-      <div class="card-grid">
-        <div>
-          <div class="metric-label">Market Cap</div>
-          <div class="metric-value">$136M</div>
-        </div>
-        
-        
-        <div>
-          <div class="metric-label">Open Interest</div>
-          <div class="metric-value">22.6K</div>
-        </div>
-        
-        
-        <div>
-          <div class="metric-label">Options Vol Today</div>
-          <div class="metric-value">4.3K</div>
-        </div>
-        
-        
-        <div>
-          <div class="metric-label">Put/Call Ratio</div>
-          <div class="metric-value">0.08</div>
-        </div>
-        
-        
-        <div>
-          <div class="metric-label">Avg Stock Vol (20d)</div>
-          <div class="metric-value">718.9K</div>
-        </div>
-        
-      </div>
-      
-      <div class="sources-row">
-        <span style="font-size:10px;color:var(--muted)">Sources:</span>
-        <span class="source-badge">nasdaq</span><span class="source-badge">finnhub</span><span class="source-badge">yfinance</span>
-      </div>
-    </div>
-  </div>
-  
-  
-  <div class="card earnings ">
-    <div class="card-top">
-      <div class="ticker-block">
-        <span class="ticker">PLAY</span>
-        <span class="company">Dave &amp; Buster&#39;s Entertainment, Inc.</span>
-        <span class="badge badge-small">Small</span>
-        
-          <span class="badge badge-confirmed">Confirmed</span>
-        
-        
-        
-        
-      </div>
-      <div class="event-meta">
-        <div class="event-date">Mon Jun 15 · AMC</div>
-        <div class="days-away">Tomorrow</div>
-      </div>
-    </div>
-    <div class="card-body">
-      <div class="card-grid">
-        <div>
-          <div class="metric-label">Market Cap</div>
-          <div class="metric-value">$449M</div>
-        </div>
-        
-        <div>
-          <div class="metric-label">EPS Estimate</div>
-          <div class="metric-value">$0.37</div>
-        </div>
-        
-        
-        <div>
-          <div class="metric-label">Open Interest</div>
-          <div class="metric-value">44.3K</div>
-        </div>
-        
-        
-        <div>
-          <div class="metric-label">Options Vol Today</div>
-          <div class="metric-value">4.9K</div>
-        </div>
-        
-        
-        <div>
-          <div class="metric-label">Put/Call Ratio</div>
-          <div class="metric-value">1.21</div>
-        </div>
-        
-        
-        <div>
-          <div class="metric-label">Avg Stock Vol (20d)</div>
-          <div class="metric-value">$2M</div>
-        </div>
-        
-      </div>
-      
-      <div class="sources-row">
-        <span style="font-size:10px;color:var(--muted)">Sources:</span>
-        <span class="source-badge">nasdaq</span><span class="source-badge">yfinance</span>
-      </div>
-    </div>
-  </div>
-  
-  
-  <div class="card earnings ">
-    <div class="card-top">
-      <div class="ticker-block">
-        <span class="ticker">CGC</span>
-        <span class="company">Canopy Growth Corporation</span>
-        <span class="badge badge-small">Small</span>
-        
-          <span class="badge badge-confirmed">Confirmed</span>
-        
-        
-        
+        <span class="badge badge-prev">Previously Reported</span>
         
       </div>
       <div class="event-meta">
@@ -444,212 +366,21 @@ a:hover { text-decoration: underline; }
     </div>
     <div class="card-body">
       <div class="card-grid">
-        <div>
-          <div class="metric-label">Market Cap</div>
-          <div class="metric-value">$449M</div>
-        </div>
+        <div><div class="metric-label">Market Cap</div><div class="metric-value">$566M</div></div>
+        
+        <div><div class="metric-label">EPS Estimate</div><div class="metric-value">$0.00</div></div>
         
         
-        <div>
-          <div class="metric-label">Open Interest</div>
-          <div class="metric-value">86.3K</div>
-        </div>
+        <div><div class="metric-label">Open Interest</div><div class="metric-value">9.7K</div></div>
         
         
-        <div>
-          <div class="metric-label">Options Vol Today</div>
-          <div class="metric-value">7.7K</div>
-        </div>
+        <div><div class="metric-label">Options Vol Today</div><div class="metric-value">1.7K</div></div>
         
         
-        <div>
-          <div class="metric-label">Put/Call Ratio</div>
-          <div class="metric-value">0.17</div>
-        </div>
+        <div><div class="metric-label">Put/Call Ratio</div><div class="metric-value">0.21</div></div>
         
         
-        <div>
-          <div class="metric-label">Avg Stock Vol (20d)</div>
-          <div class="metric-value">$8M</div>
-        </div>
-        
-      </div>
-      
-      <div class="sources-row">
-        <span style="font-size:10px;color:var(--muted)">Sources:</span>
-        <span class="source-badge">nasdaq</span><span class="source-badge">yfinance</span>
-      </div>
-    </div>
-  </div>
-  
-  
-  <div class="card earnings ">
-    <div class="card-top">
-      <div class="ticker-block">
-        <span class="ticker">REPL</span>
-        <span class="company">Replimune Group, Inc.</span>
-        <span class="badge badge-small">Small</span>
-        
-          <span class="badge badge-estimated">Estimated date</span>
-        
-        
-        
-        
-      </div>
-      <div class="event-meta">
-        <div class="event-date">Mon Jun 15</div>
-        <div class="days-away">Tomorrow</div>
-      </div>
-    </div>
-    <div class="card-body">
-      <div class="card-grid">
-        <div>
-          <div class="metric-label">Market Cap</div>
-          <div class="metric-value">$733M</div>
-        </div>
-        
-        
-        <div>
-          <div class="metric-label">Open Interest</div>
-          <div class="metric-value">31.4K</div>
-        </div>
-        
-        
-        <div>
-          <div class="metric-label">Options Vol Today</div>
-          <div class="metric-value">2.2K</div>
-        </div>
-        
-        
-        <div>
-          <div class="metric-label">Put/Call Ratio</div>
-          <div class="metric-value">0.35</div>
-        </div>
-        
-        
-        <div>
-          <div class="metric-label">Avg Stock Vol (20d)</div>
-          <div class="metric-value">$8M</div>
-        </div>
-        
-      </div>
-      
-      <div class="sources-row">
-        <span style="font-size:10px;color:var(--muted)">Sources:</span>
-        <span class="source-badge">nasdaq</span><span class="source-badge">yfinance</span>
-      </div>
-    </div>
-  </div>
-  
-  
-  <div class="card earnings ">
-    <div class="card-top">
-      <div class="ticker-block">
-        <span class="ticker">CCEP</span>
-        <span class="company">Coca-Cola Europacific Partners plc</span>
-        <span class="badge badge-large">Large</span>
-        
-        
-          <span class="badge badge-confirmed">Confirmed</span>
-        
-        
-        
-        
-      </div>
-      <div class="event-meta">
-        <div class="event-date">Tue Jun 16</div>
-        <div class="days-away">2 days away</div>
-      </div>
-    </div>
-    <div class="card-body">
-      <div class="card-grid">
-        <div>
-          <div class="metric-label">Market Cap</div>
-          <div class="metric-value">$44.0B</div>
-        </div>
-        
-        
-        <div>
-          <div class="metric-label">Open Interest</div>
-          <div class="metric-value">5.2K</div>
-        </div>
-        
-        
-        <div>
-          <div class="metric-label">Options Vol Today</div>
-          <div class="metric-value">1.1K</div>
-        </div>
-        
-        
-        <div>
-          <div class="metric-label">Put/Call Ratio</div>
-          <div class="metric-value">0.11</div>
-        </div>
-        
-        
-        <div>
-          <div class="metric-label">Avg Stock Vol (20d)</div>
-          <div class="metric-value">$2M</div>
-        </div>
-        
-      </div>
-      
-      <div class="sources-row">
-        <span style="font-size:10px;color:var(--muted)">Sources:</span>
-        <span class="source-badge">nasdaq</span><span class="source-badge">yfinance</span>
-      </div>
-    </div>
-  </div>
-  
-  
-  <div class="card earnings ">
-    <div class="card-top">
-      <div class="ticker-block">
-        <span class="ticker">VTGN</span>
-        <span class="company">VistaGen Therapeutics, Inc.</span>
-        
-        
-          <span class="badge badge-confirmed">Confirmed</span>
-        
-        
-        
-        
-      </div>
-      <div class="event-meta">
-        <div class="event-date">Tue Jun 16</div>
-        <div class="days-away">2 days away</div>
-      </div>
-    </div>
-    <div class="card-body">
-      <div class="card-grid">
-        <div>
-          <div class="metric-label">Market Cap</div>
-          <div class="metric-value">$23M</div>
-        </div>
-        
-        
-        <div>
-          <div class="metric-label">Open Interest</div>
-          <div class="metric-value">23.0K</div>
-        </div>
-        
-        
-        <div>
-          <div class="metric-label">Options Vol Today</div>
-          <div class="metric-value">872</div>
-        </div>
-        
-        
-        <div>
-          <div class="metric-label">Put/Call Ratio</div>
-          <div class="metric-value">0.07</div>
-        </div>
-        
-        
-        <div>
-          <div class="metric-label">Avg Stock Vol (20d)</div>
-          <div class="metric-value">616.5K</div>
-        </div>
+        <div><div class="metric-label">Avg Stock Vol (20d)</div><div class="metric-value">$2M</div></div>
         
       </div>
       
@@ -661,17 +392,176 @@ a:hover { text-decoration: underline; }
   </div>
   
   
-  <div class="card earnings ">
+  <div class="card earnings prev-reported"
+       data-type="earnings"
+       data-cap="micro"
+       data-confirmation="confirmed"
+       data-ticker="DOMO"
+       data-company="domo, inc."
+       data-mcap="0.136">
     <div class="card-top">
       <div class="ticker-block">
-        <span class="ticker">AVXL</span>
-        <span class="company">Anavex Life Sciences Corp.</span>
+        <span class="ticker">DOMO</span>
+        <span class="company">Domo, Inc.</span>
         
         
           <span class="badge badge-confirmed">Confirmed</span>
         
         
+        <span class="badge badge-prev">Previously Reported</span>
         
+      </div>
+      <div class="event-meta">
+        <div class="event-date">Mon Jun 15 · AMC</div>
+        <div class="days-away">Tomorrow</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-grid">
+        <div><div class="metric-label">Market Cap</div><div class="metric-value">$136M</div></div>
+        
+        
+        <div><div class="metric-label">Open Interest</div><div class="metric-value">22.6K</div></div>
+        
+        
+        <div><div class="metric-label">Options Vol Today</div><div class="metric-value">4.3K</div></div>
+        
+        
+        <div><div class="metric-label">Put/Call Ratio</div><div class="metric-value">0.08</div></div>
+        
+        
+        <div><div class="metric-label">Avg Stock Vol (20d)</div><div class="metric-value">718.9K</div></div>
+        
+      </div>
+      
+      <div class="sources-row">
+        <span style="font-size:10px;color:var(--muted)">Sources:</span>
+        <span class="source-badge">nasdaq</span><span class="source-badge">finnhub</span><span class="source-badge">cache</span>
+      </div>
+    </div>
+  </div>
+  
+  
+  <div class="card earnings prev-reported"
+       data-type="earnings"
+       data-cap="small"
+       data-confirmation="confirmed"
+       data-ticker="PLAY"
+       data-company="dave &amp; buster&#39;s entertainment, inc."
+       data-mcap="0.449">
+    <div class="card-top">
+      <div class="ticker-block">
+        <span class="ticker">PLAY</span>
+        <span class="company">Dave &amp; Buster&#39;s Entertainment, Inc.</span>
+        <span class="badge badge-small">Small</span>
+        
+          <span class="badge badge-confirmed">Confirmed</span>
+        
+        
+        <span class="badge badge-prev">Previously Reported</span>
+        
+      </div>
+      <div class="event-meta">
+        <div class="event-date">Mon Jun 15 · AMC</div>
+        <div class="days-away">Tomorrow</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-grid">
+        <div><div class="metric-label">Market Cap</div><div class="metric-value">$449M</div></div>
+        
+        <div><div class="metric-label">EPS Estimate</div><div class="metric-value">$0.37</div></div>
+        
+        
+        <div><div class="metric-label">Open Interest</div><div class="metric-value">44.3K</div></div>
+        
+        
+        <div><div class="metric-label">Options Vol Today</div><div class="metric-value">4.9K</div></div>
+        
+        
+        <div><div class="metric-label">Put/Call Ratio</div><div class="metric-value">1.21</div></div>
+        
+        
+        <div><div class="metric-label">Avg Stock Vol (20d)</div><div class="metric-value">$2M</div></div>
+        
+      </div>
+      
+      <div class="sources-row">
+        <span style="font-size:10px;color:var(--muted)">Sources:</span>
+        <span class="source-badge">nasdaq</span><span class="source-badge">cache</span>
+      </div>
+    </div>
+  </div>
+  
+  
+  <div class="card earnings prev-reported"
+       data-type="earnings"
+       data-cap="small"
+       data-confirmation="confirmed"
+       data-ticker="CGC"
+       data-company="canopy growth corporation"
+       data-mcap="0.449">
+    <div class="card-top">
+      <div class="ticker-block">
+        <span class="ticker">CGC</span>
+        <span class="company">Canopy Growth Corporation</span>
+        <span class="badge badge-small">Small</span>
+        
+          <span class="badge badge-confirmed">Confirmed</span>
+        
+        
+        <span class="badge badge-prev">Previously Reported</span>
+        
+      </div>
+      <div class="event-meta">
+        <div class="event-date">Mon Jun 15 · BMO</div>
+        <div class="days-away">Tomorrow</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-grid">
+        <div><div class="metric-label">Market Cap</div><div class="metric-value">$449M</div></div>
+        
+        
+        <div><div class="metric-label">Open Interest</div><div class="metric-value">86.3K</div></div>
+        
+        
+        <div><div class="metric-label">Options Vol Today</div><div class="metric-value">7.7K</div></div>
+        
+        
+        <div><div class="metric-label">Put/Call Ratio</div><div class="metric-value">0.17</div></div>
+        
+        
+        <div><div class="metric-label">Avg Stock Vol (20d)</div><div class="metric-value">$8M</div></div>
+        
+      </div>
+      
+      <div class="sources-row">
+        <span style="font-size:10px;color:var(--muted)">Sources:</span>
+        <span class="source-badge">nasdaq</span><span class="source-badge">cache</span>
+      </div>
+    </div>
+  </div>
+  
+  
+  <div class="card earnings prev-reported"
+       data-type="earnings"
+       data-cap="large"
+       data-confirmation="confirmed"
+       data-ticker="CCEP"
+       data-company="coca-cola europacific partners plc"
+       data-mcap="43.985">
+    <div class="card-top">
+      <div class="ticker-block">
+        <span class="ticker">CCEP</span>
+        <span class="company">Coca-Cola Europacific Partners plc</span>
+        <span class="badge badge-large">Large</span>
+        
+        
+          <span class="badge badge-confirmed">Confirmed</span>
+        
+        
+        <span class="badge badge-prev">Previously Reported</span>
         
       </div>
       <div class="event-meta">
@@ -681,46 +571,137 @@ a:hover { text-decoration: underline; }
     </div>
     <div class="card-body">
       <div class="card-grid">
-        <div>
-          <div class="metric-label">Market Cap</div>
-          <div class="metric-value">$232M</div>
-        </div>
+        <div><div class="metric-label">Market Cap</div><div class="metric-value">$44.0B</div></div>
         
         
-        <div>
-          <div class="metric-label">Open Interest</div>
-          <div class="metric-value">57.5K</div>
-        </div>
+        <div><div class="metric-label">Open Interest</div><div class="metric-value">5.2K</div></div>
         
         
-        <div>
-          <div class="metric-label">Options Vol Today</div>
-          <div class="metric-value">2.0K</div>
-        </div>
+        <div><div class="metric-label">Options Vol Today</div><div class="metric-value">1.1K</div></div>
         
         
-        <div>
-          <div class="metric-label">Put/Call Ratio</div>
-          <div class="metric-value">0.58</div>
-        </div>
+        <div><div class="metric-label">Put/Call Ratio</div><div class="metric-value">0.11</div></div>
         
         
-        <div>
-          <div class="metric-label">Avg Stock Vol (20d)</div>
-          <div class="metric-value">$1M</div>
-        </div>
+        <div><div class="metric-label">Avg Stock Vol (20d)</div><div class="metric-value">$2M</div></div>
         
       </div>
       
       <div class="sources-row">
         <span style="font-size:10px;color:var(--muted)">Sources:</span>
-        <span class="source-badge">nasdaq</span><span class="source-badge">yfinance</span>
+        <span class="source-badge">nasdaq</span><span class="source-badge">cache</span>
       </div>
     </div>
   </div>
   
   
-  <div class="card earnings prev-reported">
+  <div class="card earnings prev-reported"
+       data-type="earnings"
+       data-cap="micro"
+       data-confirmation="confirmed"
+       data-ticker="VTGN"
+       data-company="vistagen therapeutics, inc."
+       data-mcap="0.023">
+    <div class="card-top">
+      <div class="ticker-block">
+        <span class="ticker">VTGN</span>
+        <span class="company">VistaGen Therapeutics, Inc.</span>
+        
+        
+          <span class="badge badge-confirmed">Confirmed</span>
+        
+        
+        <span class="badge badge-prev">Previously Reported</span>
+        
+      </div>
+      <div class="event-meta">
+        <div class="event-date">Tue Jun 16</div>
+        <div class="days-away">2 days away</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-grid">
+        <div><div class="metric-label">Market Cap</div><div class="metric-value">$23M</div></div>
+        
+        
+        <div><div class="metric-label">Open Interest</div><div class="metric-value">23.0K</div></div>
+        
+        
+        <div><div class="metric-label">Options Vol Today</div><div class="metric-value">872</div></div>
+        
+        
+        <div><div class="metric-label">Put/Call Ratio</div><div class="metric-value">0.07</div></div>
+        
+        
+        <div><div class="metric-label">Avg Stock Vol (20d)</div><div class="metric-value">616.5K</div></div>
+        
+      </div>
+      
+      <div class="sources-row">
+        <span style="font-size:10px;color:var(--muted)">Sources:</span>
+        <span class="source-badge">nasdaq</span><span class="source-badge">finnhub</span><span class="source-badge">cache</span>
+      </div>
+    </div>
+  </div>
+  
+  
+  <div class="card earnings prev-reported"
+       data-type="earnings"
+       data-cap="micro"
+       data-confirmation="confirmed"
+       data-ticker="AVXL"
+       data-company="anavex life sciences corp."
+       data-mcap="0.232">
+    <div class="card-top">
+      <div class="ticker-block">
+        <span class="ticker">AVXL</span>
+        <span class="company">Anavex Life Sciences Corp.</span>
+        
+        
+          <span class="badge badge-confirmed">Confirmed</span>
+        
+        
+        <span class="badge badge-prev">Previously Reported</span>
+        
+      </div>
+      <div class="event-meta">
+        <div class="event-date">Tue Jun 16</div>
+        <div class="days-away">2 days away</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-grid">
+        <div><div class="metric-label">Market Cap</div><div class="metric-value">$232M</div></div>
+        
+        
+        <div><div class="metric-label">Open Interest</div><div class="metric-value">57.5K</div></div>
+        
+        
+        <div><div class="metric-label">Options Vol Today</div><div class="metric-value">2.0K</div></div>
+        
+        
+        <div><div class="metric-label">Put/Call Ratio</div><div class="metric-value">0.58</div></div>
+        
+        
+        <div><div class="metric-label">Avg Stock Vol (20d)</div><div class="metric-value">$1M</div></div>
+        
+      </div>
+      
+      <div class="sources-row">
+        <span style="font-size:10px;color:var(--muted)">Sources:</span>
+        <span class="source-badge">nasdaq</span><span class="source-badge">cache</span>
+      </div>
+    </div>
+  </div>
+  
+  
+  <div class="card earnings prev-reported"
+       data-type="earnings"
+       data-cap="large"
+       data-confirmation="confirmed"
+       data-ticker="JBL"
+       data-company="jabil inc."
+       data-mcap="40.6">
     <div class="card-top">
       <div class="ticker-block">
         <span class="ticker">JBL</span>
@@ -741,39 +722,21 @@ a:hover { text-decoration: underline; }
     </div>
     <div class="card-body">
       <div class="card-grid">
-        <div>
-          <div class="metric-label">Market Cap</div>
-          <div class="metric-value">$40.6B</div>
-        </div>
+        <div><div class="metric-label">Market Cap</div><div class="metric-value">$40.6B</div></div>
         
-        <div>
-          <div class="metric-label">EPS Estimate</div>
-          <div class="metric-value">$2.92</div>
-        </div>
+        <div><div class="metric-label">EPS Estimate</div><div class="metric-value">$2.92</div></div>
         
         
-        <div>
-          <div class="metric-label">Open Interest</div>
-          <div class="metric-value">11.7K</div>
-        </div>
+        <div><div class="metric-label">Open Interest</div><div class="metric-value">11.7K</div></div>
         
         
-        <div>
-          <div class="metric-label">Options Vol Today</div>
-          <div class="metric-value">2.5K</div>
-        </div>
+        <div><div class="metric-label">Options Vol Today</div><div class="metric-value">2.5K</div></div>
         
         
-        <div>
-          <div class="metric-label">Put/Call Ratio</div>
-          <div class="metric-value">2.28</div>
-        </div>
+        <div><div class="metric-label">Put/Call Ratio</div><div class="metric-value">2.28</div></div>
         
         
-        <div>
-          <div class="metric-label">Avg Stock Vol (20d)</div>
-          <div class="metric-value">$1M</div>
-        </div>
+        <div><div class="metric-label">Avg Stock Vol (20d)</div><div class="metric-value">$1M</div></div>
         
       </div>
       
@@ -785,7 +748,13 @@ a:hover { text-decoration: underline; }
   </div>
   
   
-  <div class="card earnings ">
+  <div class="card earnings prev-reported"
+       data-type="earnings"
+       data-cap="large"
+       data-confirmation="confirmed"
+       data-ticker="EC"
+       data-company="ecopetrol s.a."
+       data-mcap="34.086">
     <div class="card-top">
       <div class="ticker-block">
         <span class="ticker">EC</span>
@@ -796,7 +765,7 @@ a:hover { text-decoration: underline; }
           <span class="badge badge-confirmed">Confirmed</span>
         
         
-        
+        <span class="badge badge-prev">Previously Reported</span>
         
       </div>
       <div class="event-meta">
@@ -806,51 +775,39 @@ a:hover { text-decoration: underline; }
     </div>
     <div class="card-body">
       <div class="card-grid">
-        <div>
-          <div class="metric-label">Market Cap</div>
-          <div class="metric-value">$34.1B</div>
-        </div>
+        <div><div class="metric-label">Market Cap</div><div class="metric-value">$34.1B</div></div>
         
-        <div>
-          <div class="metric-label">EPS Estimate</div>
-          <div class="metric-value">$0.60</div>
-        </div>
+        <div><div class="metric-label">EPS Estimate</div><div class="metric-value">$0.60</div></div>
         
         
-        <div>
-          <div class="metric-label">Open Interest</div>
-          <div class="metric-value">119.7K</div>
-        </div>
+        <div><div class="metric-label">Open Interest</div><div class="metric-value">119.7K</div></div>
         
         
-        <div>
-          <div class="metric-label">Options Vol Today</div>
-          <div class="metric-value">5.3K</div>
-        </div>
+        <div><div class="metric-label">Options Vol Today</div><div class="metric-value">5.3K</div></div>
         
         
-        <div>
-          <div class="metric-label">Put/Call Ratio</div>
-          <div class="metric-value">0.55</div>
-        </div>
+        <div><div class="metric-label">Put/Call Ratio</div><div class="metric-value">0.55</div></div>
         
         
-        <div>
-          <div class="metric-label">Avg Stock Vol (20d)</div>
-          <div class="metric-value">$3M</div>
-        </div>
+        <div><div class="metric-label">Avg Stock Vol (20d)</div><div class="metric-value">$3M</div></div>
         
       </div>
       
       <div class="sources-row">
         <span style="font-size:10px;color:var(--muted)">Sources:</span>
-        <span class="source-badge">nasdaq</span><span class="source-badge">yfinance</span>
+        <span class="source-badge">nasdaq</span><span class="source-badge">cache</span>
       </div>
     </div>
   </div>
   
   
-  <div class="card earnings ">
+  <div class="card earnings prev-reported"
+       data-type="earnings"
+       data-cap="large"
+       data-confirmation="confirmed"
+       data-ticker="ICLR"
+       data-company="icon plc"
+       data-mcap="11.193">
     <div class="card-top">
       <div class="ticker-block">
         <span class="ticker">ICLR</span>
@@ -861,7 +818,7 @@ a:hover { text-decoration: underline; }
           <span class="badge badge-confirmed">Confirmed</span>
         
         
-        
+        <span class="badge badge-prev">Previously Reported</span>
         
       </div>
       <div class="event-meta">
@@ -871,51 +828,39 @@ a:hover { text-decoration: underline; }
     </div>
     <div class="card-body">
       <div class="card-grid">
-        <div>
-          <div class="metric-label">Market Cap</div>
-          <div class="metric-value">$11.2B</div>
-        </div>
+        <div><div class="metric-label">Market Cap</div><div class="metric-value">$11.2B</div></div>
         
-        <div>
-          <div class="metric-label">EPS Estimate</div>
-          <div class="metric-value">$2.18</div>
-        </div>
+        <div><div class="metric-label">EPS Estimate</div><div class="metric-value">$2.18</div></div>
         
         
-        <div>
-          <div class="metric-label">Open Interest</div>
-          <div class="metric-value">22.4K</div>
-        </div>
+        <div><div class="metric-label">Open Interest</div><div class="metric-value">22.4K</div></div>
         
         
-        <div>
-          <div class="metric-label">Options Vol Today</div>
-          <div class="metric-value">2.5K</div>
-        </div>
+        <div><div class="metric-label">Options Vol Today</div><div class="metric-value">2.5K</div></div>
         
         
-        <div>
-          <div class="metric-label">Put/Call Ratio</div>
-          <div class="metric-value">1.34</div>
-        </div>
+        <div><div class="metric-label">Put/Call Ratio</div><div class="metric-value">1.34</div></div>
         
         
-        <div>
-          <div class="metric-label">Avg Stock Vol (20d)</div>
-          <div class="metric-value">$1M</div>
-        </div>
+        <div><div class="metric-label">Avg Stock Vol (20d)</div><div class="metric-value">$1M</div></div>
         
       </div>
       
       <div class="sources-row">
         <span style="font-size:10px;color:var(--muted)">Sources:</span>
-        <span class="source-badge">nasdaq</span><span class="source-badge">yfinance</span>
+        <span class="source-badge">nasdaq</span><span class="source-badge">cache</span>
       </div>
     </div>
   </div>
   
   
-  <div class="card earnings ">
+  <div class="card earnings prev-reported"
+       data-type="earnings"
+       data-cap="mid"
+       data-confirmation="confirmed"
+       data-ticker="KMX"
+       data-company="carmax inc"
+       data-mcap="7.27">
     <div class="card-top">
       <div class="ticker-block">
         <span class="ticker">KMX</span>
@@ -926,7 +871,7 @@ a:hover { text-decoration: underline; }
           <span class="badge badge-confirmed">Confirmed</span>
         
         
-        
+        <span class="badge badge-prev">Previously Reported</span>
         
       </div>
       <div class="event-meta">
@@ -936,51 +881,39 @@ a:hover { text-decoration: underline; }
     </div>
     <div class="card-body">
       <div class="card-grid">
-        <div>
-          <div class="metric-label">Market Cap</div>
-          <div class="metric-value">$7.3B</div>
-        </div>
+        <div><div class="metric-label">Market Cap</div><div class="metric-value">$7.3B</div></div>
         
-        <div>
-          <div class="metric-label">EPS Estimate</div>
-          <div class="metric-value">$0.94</div>
-        </div>
+        <div><div class="metric-label">EPS Estimate</div><div class="metric-value">$0.94</div></div>
         
         
-        <div>
-          <div class="metric-label">Open Interest</div>
-          <div class="metric-value">66.3K</div>
-        </div>
+        <div><div class="metric-label">Open Interest</div><div class="metric-value">66.3K</div></div>
         
         
-        <div>
-          <div class="metric-label">Options Vol Today</div>
-          <div class="metric-value">5.4K</div>
-        </div>
+        <div><div class="metric-label">Options Vol Today</div><div class="metric-value">5.4K</div></div>
         
         
-        <div>
-          <div class="metric-label">Put/Call Ratio</div>
-          <div class="metric-value">1.12</div>
-        </div>
+        <div><div class="metric-label">Put/Call Ratio</div><div class="metric-value">1.12</div></div>
         
         
-        <div>
-          <div class="metric-label">Avg Stock Vol (20d)</div>
-          <div class="metric-value">$3M</div>
-        </div>
+        <div><div class="metric-label">Avg Stock Vol (20d)</div><div class="metric-value">$3M</div></div>
         
       </div>
       
       <div class="sources-row">
         <span style="font-size:10px;color:var(--muted)">Sources:</span>
-        <span class="source-badge">nasdaq</span><span class="source-badge">finnhub</span><span class="source-badge">yfinance</span>
+        <span class="source-badge">nasdaq</span><span class="source-badge">finnhub</span><span class="source-badge">cache</span>
       </div>
     </div>
   </div>
   
   
-  <div class="card earnings prev-reported">
+  <div class="card earnings prev-reported"
+       data-type="earnings"
+       data-cap="small"
+       data-confirmation="confirmed"
+       data-ticker="SWBI"
+       data-company="smith &amp; wesson brands, inc."
+       data-mcap="0.657">
     <div class="card-top">
       <div class="ticker-block">
         <span class="ticker">SWBI</span>
@@ -1000,34 +933,19 @@ a:hover { text-decoration: underline; }
     </div>
     <div class="card-body">
       <div class="card-grid">
-        <div>
-          <div class="metric-label">Market Cap</div>
-          <div class="metric-value">$657M</div>
-        </div>
+        <div><div class="metric-label">Market Cap</div><div class="metric-value">$657M</div></div>
         
         
-        <div>
-          <div class="metric-label">Open Interest</div>
-          <div class="metric-value">25.0K</div>
-        </div>
+        <div><div class="metric-label">Open Interest</div><div class="metric-value">25.0K</div></div>
         
         
-        <div>
-          <div class="metric-label">Options Vol Today</div>
-          <div class="metric-value">1.8K</div>
-        </div>
+        <div><div class="metric-label">Options Vol Today</div><div class="metric-value">1.8K</div></div>
         
         
-        <div>
-          <div class="metric-label">Put/Call Ratio</div>
-          <div class="metric-value">1.51</div>
-        </div>
+        <div><div class="metric-label">Put/Call Ratio</div><div class="metric-value">1.51</div></div>
         
         
-        <div>
-          <div class="metric-label">Avg Stock Vol (20d)</div>
-          <div class="metric-value">556.1K</div>
-        </div>
+        <div><div class="metric-label">Avg Stock Vol (20d)</div><div class="metric-value">556.1K</div></div>
         
       </div>
       
@@ -1039,7 +957,13 @@ a:hover { text-decoration: underline; }
   </div>
   
   
-  <div class="card earnings ">
+  <div class="card earnings prev-reported"
+       data-type="earnings"
+       data-cap="small"
+       data-confirmation="confirmed"
+       data-ticker="RR"
+       data-company="richtech robotics inc."
+       data-mcap="0.476">
     <div class="card-top">
       <div class="ticker-block">
         <span class="ticker">RR</span>
@@ -1049,7 +973,7 @@ a:hover { text-decoration: underline; }
           <span class="badge badge-confirmed">Confirmed</span>
         
         
-        
+        <span class="badge badge-prev">Previously Reported</span>
         
       </div>
       <div class="event-meta">
@@ -1059,46 +983,37 @@ a:hover { text-decoration: underline; }
     </div>
     <div class="card-body">
       <div class="card-grid">
-        <div>
-          <div class="metric-label">Market Cap</div>
-          <div class="metric-value">$476M</div>
-        </div>
+        <div><div class="metric-label">Market Cap</div><div class="metric-value">$476M</div></div>
         
         
-        <div>
-          <div class="metric-label">Open Interest</div>
-          <div class="metric-value">150.6K</div>
-        </div>
+        <div><div class="metric-label">Open Interest</div><div class="metric-value">150.6K</div></div>
         
         
-        <div>
-          <div class="metric-label">Options Vol Today</div>
-          <div class="metric-value">10.4K</div>
-        </div>
+        <div><div class="metric-label">Options Vol Today</div><div class="metric-value">10.4K</div></div>
         
         
-        <div>
-          <div class="metric-label">Put/Call Ratio</div>
-          <div class="metric-value">0.18</div>
-        </div>
+        <div><div class="metric-label">Put/Call Ratio</div><div class="metric-value">0.18</div></div>
         
         
-        <div>
-          <div class="metric-label">Avg Stock Vol (20d)</div>
-          <div class="metric-value">$15M</div>
-        </div>
+        <div><div class="metric-label">Avg Stock Vol (20d)</div><div class="metric-value">$15M</div></div>
         
       </div>
       
       <div class="sources-row">
         <span style="font-size:10px;color:var(--muted)">Sources:</span>
-        <span class="source-badge">nasdaq</span><span class="source-badge">yfinance</span>
+        <span class="source-badge">nasdaq</span><span class="source-badge">yfinance</span><span class="source-badge">cache</span>
       </div>
     </div>
   </div>
   
   
-  <div class="card earnings ">
+  <div class="card earnings prev-reported"
+       data-type="earnings"
+       data-cap="large"
+       data-confirmation="confirmed"
+       data-ticker="ACN"
+       data-company="accenture plc"
+       data-mcap="104.796">
     <div class="card-top">
       <div class="ticker-block">
         <span class="ticker">ACN</span>
@@ -1109,7 +1024,7 @@ a:hover { text-decoration: underline; }
           <span class="badge badge-confirmed">Confirmed</span>
         
         
-        
+        <span class="badge badge-prev">Previously Reported</span>
         
       </div>
       <div class="event-meta">
@@ -1119,51 +1034,39 @@ a:hover { text-decoration: underline; }
     </div>
     <div class="card-body">
       <div class="card-grid">
-        <div>
-          <div class="metric-label">Market Cap</div>
-          <div class="metric-value">$104.8B</div>
-        </div>
+        <div><div class="metric-label">Market Cap</div><div class="metric-value">$104.8B</div></div>
         
-        <div>
-          <div class="metric-label">EPS Estimate</div>
-          <div class="metric-value">$3.70</div>
-        </div>
+        <div><div class="metric-label">EPS Estimate</div><div class="metric-value">$3.70</div></div>
         
         
-        <div>
-          <div class="metric-label">Open Interest</div>
-          <div class="metric-value">78.9K</div>
-        </div>
+        <div><div class="metric-label">Open Interest</div><div class="metric-value">78.9K</div></div>
         
         
-        <div>
-          <div class="metric-label">Options Vol Today</div>
-          <div class="metric-value">8.7K</div>
-        </div>
+        <div><div class="metric-label">Options Vol Today</div><div class="metric-value">8.7K</div></div>
         
         
-        <div>
-          <div class="metric-label">Put/Call Ratio</div>
-          <div class="metric-value">0.59</div>
-        </div>
+        <div><div class="metric-label">Put/Call Ratio</div><div class="metric-value">0.59</div></div>
         
         
-        <div>
-          <div class="metric-label">Avg Stock Vol (20d)</div>
-          <div class="metric-value">$6M</div>
-        </div>
+        <div><div class="metric-label">Avg Stock Vol (20d)</div><div class="metric-value">$6M</div></div>
         
       </div>
       
       <div class="sources-row">
         <span style="font-size:10px;color:var(--muted)">Sources:</span>
-        <span class="source-badge">nasdaq</span><span class="source-badge">finnhub</span><span class="source-badge">yfinance</span>
+        <span class="source-badge">nasdaq</span><span class="source-badge">finnhub</span><span class="source-badge">cache</span>
       </div>
     </div>
   </div>
   
   
-  <div class="card earnings prev-reported">
+  <div class="card earnings prev-reported"
+       data-type="earnings"
+       data-cap="large"
+       data-confirmation="confirmed"
+       data-ticker="KR"
+       data-company="kroger company (the)"
+       data-mcap="39.898">
     <div class="card-top">
       <div class="ticker-block">
         <span class="ticker">KR</span>
@@ -1184,51 +1087,39 @@ a:hover { text-decoration: underline; }
     </div>
     <div class="card-body">
       <div class="card-grid">
-        <div>
-          <div class="metric-label">Market Cap</div>
-          <div class="metric-value">$39.9B</div>
-        </div>
+        <div><div class="metric-label">Market Cap</div><div class="metric-value">$39.9B</div></div>
         
-        <div>
-          <div class="metric-label">EPS Estimate</div>
-          <div class="metric-value">$1.58</div>
-        </div>
+        <div><div class="metric-label">EPS Estimate</div><div class="metric-value">$1.58</div></div>
         
         
-        <div>
-          <div class="metric-label">Open Interest</div>
-          <div class="metric-value">66.5K</div>
-        </div>
+        <div><div class="metric-label">Open Interest</div><div class="metric-value">66.5K</div></div>
         
         
-        <div>
-          <div class="metric-label">Options Vol Today</div>
-          <div class="metric-value">18.5K</div>
-        </div>
+        <div><div class="metric-label">Options Vol Today</div><div class="metric-value">18.5K</div></div>
         
         
-        <div>
-          <div class="metric-label">Put/Call Ratio</div>
-          <div class="metric-value">0.23</div>
-        </div>
+        <div><div class="metric-label">Put/Call Ratio</div><div class="metric-value">0.23</div></div>
         
         
-        <div>
-          <div class="metric-label">Avg Stock Vol (20d)</div>
-          <div class="metric-value">$7M</div>
-        </div>
+        <div><div class="metric-label">Avg Stock Vol (20d)</div><div class="metric-value">$7M</div></div>
         
       </div>
       
       <div class="sources-row">
         <span style="font-size:10px;color:var(--muted)">Sources:</span>
-        <span class="source-badge">nasdaq</span><span class="source-badge">finnhub</span><span class="source-badge">cache</span>
+        <span class="source-badge">nasdaq</span><span class="source-badge">finnhub</span><span class="source-badge">yfinance</span><span class="source-badge">cache</span>
       </div>
     </div>
   </div>
   
   
-  <div class="card earnings ">
+  <div class="card earnings prev-reported"
+       data-type="earnings"
+       data-cap="mid"
+       data-confirmation="confirmed"
+       data-ticker="HUBG"
+       data-company="hub group, inc."
+       data-mcap="2.836">
     <div class="card-top">
       <div class="ticker-block">
         <span class="ticker">HUBG</span>
@@ -1239,7 +1130,7 @@ a:hover { text-decoration: underline; }
           <span class="badge badge-confirmed">Confirmed</span>
         
         
-        
+        <span class="badge badge-prev">Previously Reported</span>
         
       </div>
       <div class="event-meta">
@@ -1249,51 +1140,39 @@ a:hover { text-decoration: underline; }
     </div>
     <div class="card-body">
       <div class="card-grid">
-        <div>
-          <div class="metric-label">Market Cap</div>
-          <div class="metric-value">$2.8B</div>
-        </div>
+        <div><div class="metric-label">Market Cap</div><div class="metric-value">$2.8B</div></div>
         
-        <div>
-          <div class="metric-label">EPS Estimate</div>
-          <div class="metric-value">$0.42</div>
-        </div>
+        <div><div class="metric-label">EPS Estimate</div><div class="metric-value">$0.42</div></div>
         
         
-        <div>
-          <div class="metric-label">Open Interest</div>
-          <div class="metric-value">2.0K</div>
-        </div>
+        <div><div class="metric-label">Open Interest</div><div class="metric-value">2.0K</div></div>
         
         
-        <div>
-          <div class="metric-label">Options Vol Today</div>
-          <div class="metric-value">8.4K</div>
-        </div>
+        <div><div class="metric-label">Options Vol Today</div><div class="metric-value">8.4K</div></div>
         
         
-        <div>
-          <div class="metric-label">Put/Call Ratio</div>
-          <div class="metric-value">2.68</div>
-        </div>
+        <div><div class="metric-label">Put/Call Ratio</div><div class="metric-value">2.68</div></div>
         
         
-        <div>
-          <div class="metric-label">Avg Stock Vol (20d)</div>
-          <div class="metric-value">812.2K</div>
-        </div>
+        <div><div class="metric-label">Avg Stock Vol (20d)</div><div class="metric-value">812.2K</div></div>
         
       </div>
       
       <div class="sources-row">
         <span style="font-size:10px;color:var(--muted)">Sources:</span>
-        <span class="source-badge">nasdaq</span><span class="source-badge">yfinance</span>
+        <span class="source-badge">nasdaq</span><span class="source-badge">cache</span>
       </div>
     </div>
   </div>
   
   
-  <div class="card earnings prev-reported">
+  <div class="card earnings prev-reported"
+       data-type="earnings"
+       data-cap="small"
+       data-confirmation="estimated"
+       data-ticker="MEI"
+       data-company="mei"
+       data-mcap="0.426">
     <div class="card-top">
       <div class="ticker-block">
         <span class="ticker">MEI</span>
@@ -1313,39 +1192,21 @@ a:hover { text-decoration: underline; }
     </div>
     <div class="card-body">
       <div class="card-grid">
-        <div>
-          <div class="metric-label">Market Cap</div>
-          <div class="metric-value">$426M</div>
-        </div>
+        <div><div class="metric-label">Market Cap</div><div class="metric-value">$426M</div></div>
         
-        <div>
-          <div class="metric-label">EPS Estimate</div>
-          <div class="metric-value">$-0.21</div>
-        </div>
+        <div><div class="metric-label">EPS Estimate</div><div class="metric-value">$-0.21</div></div>
         
         
-        <div>
-          <div class="metric-label">Open Interest</div>
-          <div class="metric-value">13.6K</div>
-        </div>
+        <div><div class="metric-label">Open Interest</div><div class="metric-value">13.6K</div></div>
         
         
-        <div>
-          <div class="metric-label">Options Vol Today</div>
-          <div class="metric-value">1.2K</div>
-        </div>
+        <div><div class="metric-label">Options Vol Today</div><div class="metric-value">1.2K</div></div>
         
         
-        <div>
-          <div class="metric-label">Put/Call Ratio</div>
-          <div class="metric-value">0.14</div>
-        </div>
+        <div><div class="metric-label">Put/Call Ratio</div><div class="metric-value">0.14</div></div>
         
         
-        <div>
-          <div class="metric-label">Avg Stock Vol (20d)</div>
-          <div class="metric-value">$1M</div>
-        </div>
+        <div><div class="metric-label">Avg Stock Vol (20d)</div><div class="metric-value">$1M</div></div>
         
       </div>
       
@@ -1356,32 +1217,86 @@ a:hover { text-decoration: underline; }
     </div>
   </div>
   
+  
+  <div class="card earnings "
+       data-type="earnings"
+       data-cap="small"
+       data-confirmation="confirmed"
+       data-ticker="REPL"
+       data-company="replimune group, inc."
+       data-mcap="0.733">
+    <div class="card-top">
+      <div class="ticker-block">
+        <span class="ticker">REPL</span>
+        <span class="company">Replimune Group, Inc.</span>
+        <span class="badge badge-small">Small</span>
+        
+          <span class="badge badge-confirmed">Confirmed</span>
+        
+        
+        
+        
+      </div>
+      <div class="event-meta">
+        <div class="event-date">Thu Jun 18</div>
+        <div class="days-away">4 days away</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-grid">
+        <div><div class="metric-label">Market Cap</div><div class="metric-value">$733M</div></div>
+        
+        
+        <div><div class="metric-label">Open Interest</div><div class="metric-value">31.4K</div></div>
+        
+        
+        <div><div class="metric-label">Options Vol Today</div><div class="metric-value">2.2K</div></div>
+        
+        
+        <div><div class="metric-label">Put/Call Ratio</div><div class="metric-value">0.35</div></div>
+        
+        
+        <div><div class="metric-label">Avg Stock Vol (20d)</div><div class="metric-value">$8M</div></div>
+        
+      </div>
+      
+      <div class="sources-row">
+        <span style="font-size:10px;color:var(--muted)">Sources:</span>
+        <span class="source-badge">nasdaq</span><span class="source-badge">cache</span>
+      </div>
+    </div>
+  </div>
+  
 </div>
 
-<!-- ═══════════════════════ SECTION B: IPOs ═══════════════════════ -->
-<div class="section">
+<!-- ══ SECTION B: IPOs ═══════════════════════════════════════════════ -->
+<div class="section" data-section="ipo">
   <div class="section-title">B — Upcoming IPOs &amp; New Listings</div>
-
   
-
   
   <div class="section-empty">No upcoming IPOs found for the next 7 days.</div>
   
+  <div class="section-filter-empty">No IPOs match your current filters.</div>
 
   
 </div>
 
-<!-- ═══════════════════════ SECTION C: 8-K FILINGS ═══════════════════════ -->
-<div class="section">
+<!-- ══ SECTION C: 8-K ════════════════════════════════════════════════ -->
+<div class="section" data-section="8k">
   <div class="section-title">C — SEC 8-K Material Events</div>
+  
+  
+  <div class="section-filter-empty">No 8-K filings match your current filters.</div>
 
   
-
   
-
-  
-  
-  <div class="card eightk prev-reported">
+  <div class="card eightk prev-reported"
+       data-type="8k"
+       data-cap="large"
+       data-confirmation=""
+       data-ticker="MCK"
+       data-company=""
+       data-mcap="94.246">
     <div class="card-top">
       <div class="ticker-block">
         <span class="ticker">MCK</span>
@@ -1395,11 +1310,9 @@ a:hover { text-decoration: underline; }
       </div>
     </div>
     <div class="card-body">
-      <div class="summary-text">Barclays Maintains Overweight Rating on McKesson (MCK). McKesson Corporation (NYSE:MCK) is one of the Top 10 Strong Buy Stocks to Invest In. On June 10, 2026, Barclays lowered</div>
+      <div class="summary-text">Avidity Partners Management LP Purchases 3,720 Shares of McKesson Corporation $MCK. Avidity Partners Management LP raised its position in McKesson Corporation (NYSE:MCK – Free Report) by 64.1% during the</div>
       
-      <div class="sources-row">
-        <a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;company=&amp;type=8-K&amp;dateb=&amp;owner=include&amp;count=10" target="_blank" rel="noopener" style="font-size:12px;">View on EDGAR →</a>
-      </div>
+      <div class="sources-row"><a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;company=&amp;type=8-K&amp;dateb=&amp;owner=include&amp;count=10" target="_blank" rel="noopener" style="font-size:12px;">View on EDGAR →</a></div>
       
       <div class="sources-row">
         <span style="font-size:10px;color:var(--muted)">Sources:</span>
@@ -1409,7 +1322,13 @@ a:hover { text-decoration: underline; }
   </div>
   
   
-  <div class="card eightk prev-reported">
+  <div class="card eightk prev-reported"
+       data-type="8k"
+       data-cap="large"
+       data-confirmation=""
+       data-ticker="SCI"
+       data-company=""
+       data-mcap="10.613">
     <div class="card-top">
       <div class="ticker-block">
         <span class="ticker">SCI</span>
@@ -1425,9 +1344,7 @@ a:hover { text-decoration: underline; }
     <div class="card-body">
       <div class="summary-text">Long-Fiber Thermoplastics Market Dynamics and Industry Growth Factors. The global Long Fiber Thermoplastics (LFT) Market was valued at USD 4.06 billion in 2021 and is projected to reach USD 9</div>
       
-      <div class="sources-row">
-        <a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;company=&amp;type=8-K&amp;dateb=&amp;owner=include&amp;count=10" target="_blank" rel="noopener" style="font-size:12px;">View on EDGAR →</a>
-      </div>
+      <div class="sources-row"><a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;company=&amp;type=8-K&amp;dateb=&amp;owner=include&amp;count=10" target="_blank" rel="noopener" style="font-size:12px;">View on EDGAR →</a></div>
       
       <div class="sources-row">
         <span style="font-size:10px;color:var(--muted)">Sources:</span>
@@ -1437,7 +1354,13 @@ a:hover { text-decoration: underline; }
   </div>
   
   
-  <div class="card eightk prev-reported">
+  <div class="card eightk prev-reported"
+       data-type="8k"
+       data-cap="large"
+       data-confirmation=""
+       data-ticker="TGT"
+       data-company=""
+       data-mcap="61.42">
     <div class="card-top">
       <div class="ticker-block">
         <span class="ticker">TGT</span>
@@ -1453,9 +1376,7 @@ a:hover { text-decoration: underline; }
     <div class="card-body">
       <div class="summary-text">Target’s (TGT) ‘Specialization at Scale’ Strategy Wins Support from Guggenheim. Target Corporation (NYSE:TGT) is included among the 10 Best S&amp;P 500 Dividend Stocks to Buy Right Now. Guggenheim raised</div>
       
-      <div class="sources-row">
-        <a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;company=&amp;type=8-K&amp;dateb=&amp;owner=include&amp;count=10" target="_blank" rel="noopener" style="font-size:12px;">View on EDGAR →</a>
-      </div>
+      <div class="sources-row"><a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;company=&amp;type=8-K&amp;dateb=&amp;owner=include&amp;count=10" target="_blank" rel="noopener" style="font-size:12px;">View on EDGAR →</a></div>
       
       <div class="sources-row">
         <span style="font-size:10px;color:var(--muted)">Sources:</span>
@@ -1465,7 +1386,13 @@ a:hover { text-decoration: underline; }
   </div>
   
   
-  <div class="card eightk prev-reported">
+  <div class="card eightk prev-reported"
+       data-type="8k"
+       data-cap="large"
+       data-confirmation=""
+       data-ticker="DKS"
+       data-company=""
+       data-mcap="19.779">
     <div class="card-top">
       <div class="ticker-block">
         <span class="ticker">DKS</span>
@@ -1481,9 +1408,7 @@ a:hover { text-decoration: underline; }
     <div class="card-body">
       <div class="summary-text">Bidadi Township row turns into DKS vs HDK showdown as land acquisition sparks fresh political battle. With the government issuing the final notification for the Bidadi Township project, H.D. Kumaraswamy and Nikhil Kumarasw</div>
       
-      <div class="sources-row">
-        <a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;company=&amp;type=8-K&amp;dateb=&amp;owner=include&amp;count=10" target="_blank" rel="noopener" style="font-size:12px;">View on EDGAR →</a>
-      </div>
+      <div class="sources-row"><a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;company=&amp;type=8-K&amp;dateb=&amp;owner=include&amp;count=10" target="_blank" rel="noopener" style="font-size:12px;">View on EDGAR →</a></div>
       
       <div class="sources-row">
         <span style="font-size:10px;color:var(--muted)">Sources:</span>
@@ -1493,7 +1418,13 @@ a:hover { text-decoration: underline; }
   </div>
   
   
-  <div class="card eightk prev-reported">
+  <div class="card eightk prev-reported"
+       data-type="8k"
+       data-cap="large"
+       data-confirmation=""
+       data-ticker="CTVA"
+       data-company=""
+       data-mcap="50.924">
     <div class="card-top">
       <div class="ticker-block">
         <span class="ticker">CTVA</span>
@@ -1509,9 +1440,7 @@ a:hover { text-decoration: underline; }
     <div class="card-body">
       <div class="summary-text">Adams Natural Resources Fund Inc. Lowers Position in Corteva, Inc. $CTVA. Adams Natural Resources Fund Inc. trimmed its holdings in shares of Corteva, Inc. (NYSE:CTVA – Free Report) by 37.0% dur</div>
       
-      <div class="sources-row">
-        <a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;company=&amp;type=8-K&amp;dateb=&amp;owner=include&amp;count=10" target="_blank" rel="noopener" style="font-size:12px;">View on EDGAR →</a>
-      </div>
+      <div class="sources-row"><a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;company=&amp;type=8-K&amp;dateb=&amp;owner=include&amp;count=10" target="_blank" rel="noopener" style="font-size:12px;">View on EDGAR →</a></div>
       
       <div class="sources-row">
         <span style="font-size:10px;color:var(--muted)">Sources:</span>
@@ -1521,7 +1450,13 @@ a:hover { text-decoration: underline; }
   </div>
   
   
-  <div class="card eightk prev-reported">
+  <div class="card eightk prev-reported"
+       data-type="8k"
+       data-cap="large"
+       data-confirmation=""
+       data-ticker="WES"
+       data-company=""
+       data-mcap="17.551">
     <div class="card-top">
       <div class="ticker-block">
         <span class="ticker">WES</span>
@@ -1537,9 +1472,7 @@ a:hover { text-decoration: underline; }
     <div class="card-body">
       <div class="summary-text">Wes Streeting plans to increase high-skilled immigration if he becomes PM. Leadership hopeful to also say tax revenues from new North Sea oil and gasfields should be used to cut energy bills</div>
       
-      <div class="sources-row">
-        <a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;company=&amp;type=8-K&amp;dateb=&amp;owner=include&amp;count=10" target="_blank" rel="noopener" style="font-size:12px;">View on EDGAR →</a>
-      </div>
+      <div class="sources-row"><a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;company=&amp;type=8-K&amp;dateb=&amp;owner=include&amp;count=10" target="_blank" rel="noopener" style="font-size:12px;">View on EDGAR →</a></div>
       
       <div class="sources-row">
         <span style="font-size:10px;color:var(--muted)">Sources:</span>
@@ -1549,7 +1482,13 @@ a:hover { text-decoration: underline; }
   </div>
   
   
-  <div class="card eightk prev-reported">
+  <div class="card eightk prev-reported"
+       data-type="8k"
+       data-cap="large"
+       data-confirmation=""
+       data-ticker="DASH"
+       data-company=""
+       data-mcap="65.611">
     <div class="card-top">
       <div class="ticker-block">
         <span class="ticker">DASH</span>
@@ -1565,9 +1504,7 @@ a:hover { text-decoration: underline; }
     <div class="card-body">
       <div class="summary-text">Best 4K Dashcam Deals for Safe Driving: Amazon Weekend Offers. Explore the best 4K dashcam deals on Amazon this weekend. Compare top models by night vision, parking mode, and GPS logg</div>
       
-      <div class="sources-row">
-        <a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;company=&amp;type=8-K&amp;dateb=&amp;owner=include&amp;count=10" target="_blank" rel="noopener" style="font-size:12px;">View on EDGAR →</a>
-      </div>
+      <div class="sources-row"><a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;company=&amp;type=8-K&amp;dateb=&amp;owner=include&amp;count=10" target="_blank" rel="noopener" style="font-size:12px;">View on EDGAR →</a></div>
       
       <div class="sources-row">
         <span style="font-size:10px;color:var(--muted)">Sources:</span>
@@ -1577,7 +1514,13 @@ a:hover { text-decoration: underline; }
   </div>
   
   
-  <div class="card eightk prev-reported">
+  <div class="card eightk prev-reported"
+       data-type="8k"
+       data-cap="mid"
+       data-confirmation=""
+       data-ticker="WRBY"
+       data-company=""
+       data-mcap="3.247">
     <div class="card-top">
       <div class="ticker-block">
         <span class="ticker">WRBY</span>
@@ -1593,9 +1536,7 @@ a:hover { text-decoration: underline; }
     <div class="card-body">
       <div class="summary-text">Youngme Moon Sells 10,000 Shares of Warby Parker (NYSE:WRBY) Stock. Warby Parker Inc. (NYSE:WRBY – Get Free Report) Director Youngme Moon sold 10,000 shares of the company’s stock in a tra</div>
       
-      <div class="sources-row">
-        <a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;company=&amp;type=8-K&amp;dateb=&amp;owner=include&amp;count=10" target="_blank" rel="noopener" style="font-size:12px;">View on EDGAR →</a>
-      </div>
+      <div class="sources-row"><a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;company=&amp;type=8-K&amp;dateb=&amp;owner=include&amp;count=10" target="_blank" rel="noopener" style="font-size:12px;">View on EDGAR →</a></div>
       
       <div class="sources-row">
         <span style="font-size:10px;color:var(--muted)">Sources:</span>
@@ -1605,7 +1546,13 @@ a:hover { text-decoration: underline; }
   </div>
   
   
-  <div class="card eightk prev-reported">
+  <div class="card eightk prev-reported"
+       data-type="8k"
+       data-cap="small"
+       data-confirmation=""
+       data-ticker="OPTU"
+       data-company=""
+       data-mcap="0.505">
     <div class="card-top">
       <div class="ticker-block">
         <span class="ticker">OPTU</span>
@@ -1621,9 +1568,7 @@ a:hover { text-decoration: underline; }
     <div class="card-body">
       <div class="summary-text">SEC 8-K filing by </div>
       
-      <div class="sources-row">
-        <a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;company=&amp;type=8-K&amp;dateb=&amp;owner=include&amp;count=10" target="_blank" rel="noopener" style="font-size:12px;">View on EDGAR →</a>
-      </div>
+      <div class="sources-row"><a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;company=&amp;type=8-K&amp;dateb=&amp;owner=include&amp;count=10" target="_blank" rel="noopener" style="font-size:12px;">View on EDGAR →</a></div>
       
       <div class="sources-row">
         <span style="font-size:10px;color:var(--muted)">Sources:</span>
@@ -1633,7 +1578,13 @@ a:hover { text-decoration: underline; }
   </div>
   
   
-  <div class="card eightk prev-reported">
+  <div class="card eightk prev-reported"
+       data-type="8k"
+       data-cap="micro"
+       data-confirmation=""
+       data-ticker="LENZ"
+       data-company=""
+       data-mcap="0.212">
     <div class="card-top">
       <div class="ticker-block">
         <span class="ticker">LENZ</span>
@@ -1649,9 +1600,7 @@ a:hover { text-decoration: underline; }
     <div class="card-body">
       <div class="summary-text">Results from Incyte&#39;s Pivotal Phase 3 frontMIND Trial of Tafasitamab Combination Presented at the 2026 European Hematology Association Congress Plenary Showed Prolonged Progression Free Survival. - frontMIND study evaluating tafasitamab (Monjuvi ® /Minjuvi ® ) in patients with previously untreated high-risk diffuse</div>
       
-      <div class="sources-row">
-        <a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;company=&amp;type=8-K&amp;dateb=&amp;owner=include&amp;count=10" target="_blank" rel="noopener" style="font-size:12px;">View on EDGAR →</a>
-      </div>
+      <div class="sources-row"><a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;company=&amp;type=8-K&amp;dateb=&amp;owner=include&amp;count=10" target="_blank" rel="noopener" style="font-size:12px;">View on EDGAR →</a></div>
       
       <div class="sources-row">
         <span style="font-size:10px;color:var(--muted)">Sources:</span>
@@ -1661,7 +1610,13 @@ a:hover { text-decoration: underline; }
   </div>
   
   
-  <div class="card eightk prev-reported">
+  <div class="card eightk prev-reported"
+       data-type="8k"
+       data-cap="small"
+       data-confirmation=""
+       data-ticker="ENVX"
+       data-company=""
+       data-mcap="1.453">
     <div class="card-top">
       <div class="ticker-block">
         <span class="ticker">ENVX</span>
@@ -1675,21 +1630,25 @@ a:hover { text-decoration: underline; }
       </div>
     </div>
     <div class="card-body">
-      <div class="summary-text">SEC 8-K filing by </div>
+      <div class="summary-text">Lithium Stocks To Follow Now – June 13th. Amprius Technologies, QuantumScape, Critical Metals, Lithium Americas, Sigma Lithium, Enovix, and Lithium Americas (Arge</div>
       
-      <div class="sources-row">
-        <a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;company=&amp;type=8-K&amp;dateb=&amp;owner=include&amp;count=10" target="_blank" rel="noopener" style="font-size:12px;">View on EDGAR →</a>
-      </div>
+      <div class="sources-row"><a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;company=&amp;type=8-K&amp;dateb=&amp;owner=include&amp;count=10" target="_blank" rel="noopener" style="font-size:12px;">View on EDGAR →</a></div>
       
       <div class="sources-row">
         <span style="font-size:10px;color:var(--muted)">Sources:</span>
-        <span class="source-badge">edgar</span><span class="source-badge">cache</span>
+        <span class="source-badge">edgar</span><span class="source-badge">cache</span><span class="source-badge">newsdata</span>
       </div>
     </div>
   </div>
   
   
-  <div class="card eightk prev-reported">
+  <div class="card eightk prev-reported"
+       data-type="8k"
+       data-cap="small"
+       data-confirmation=""
+       data-ticker="DNUT"
+       data-company=""
+       data-mcap="0.743">
     <div class="card-top">
       <div class="ticker-block">
         <span class="ticker">DNUT</span>
@@ -1705,9 +1664,7 @@ a:hover { text-decoration: underline; }
     <div class="card-body">
       <div class="summary-text">Krispy Kreme Sees Unusually High Options Volume (NASDAQ:DNUT). Krispy Kreme, Inc. (NASDAQ:DNUT – Get Free Report) saw some unusual options trading on Friday. Traders acquired 6,231 ca</div>
       
-      <div class="sources-row">
-        <a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;company=&amp;type=8-K&amp;dateb=&amp;owner=include&amp;count=10" target="_blank" rel="noopener" style="font-size:12px;">View on EDGAR →</a>
-      </div>
+      <div class="sources-row"><a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;company=&amp;type=8-K&amp;dateb=&amp;owner=include&amp;count=10" target="_blank" rel="noopener" style="font-size:12px;">View on EDGAR →</a></div>
       
       <div class="sources-row">
         <span style="font-size:10px;color:var(--muted)">Sources:</span>
@@ -1718,47 +1675,32 @@ a:hover { text-decoration: underline; }
   
 </div>
 
-<!-- ═══════════════════════ SECTION D: NEWS ═══════════════════════ -->
-<div class="section">
+<!-- ══ SECTION D: NEWS ══════════════════════════════════════════════ -->
+<div class="section" data-section="news">
   <div class="section-title">D — News Catalysts</div>
-
   
-
   
   <div class="section-empty">No keyword-matched news catalysts found.</div>
   
+  <div class="section-filter-empty">No news catalysts match your current filters.</div>
 
   
 </div>
 
-<!-- ═══════════════════════ DIAGNOSTICS FOOTER ═══════════════════════ -->
+<!-- ══ FOOTER ════════════════════════════════════════════════════════ -->
 <div class="footer">
   <h3>Diagnostics</h3>
   <div class="footer-grid">
     <div class="footer-item">
       <strong>Source Activity</strong>
       
-        
-        <div>nasdaq: 18 events contributed</div>
-        
-        <div>yfinance: 14 events contributed</div>
-        
-        <div>finnhub: 9 events contributed</div>
-        
-        <div>cache: 17 events contributed</div>
-        
-        <div>edgar: 12 events contributed</div>
-        
-        <div>newsdata: 10 events contributed</div>
-        
+        <div>nasdaq: 18 events</div><div>cache: 31 events</div><div>finnhub: 9 events</div><div>yfinance: 2 events</div><div>edgar: 12 events</div><div>newsdata: 11 events</div>
       
     </div>
     <div class="footer-item">
       <strong>Data Unavailable</strong>
       
-        <div class="unavailable-list">
-          Options data missing for: OPENZ, AAME, KCRD, CDT, RTB, ALPS, EBZT, CYAN, RUBI, REBN, EFR, WDH, DPG, BGDE, DSWL, AIMAU, YI, GNS, CHR, WLYB, GURE, KOAN, FRD, SOUB, CURR, PURE, BRLS, IZM, VIVS, CHAI, IHT, BTTC, STRS, RTON, EONR, SNOA, SEED, NAMM, QEPC, CODA, ICG, TCNNF, STRM, SNRG, SEGG, WHLRL, SBSAA, RGNT, GITS, ENZ, LRHC, UNKNOWN, TVTV, CETY, ZEOX, BMR, GMS, SENR, DDDX, JRSH, QMCO, EMCG, VSTD, DTF, XAIR, RYES, IVF, DIDIY, IMTE, ADXN, FMST, PBSV, VNCE, BHR-PD, GAUZ, CRCW, UXIN, NMEX, AFJK, MODD, ATLN, TLX, DTSS, GLMD
-        </div>
+        <div class="unavailable-list">Options data missing for: EMCG, AIMAU, LRHC, ENZ, ZEOX, WHLRL, GAUZ, CHAI, CHR, RYES, QEPC, XAIR, GNS, IHT, REBN, CETY, CRCW, PURE, EFR, MODD, SOUB, RTB, DDDX, KOAN, UXIN, CYAN, BTTC, NAMM, BGDE, DIDIY, ATLN, FMST, STRM, GITS, SBSAA, IMTE, ALPS, UNKNOWN, KCRD, SENR, EBZT, JRSH, SEED, RTON, RUBI, TCNNF, GMS, ADXN, OPENZ, PBSV, YI, FRD, SEGG, BMR, DSWL, VIVS, CODA, DPG, IVF, AFJK, RGNT, VNCE, VSTD, ICG, CURR, TVTV, EONR, DTF, WDH, GLMD, IZM, SNOA, SNRG, WLYB, TLX, BHR-PD, NMEX, AAME, GURE, STRS, BRLS, DTSS, QMCO, CDT</div>
       
     </div>
   </div>
@@ -1770,5 +1712,136 @@ a:hover { text-decoration: underline; }
 </div>
 
 </div><!-- /container -->
+
+<script>
+(function () {
+  var allCards    = Array.from(document.querySelectorAll('.card'));
+  var countEl     = document.getElementById('filter-count');
+
+  // State
+  var activeType  = 'all';
+  var activeCap   = 'all';
+  var showConf    = true;
+  var showEst     = true;
+  var minMcap     = null;
+  var maxMcap     = null;
+  var searchQ     = '';
+
+  // Elements
+  var searchInput = document.getElementById('search-input');
+  var mcapMin     = document.getElementById('mcap-min');
+  var mcapMax     = document.getElementById('mcap-max');
+  var cbConf      = document.getElementById('cb-confirmed');
+  var cbEst       = document.getElementById('cb-estimated');
+
+  function applyFilters() {
+    var visible = 0;
+
+    allCards.forEach(function (card) {
+      var type    = card.dataset.type;
+      var cap     = card.dataset.cap;
+      var conf    = card.dataset.confirmation;
+      var ticker  = card.dataset.ticker || '';
+      var company = card.dataset.company || '';
+      var mcapRaw = card.dataset.mcap;
+      var mcap    = mcapRaw !== '' ? parseFloat(mcapRaw) : null;
+
+      var show = true;
+
+      // 1. Event type
+      if (activeType !== 'all' && type !== activeType) show = false;
+
+      // 2. Cap tier
+      if (show && activeCap !== 'all' && cap !== activeCap) show = false;
+
+      // 3. Confirmation (only affects cards that have a confirmation value)
+      if (show && conf) {
+        if (conf === 'confirmed' && !showConf) show = false;
+        if (conf === 'estimated' && !showEst)  show = false;
+      }
+
+      // 4. Market cap range (skip cards with no mcap data — don't hide them)
+      if (show && mcap !== null) {
+        if (minMcap !== null && mcap < minMcap) show = false;
+        if (maxMcap !== null && mcap > maxMcap) show = false;
+      }
+
+      // 5. Ticker / company search
+      if (show && searchQ) {
+        var hit = ticker.toLowerCase().indexOf(searchQ) !== -1 ||
+                  company.indexOf(searchQ) !== -1;
+        if (!hit) show = false;
+      }
+
+      card.style.display = show ? '' : 'none';
+      if (show) visible++;
+    });
+
+    // Update per-section empty state
+    document.querySelectorAll('.section').forEach(function (sec) {
+      var secType    = sec.dataset.section;
+      var cards      = Array.from(sec.querySelectorAll('.card'));
+      var visInSec   = cards.filter(function (c) { return c.style.display !== 'none'; }).length;
+      var filterMsg  = sec.querySelector('.section-filter-empty');
+      var normalMsg  = sec.querySelector('.section-empty');
+
+      // Type filter hides the whole section
+      var typeHidden = activeType !== 'all' && secType !== activeType;
+      sec.style.display = typeHidden ? 'none' : '';
+
+      if (!typeHidden && filterMsg) {
+        // Show filter-empty only when there are actual cards but all are filtered out
+        var hasCards = cards.length > 0;
+        filterMsg.style.display = (hasCards && visInSec === 0) ? 'block' : 'none';
+        if (normalMsg) normalMsg.style.display = hasCards ? 'none' : '';
+      }
+    });
+
+    if (countEl) countEl.textContent = visible + ' result' + (visible !== 1 ? 's' : '');
+  }
+
+  // ── Event type buttons ──
+  document.querySelectorAll('[data-type]').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      document.querySelectorAll('[data-type]').forEach(function (b) { b.classList.remove('active'); });
+      btn.classList.add('active');
+      activeType = btn.dataset.type;
+      applyFilters();
+    });
+  });
+
+  // ── Cap tier buttons ──
+  document.querySelectorAll('[data-cap]').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      document.querySelectorAll('[data-cap]').forEach(function (b) { b.classList.remove('active'); });
+      btn.classList.add('active');
+      activeCap = btn.dataset.cap;
+      applyFilters();
+    });
+  });
+
+  // ── Confirmation checkboxes ──
+  cbConf.addEventListener('change', function () { showConf = cbConf.checked; applyFilters(); });
+  cbEst.addEventListener('change',  function () { showEst  = cbEst.checked;  applyFilters(); });
+
+  // ── Market cap range ──
+  function readMcap() {
+    var mn = parseFloat(mcapMin.value);
+    var mx = parseFloat(mcapMax.value);
+    minMcap = isNaN(mn) ? null : mn;
+    maxMcap = isNaN(mx) ? null : mx;
+    applyFilters();
+  }
+  mcapMin.addEventListener('input', readMcap);
+  mcapMax.addEventListener('input', readMcap);
+
+  // ── Search ──
+  searchInput.addEventListener('input', function () {
+    searchQ = searchInput.value.trim().toLowerCase();
+    applyFilters();
+  });
+
+})();
+</script>
 </body>
 </html>
