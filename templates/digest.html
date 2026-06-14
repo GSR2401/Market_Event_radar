@@ -43,16 +43,13 @@ a:hover { text-decoration: underline; }
   padding: 10px 24px;
   display: flex; flex-direction: column; gap: 8px;
 }
-.filter-row {
-  display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
-}
+.filter-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
 .filter-label {
   font-size: 10px; font-weight: 700; letter-spacing: .8px;
   text-transform: uppercase; color: var(--muted); min-width: 38px;
 }
 .filter-sep { width: 1px; height: 22px; background: var(--border); margin: 0 4px; }
 
-/* Toggle buttons */
 .tb {
   font-size: 11px; font-weight: 600; letter-spacing: .3px;
   padding: 4px 12px; border-radius: 20px; border: 1px solid var(--border);
@@ -62,7 +59,6 @@ a:hover { text-decoration: underline; }
 .tb:hover { border-color: var(--blue-lt); color: var(--blue); }
 .tb.active { background: var(--blue); color: #fff; border-color: var(--blue); }
 
-/* Confirmation checkboxes */
 .cb-wrap {
   display: flex; align-items: center; gap: 5px;
   font-size: 11px; font-weight: 600; cursor: pointer;
@@ -70,24 +66,21 @@ a:hover { text-decoration: underline; }
   background: var(--bg); color: var(--muted);
   transition: all .15s; user-select: none;
 }
-.cb-wrap:hover { border-color: var(--blue-lt); }
 .cb-wrap input[type=checkbox] { width: 13px; height: 13px; accent-color: var(--blue); cursor: pointer; }
 .cb-wrap.confirmed { color: #065f46; border-color: #6ee7b7; background: #f0fdf4; }
 .cb-wrap.estimated { color: #92400e; border-color: #fcd34d; background: #fffbeb; }
 
-/* Market cap inputs */
 .mcap-wrap { display: flex; align-items: center; gap: 6px; }
 .mcap-input {
   width: 72px; padding: 4px 8px; font-size: 11px; font-weight: 600;
   border: 1px solid var(--border); border-radius: 20px;
-  background: var(--bg); color: var(--text);
-  outline: none; transition: border-color .15s; text-align: center;
+  background: var(--bg); color: var(--text); outline: none;
+  transition: border-color .15s; text-align: center;
 }
 .mcap-input:focus { border-color: var(--blue-lt); }
 .mcap-input::placeholder { color: var(--muted); font-weight: 400; }
 .mcap-dash { font-size: 11px; color: var(--muted); }
 
-/* Search */
 .search-wrap { position: relative; flex: 1; max-width: 220px; }
 .search-icon {
   position: absolute; left: 10px; top: 50%; transform: translateY(-50%);
@@ -101,11 +94,18 @@ a:hover { text-decoration: underline; }
 }
 .search-input:focus { border-color: var(--blue-lt); }
 
-/* Results counter */
-.filter-count {
-  font-size: 11px; color: var(--muted); margin-left: auto;
-  white-space: nowrap;
+.filter-count { font-size: 11px; color: var(--muted); white-space: nowrap; }
+
+/* Bin toggle button in filter bar */
+#view-bin-btn {
+  margin-left: auto;
+  font-size: 11px; font-weight: 700;
+  padding: 4px 12px; border-radius: 20px;
+  border: 1px solid #fca5a5; background: #fff1f1; color: var(--red);
+  cursor: pointer; transition: all .15s; white-space: nowrap; display: none;
 }
+#view-bin-btn:hover { background: #fee2e2; }
+#view-bin-btn.bin-open { background: var(--blue); color: #fff; border-color: var(--blue); }
 
 /* ── Layout ── */
 .container { max-width: 900px; margin: 0 auto; padding: 20px 16px 60px; }
@@ -115,7 +115,9 @@ a:hover { text-decoration: underline; }
 .section-title {
   font-size: 13px; font-weight: 700; letter-spacing: 1px;
   text-transform: uppercase; color: var(--blue);
-  border-bottom: 2px solid var(--blue); padding-bottom: 6px; margin-bottom: 12px;
+  border-bottom: 2px solid var(--blue);
+  padding-bottom: 6px; margin-bottom: 12px;
+  display: flex; align-items: center; justify-content: space-between;
 }
 .section-empty, .section-filter-empty {
   color: var(--muted); font-style: italic; font-size: 13px; padding: 8px 0;
@@ -133,7 +135,9 @@ a:hover { text-decoration: underline; }
   border-left: 4px solid var(--blue); border-radius: 6px;
   padding: 14px 16px; margin-bottom: 10px;
   box-shadow: 0 1px 3px rgba(0,0,0,.04);
-  transition: box-shadow .15s;
+  position: relative;                          /* needed for dismiss btn */
+  transition: transform .28s ease, opacity .28s ease, box-shadow .15s;
+  will-change: transform, opacity;
 }
 .card:hover { box-shadow: 0 3px 10px rgba(0,0,0,.09); }
 .card.earnings { border-left-color: var(--blue); }
@@ -142,6 +146,48 @@ a:hover { text-decoration: underline; }
 .card.news     { border-left-color: var(--purple); }
 .card.prev-reported { opacity: .6; }
 
+/* card fly-out/in driven by inline styles in JS */
+
+/* ── Dismiss (X) button ── */
+.dismiss-btn {
+  position: absolute; top: 10px; right: 10px;
+  width: 22px; height: 22px; border-radius: 50%;
+  background: #fee2e2; color: #991b1b;
+  border: none; font-size: 12px; font-weight: 700;
+  cursor: pointer; line-height: 1;
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; transition: opacity .15s; z-index: 5;
+}
+.card:hover .dismiss-btn { opacity: 1; }
+/* Always slightly visible on touch screens */
+@media (hover: none) { .dismiss-btn { opacity: 0.25; } }
+
+/* ── Restore button (shown inside bin cards) ── */
+.restore-btn {
+  display: inline-flex; align-items: center; gap: 4px;
+  margin-top: 8px; padding: 4px 10px;
+  font-size: 11px; font-weight: 600;
+  background: #dbeafe; color: #1e40af;
+  border: 1px solid #93c5fd; border-radius: 4px; cursor: pointer;
+  transition: background .15s;
+}
+.restore-btn:hover { background: #bfdbfe; }
+
+/* ── Bin Panel ── */
+#bin-panel { display: none; }
+.bin-section-title {
+  color: var(--red) !important; border-color: var(--red) !important;
+}
+#clear-bin-btn {
+  font-size: 10px; font-weight: 600; padding: 3px 10px;
+  border: 1px solid #fca5a5; border-radius: 12px;
+  background: #fff1f1; color: var(--red); cursor: pointer;
+  transition: background .15s;
+}
+#clear-bin-btn:hover { background: #fee2e2; }
+#bin-empty-msg { color: var(--muted); font-style: italic; font-size: 13px; padding: 8px 0; display: none; }
+
+/* ── Card body (unchanged) ── */
 .card-top {
   display: flex; align-items: flex-start;
   justify-content: space-between; gap: 12px; flex-wrap: wrap;
@@ -150,7 +196,6 @@ a:hover { text-decoration: underline; }
 .ticker { font-size: 17px; font-weight: 700; color: var(--blue); }
 .company { font-size: 13px; color: var(--muted); }
 
-/* ── Badges ── */
 .badge {
   display: inline-block; border-radius: 3px;
   font-size: 10px; font-weight: 700; letter-spacing: .4px;
@@ -166,7 +211,6 @@ a:hover { text-decoration: underline; }
 .badge-single-source { background: #f3e8ff; color: #581c87; }
 .badge-prev          { background: #e5e7eb; color: #374151; }
 
-/* ── Card body ── */
 .card-body { margin-top: 10px; }
 .card-grid {
   display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
@@ -225,36 +269,28 @@ a:hover { text-decoration: underline; }
 
 <!-- ══ STICKY FILTER BAR ════════════════════════════════════════════ -->
 <div class="filter-bar">
-
-  <!-- Row 1: Search · Event type · Cap tier -->
   <div class="filter-row">
     <div class="search-wrap">
       <span class="search-icon">🔍</span>
       <input class="search-input" id="search-input" type="text"
              placeholder="Search ticker or company…" autocomplete="off">
     </div>
-
     <div class="filter-sep"></div>
-
     <span class="filter-label">Type</span>
     <button class="tb active" data-type="all">All</button>
     <button class="tb" data-type="earnings">Earnings</button>
     <button class="tb" data-type="ipo">IPO</button>
     <button class="tb" data-type="8k">8-K</button>
     <button class="tb" data-type="news">News</button>
-
     <div class="filter-sep"></div>
-
     <span class="filter-label">Cap</span>
     <button class="tb active" data-cap="all">All</button>
     <button class="tb" data-cap="large">Large</button>
     <button class="tb" data-cap="mid">Mid</button>
     <button class="tb" data-cap="small">Small</button>
-
     <span class="filter-count" id="filter-count">{{ total_events }} results</span>
+    <button id="view-bin-btn">🗑 Bin (0)</button>
   </div>
-
-  <!-- Row 2: Market cap range · Confirmation status -->
   <div class="filter-row">
     <span class="filter-label">MCap</span>
     <div class="mcap-wrap">
@@ -262,21 +298,16 @@ a:hover { text-decoration: underline; }
       <span class="mcap-dash">—</span>
       <input class="mcap-input" id="mcap-max" type="number" min="0" step="0.5" placeholder="Max $B">
     </div>
-
     <div class="filter-sep"></div>
-
     <span class="filter-label">Date</span>
     <label class="cb-wrap confirmed">
-      <input type="checkbox" id="cb-confirmed" checked>
-      Confirmed
+      <input type="checkbox" id="cb-confirmed" checked> Confirmed
     </label>
     <label class="cb-wrap estimated">
-      <input type="checkbox" id="cb-estimated" checked>
-      Estimated
+      <input type="checkbox" id="cb-estimated" checked> Estimated
     </label>
   </div>
-
-</div><!-- /filter-bar -->
+</div>
 
 <div class="container">
 
@@ -286,9 +317,7 @@ a:hover { text-decoration: underline; }
   {% if section_errors.get('earnings') %}
   <div class="section-error">⚠ {{ section_errors['earnings'] }}</div>
   {% endif %}
-  {% if not earnings %}
-  <div class="section-empty">No earnings events found for the next 7 days.</div>
-  {% endif %}
+  {% if not earnings %}<div class="section-empty">No earnings events found for the next 7 days.</div>{% endif %}
   <div class="section-filter-empty">No earnings match your current filters.</div>
 
   {% for ev in earnings %}
@@ -299,7 +328,8 @@ a:hover { text-decoration: underline; }
        data-confirmation="{{ ev.confirmation|lower }}"
        data-ticker="{{ ev.ticker|upper }}"
        data-company="{{ ev.company_name|lower }}"
-       data-mcap="{{ (ev.market_cap / 1e9)|round(3) if ev.market_cap else '' }}">
+       data-mcap="{{ (ev.market_cap / 1e9)|round(3) if ev.market_cap else '' }}"
+       data-card-id="{{ ev.ticker }}-earnings">
     <div class="card-top">
       <div class="ticker-block">
         <span class="ticker">{{ ev.ticker }}</span>
@@ -307,11 +337,8 @@ a:hover { text-decoration: underline; }
         {% if ev.cap_tier == 'LARGE' %}<span class="badge badge-large">Large</span>
         {% elif ev.cap_tier == 'MID' %}<span class="badge badge-mid">Mid</span>
         {% elif ev.cap_tier == 'SMALL' %}<span class="badge badge-small">Small</span>{% endif %}
-        {% if ev.confirmation == 'CONFIRMED' %}
-          <span class="badge badge-confirmed">Confirmed</span>
-        {% else %}
-          <span class="badge badge-estimated">Estimated date</span>
-        {% endif %}
+        {% if ev.confirmation == 'CONFIRMED' %}<span class="badge badge-confirmed">Confirmed</span>
+        {% else %}<span class="badge badge-estimated">Estimated date</span>{% endif %}
         {% if ev.activity_level == 'STRONG' %}<span class="badge badge-strong">Options: Strong</span>
         {% elif ev.activity_level == 'MODERATE' %}<span class="badge badge-moderate">Options: Elevated</span>{% endif %}
         {% if ev.previously_reported %}<span class="badge badge-prev">Previously Reported</span>{% endif %}
@@ -325,21 +352,11 @@ a:hover { text-decoration: underline; }
     <div class="card-body">
       <div class="card-grid">
         <div><div class="metric-label">Market Cap</div><div class="metric-value">{{ ev.market_cap | fmt_cap }}</div></div>
-        {% if ev.eps_estimate is not none %}
-        <div><div class="metric-label">EPS Estimate</div><div class="metric-value">${{ "%.2f"|format(ev.eps_estimate) }}</div></div>
-        {% endif %}
-        {% if ev.options_total_oi %}
-        <div><div class="metric-label">Open Interest</div><div class="metric-value">{{ ev.options_total_oi | fmt_num }}</div></div>
-        {% endif %}
-        {% if ev.options_current_volume %}
-        <div><div class="metric-label">Options Vol Today</div><div class="metric-value">{{ ev.options_current_volume | fmt_num }}</div></div>
-        {% endif %}
-        {% if ev.put_call_ratio is not none %}
-        <div><div class="metric-label">Put/Call Ratio</div><div class="metric-value">{{ "%.2f"|format(ev.put_call_ratio) }}</div></div>
-        {% endif %}
-        {% if ev.stock_avg_volume_20d %}
-        <div><div class="metric-label">Avg Stock Vol (20d)</div><div class="metric-value">{{ ev.stock_avg_volume_20d | fmt_num }}</div></div>
-        {% endif %}
+        {% if ev.eps_estimate is not none %}<div><div class="metric-label">EPS Estimate</div><div class="metric-value">${{ "%.2f"|format(ev.eps_estimate) }}</div></div>{% endif %}
+        {% if ev.options_total_oi %}<div><div class="metric-label">Open Interest</div><div class="metric-value">{{ ev.options_total_oi | fmt_num }}</div></div>{% endif %}
+        {% if ev.options_current_volume %}<div><div class="metric-label">Options Vol Today</div><div class="metric-value">{{ ev.options_current_volume | fmt_num }}</div></div>{% endif %}
+        {% if ev.put_call_ratio is not none %}<div><div class="metric-label">Put/Call Ratio</div><div class="metric-value">{{ "%.2f"|format(ev.put_call_ratio) }}</div></div>{% endif %}
+        {% if ev.stock_avg_volume_20d %}<div><div class="metric-label">Avg Stock Vol (20d)</div><div class="metric-value">{{ ev.stock_avg_volume_20d | fmt_num }}</div></div>{% endif %}
       </div>
       {% if ev.summary %}<div class="summary-text">{{ ev.summary }}</div>{% endif %}
       <div class="sources-row">
@@ -354,12 +371,8 @@ a:hover { text-decoration: underline; }
 <!-- ══ SECTION B: IPOs ═══════════════════════════════════════════════ -->
 <div class="section" data-section="ipo">
   <div class="section-title">B — Upcoming IPOs &amp; New Listings</div>
-  {% if section_errors.get('ipo') %}
-  <div class="section-error">⚠ {{ section_errors['ipo'] }}</div>
-  {% endif %}
-  {% if not ipos %}
-  <div class="section-empty">No upcoming IPOs found for the next 7 days.</div>
-  {% endif %}
+  {% if section_errors.get('ipo') %}<div class="section-error">⚠ {{ section_errors['ipo'] }}</div>{% endif %}
+  {% if not ipos %}<div class="section-empty">No upcoming IPOs found for the next 7 days.</div>{% endif %}
   <div class="section-filter-empty">No IPOs match your current filters.</div>
 
   {% for ev in ipos %}
@@ -370,7 +383,8 @@ a:hover { text-decoration: underline; }
        data-confirmation=""
        data-ticker="{{ ev.ticker|upper }}"
        data-company="{{ ev.company_name|lower }}"
-       data-mcap="{{ (ev.market_cap / 1e9)|round(3) if ev.market_cap else '' }}">
+       data-mcap="{{ (ev.market_cap / 1e9)|round(3) if ev.market_cap else '' }}"
+       data-card-id="{{ ev.ticker }}-ipo">
     <div class="card-top">
       <div class="ticker-block">
         <span class="ticker">{{ ev.ticker }}</span>
@@ -398,12 +412,8 @@ a:hover { text-decoration: underline; }
 <!-- ══ SECTION C: 8-K ════════════════════════════════════════════════ -->
 <div class="section" data-section="8k">
   <div class="section-title">C — SEC 8-K Material Events</div>
-  {% if section_errors.get('8k') %}
-  <div class="section-error">⚠ {{ section_errors['8k'] }}</div>
-  {% endif %}
-  {% if not eightk %}
-  <div class="section-empty">No 8-K material filings in the last 48 hours.</div>
-  {% endif %}
+  {% if section_errors.get('8k') %}<div class="section-error">⚠ {{ section_errors['8k'] }}</div>{% endif %}
+  {% if not eightk %}<div class="section-empty">No 8-K material filings in the last 48 hours.</div>{% endif %}
   <div class="section-filter-empty">No 8-K filings match your current filters.</div>
 
   {% for ev in eightk %}
@@ -414,7 +424,8 @@ a:hover { text-decoration: underline; }
        data-confirmation=""
        data-ticker="{{ ev.ticker|upper }}"
        data-company="{{ ev.company_name|lower }}"
-       data-mcap="{{ (ev.market_cap / 1e9)|round(3) if ev.market_cap else '' }}">
+       data-mcap="{{ (ev.market_cap / 1e9)|round(3) if ev.market_cap else '' }}"
+       data-card-id="{{ ev.ticker }}-8k">
     <div class="card-top">
       <div class="ticker-block">
         <span class="ticker">{{ ev.ticker if ev.ticker != 'UNKNOWN' else '—' }}</span>
@@ -429,9 +440,7 @@ a:hover { text-decoration: underline; }
     </div>
     <div class="card-body">
       {% if ev.summary %}<div class="summary-text">{{ ev.summary }}</div>{% endif %}
-      {% if ev.filing_url %}
-      <div class="sources-row"><a href="{{ ev.filing_url }}" target="_blank" rel="noopener" style="font-size:12px;">View on EDGAR →</a></div>
-      {% endif %}
+      {% if ev.filing_url %}<div class="sources-row"><a href="{{ ev.filing_url }}" target="_blank" rel="noopener" style="font-size:12px;">View on EDGAR →</a></div>{% endif %}
       <div class="sources-row">
         <span style="font-size:10px;color:var(--muted)">Sources:</span>
         {% for s in ev.sources %}<span class="source-badge">{{ s }}</span>{% endfor %}
@@ -444,12 +453,8 @@ a:hover { text-decoration: underline; }
 <!-- ══ SECTION D: NEWS ══════════════════════════════════════════════ -->
 <div class="section" data-section="news">
   <div class="section-title">D — News Catalysts</div>
-  {% if section_errors.get('news') %}
-  <div class="section-error">⚠ {{ section_errors['news'] }}</div>
-  {% endif %}
-  {% if not news %}
-  <div class="section-empty">No keyword-matched news catalysts found.</div>
-  {% endif %}
+  {% if section_errors.get('news') %}<div class="section-error">⚠ {{ section_errors['news'] }}</div>{% endif %}
+  {% if not news %}<div class="section-empty">No keyword-matched news catalysts found.</div>{% endif %}
   <div class="section-filter-empty">No news catalysts match your current filters.</div>
 
   {% for ev in news %}
@@ -459,7 +464,8 @@ a:hover { text-decoration: underline; }
        data-confirmation=""
        data-ticker="{{ ev.ticker|upper }}"
        data-company="{{ ev.company_name|lower }}"
-       data-mcap="{{ (ev.market_cap / 1e9)|round(3) if ev.market_cap else '' }}">
+       data-mcap="{{ (ev.market_cap / 1e9)|round(3) if ev.market_cap else '' }}"
+       data-card-id="{{ ev.ticker }}-news">
     <div class="card-top">
       <div class="ticker-block">
         <span class="ticker">{{ ev.ticker }}</span>
@@ -484,6 +490,18 @@ a:hover { text-decoration: underline; }
   {% endfor %}
 </div>
 
+<!-- ══ BIN PANEL ════════════════════════════════════════════════════ -->
+<div id="bin-panel">
+  <div class="section">
+    <div class="section-title bin-section-title">
+      <span>🗑 Bin — Dismissed Today</span>
+      <button id="clear-bin-btn">Clear All</button>
+    </div>
+    <div id="bin-empty-msg">Nothing in the bin yet.</div>
+    <div id="bin-cards"></div>
+  </div>
+</div>
+
 <!-- ══ FOOTER ════════════════════════════════════════════════════════ -->
 <div class="footer">
   <h3>Diagnostics</h3>
@@ -492,17 +510,13 @@ a:hover { text-decoration: underline; }
       <strong>Source Activity</strong>
       {% if source_health %}
         {% for src, count in source_health.items() %}<div>{{ src }}: {{ count }} events</div>{% endfor %}
-      {% else %}
-        <div style="color:var(--muted)">No source data</div>
-      {% endif %}
+      {% else %}<div style="color:var(--muted)">No source data</div>{% endif %}
     </div>
     <div class="footer-item">
       <strong>Data Unavailable</strong>
       {% if unavailable_tickers %}
         <div class="unavailable-list">Options data missing for: {{ unavailable_tickers | join(', ') }}</div>
-      {% else %}
-        <div style="color:#15803d">All tickers resolved ✓</div>
-      {% endif %}
+      {% else %}<div style="color:#15803d">All tickers resolved ✓</div>{% endif %}
     </div>
   </div>
   <div style="margin-top:12px;font-size:11px;color:var(--muted);">
@@ -514,133 +528,325 @@ a:hover { text-decoration: underline; }
 
 </div><!-- /container -->
 
+<!-- ══ JAVASCRIPT ════════════════════════════════════════════════════ -->
 <script>
 (function () {
-  var allCards    = Array.from(document.querySelectorAll('.card'));
-  var countEl     = document.getElementById('filter-count');
+'use strict';
 
-  // State
-  var activeType  = 'all';
-  var activeCap   = 'all';
-  var showConf    = true;
-  var showEst     = true;
-  var minMcap     = null;
-  var maxMcap     = null;
-  var searchQ     = '';
+/* ════════════════════════════════════════════════════════════════════
+   FILTER SYSTEM
+   ════════════════════════════════════════════════════════════════════ */
 
-  // Elements
-  var searchInput = document.getElementById('search-input');
-  var mcapMin     = document.getElementById('mcap-min');
-  var mcapMax     = document.getElementById('mcap-max');
-  var cbConf      = document.getElementById('cb-confirmed');
-  var cbEst       = document.getElementById('cb-estimated');
+var allCards    = Array.from(document.querySelectorAll('.card'));
+var countEl     = document.getElementById('filter-count');
+var activeType  = 'all';
+var activeCap   = 'all';
+var showConf    = true;
+var showEst     = true;
+var minMcap     = null;
+var maxMcap     = null;
+var searchQ     = '';
 
-  function applyFilters() {
-    var visible = 0;
+function applyFilters() {
+  var visible = 0;
 
-    allCards.forEach(function (card) {
-      var type    = card.dataset.type;
-      var cap     = card.dataset.cap;
-      var conf    = card.dataset.confirmation;
-      var ticker  = card.dataset.ticker || '';
-      var company = card.dataset.company || '';
-      var mcapRaw = card.dataset.mcap;
-      var mcap    = mcapRaw !== '' ? parseFloat(mcapRaw) : null;
+  allCards.forEach(function (card) {
+    // Binned cards are never in the main sections — skip
+    if (card.closest('#bin-cards')) return;
 
-      var show = true;
+    var type    = card.dataset.type;
+    var cap     = card.dataset.cap;
+    var conf    = card.dataset.confirmation;
+    var ticker  = card.dataset.ticker || '';
+    var company = card.dataset.company || '';
+    var mcapRaw = card.dataset.mcap;
+    var mcap    = mcapRaw !== '' ? parseFloat(mcapRaw) : null;
+    var show    = true;
 
-      // 1. Event type
-      if (activeType !== 'all' && type !== activeType) show = false;
+    if (activeType !== 'all' && type !== activeType) show = false;
+    if (show && activeCap !== 'all' && cap !== activeCap) show = false;
+    if (show && conf) {
+      if (conf === 'confirmed' && !showConf) show = false;
+      if (conf === 'estimated' && !showEst)  show = false;
+    }
+    if (show && mcap !== null) {
+      if (minMcap !== null && mcap < minMcap) show = false;
+      if (maxMcap !== null && mcap > maxMcap) show = false;
+    }
+    if (show && searchQ) {
+      var hit = ticker.toLowerCase().indexOf(searchQ) !== -1 ||
+                company.indexOf(searchQ) !== -1;
+      if (!hit) show = false;
+    }
 
-      // 2. Cap tier
-      if (show && activeCap !== 'all' && cap !== activeCap) show = false;
-
-      // 3. Confirmation (only affects cards that have a confirmation value)
-      if (show && conf) {
-        if (conf === 'confirmed' && !showConf) show = false;
-        if (conf === 'estimated' && !showEst)  show = false;
-      }
-
-      // 4. Market cap range (skip cards with no mcap data — don't hide them)
-      if (show && mcap !== null) {
-        if (minMcap !== null && mcap < minMcap) show = false;
-        if (maxMcap !== null && mcap > maxMcap) show = false;
-      }
-
-      // 5. Ticker / company search
-      if (show && searchQ) {
-        var hit = ticker.toLowerCase().indexOf(searchQ) !== -1 ||
-                  company.indexOf(searchQ) !== -1;
-        if (!hit) show = false;
-      }
-
-      card.style.display = show ? '' : 'none';
-      if (show) visible++;
-    });
-
-    // Update per-section empty state
-    document.querySelectorAll('.section').forEach(function (sec) {
-      var secType    = sec.dataset.section;
-      var cards      = Array.from(sec.querySelectorAll('.card'));
-      var visInSec   = cards.filter(function (c) { return c.style.display !== 'none'; }).length;
-      var filterMsg  = sec.querySelector('.section-filter-empty');
-      var normalMsg  = sec.querySelector('.section-empty');
-
-      // Type filter hides the whole section
-      var typeHidden = activeType !== 'all' && secType !== activeType;
-      sec.style.display = typeHidden ? 'none' : '';
-
-      if (!typeHidden && filterMsg) {
-        // Show filter-empty only when there are actual cards but all are filtered out
-        var hasCards = cards.length > 0;
-        filterMsg.style.display = (hasCards && visInSec === 0) ? 'block' : 'none';
-        if (normalMsg) normalMsg.style.display = hasCards ? 'none' : '';
-      }
-    });
-
-    if (countEl) countEl.textContent = visible + ' result' + (visible !== 1 ? 's' : '');
-  }
-
-  // ── Event type buttons ──
-  document.querySelectorAll('[data-type]').forEach(function (btn) {
-    btn.addEventListener('click', function () {
-      document.querySelectorAll('[data-type]').forEach(function (b) { b.classList.remove('active'); });
-      btn.classList.add('active');
-      activeType = btn.dataset.type;
-      applyFilters();
-    });
+    card.style.display = show ? '' : 'none';
+    if (show) visible++;
   });
 
-  // ── Cap tier buttons ──
-  document.querySelectorAll('[data-cap]').forEach(function (btn) {
-    btn.addEventListener('click', function () {
-      document.querySelectorAll('[data-cap]').forEach(function (b) { b.classList.remove('active'); });
-      btn.classList.add('active');
-      activeCap = btn.dataset.cap;
-      applyFilters();
-    });
+  // Per-section empty/hidden states
+  document.querySelectorAll('.section[data-section]').forEach(function (sec) {
+    var secType    = sec.dataset.section;
+    var cards      = Array.from(sec.querySelectorAll('.card'));
+    var visInSec   = cards.filter(function (c) { return c.style.display !== 'none'; }).length;
+    var filterMsg  = sec.querySelector('.section-filter-empty');
+    var typeHidden = activeType !== 'all' && secType !== activeType;
+    sec.style.display = typeHidden ? 'none' : '';
+    if (!typeHidden && filterMsg) {
+      /* show only when cards exist but all are filtered out (not when all were binned) */
+      filterMsg.style.display = (cards.length > 0 && visInSec === 0) ? 'block' : 'none';
+    }
   });
 
-  // ── Confirmation checkboxes ──
-  cbConf.addEventListener('change', function () { showConf = cbConf.checked; applyFilters(); });
-  cbEst.addEventListener('change',  function () { showEst  = cbEst.checked;  applyFilters(); });
+  if (countEl) countEl.textContent = visible + ' result' + (visible !== 1 ? 's' : '');
+}
 
-  // ── Market cap range ──
+document.querySelectorAll('[data-type]').forEach(function (btn) {
+  btn.addEventListener('click', function () {
+    document.querySelectorAll('[data-type]').forEach(function (b) { b.classList.remove('active'); });
+    btn.classList.add('active');
+    activeType = btn.dataset.type;
+    applyFilters();
+  });
+});
+document.querySelectorAll('[data-cap]').forEach(function (btn) {
+  btn.addEventListener('click', function () {
+    document.querySelectorAll('[data-cap]').forEach(function (b) { b.classList.remove('active'); });
+    btn.classList.add('active');
+    activeCap = btn.dataset.cap;
+    applyFilters();
+  });
+});
+document.getElementById('cb-confirmed').addEventListener('change', function (e) { showConf = e.target.checked; applyFilters(); });
+document.getElementById('cb-estimated').addEventListener('change', function (e) { showEst  = e.target.checked; applyFilters(); });
+(function () {
   function readMcap() {
-    var mn = parseFloat(mcapMin.value);
-    var mx = parseFloat(mcapMax.value);
+    var mn = parseFloat(document.getElementById('mcap-min').value);
+    var mx = parseFloat(document.getElementById('mcap-max').value);
     minMcap = isNaN(mn) ? null : mn;
     maxMcap = isNaN(mx) ? null : mx;
     applyFilters();
   }
-  mcapMin.addEventListener('input', readMcap);
-  mcapMax.addEventListener('input', readMcap);
+  document.getElementById('mcap-min').addEventListener('input', readMcap);
+  document.getElementById('mcap-max').addEventListener('input', readMcap);
+})();
+document.getElementById('search-input').addEventListener('input', function (e) {
+  searchQ = e.target.value.trim().toLowerCase();
+  applyFilters();
+});
 
-  // ── Search ──
-  searchInput.addEventListener('input', function () {
-    searchQ = searchInput.value.trim().toLowerCase();
-    applyFilters();
+/* ════════════════════════════════════════════════════════════════════
+   BIN SYSTEM — Swipe-to-Bin daily triage
+   ════════════════════════════════════════════════════════════════════ */
+
+var TODAY_KEY   = 'bin-' + new Date().toISOString().slice(0, 10);
+var binCards    = document.getElementById('bin-cards');
+var binPanel    = document.getElementById('bin-panel');
+var viewBinBtn  = document.getElementById('view-bin-btn');
+var binEmptyMsg = document.getElementById('bin-empty-msg');
+var clearBinBtn = document.getElementById('clear-bin-btn');
+
+/* ── Storage ── */
+function purgeStale() {
+  try {
+    Object.keys(localStorage).forEach(function (k) {
+      if (k.slice(0, 4) === 'bin-' && k !== TODAY_KEY) localStorage.removeItem(k);
+    });
+  } catch (e) {}
+}
+function readBin() {
+  try { return JSON.parse(localStorage.getItem(TODAY_KEY) || '[]'); } catch (e) { return []; }
+}
+function saveBin(list) {
+  try { localStorage.setItem(TODAY_KEY, JSON.stringify(list)); } catch (e) {}
+}
+function addToStorage(id)    { var l = readBin(); if (l.indexOf(id) === -1) { l.push(id); saveBin(l); } }
+function removeFromStorage(id) { saveBin(readBin().filter(function (x) { return x !== id; })); }
+
+/* ── UI helpers ── */
+function syncBinBtn() {
+  var n = binCards.querySelectorAll('.card').length;
+  viewBinBtn.style.display = n > 0 ? '' : 'none';
+  if (n > 0) viewBinBtn.textContent = (binPanel.style.display !== 'none' ? '← Main View' : '🗑 Bin (' + n + ')');
+}
+function syncBinEmpty() {
+  binEmptyMsg.style.display = binCards.querySelectorAll('.card').length === 0 ? 'block' : 'none';
+}
+
+/* ── Animate a card flying left (into bin) ── */
+function flyOut(card, cb) {
+  var done = false;
+  function finish() {
+    if (done) return;
+    done = true;
+    card.style.transition = '';
+    card.style.transform  = '';
+    card.style.opacity    = '';
+    cb();
+  }
+  card.style.transition = 'transform .2s ease, opacity .2s ease';
+  card.style.transform  = 'translateX(-110%)';
+  card.style.opacity    = '0';
+  card.addEventListener('transitionend', finish, { once: true });
+  setTimeout(finish, 300);   /* fallback if transitionend never fires */
+}
+
+/* ── Animate a card sliding in from right (restore) ── */
+function flyIn(card) {
+  card.style.transition = 'none';
+  card.style.transform  = 'translateX(60px)';
+  card.style.opacity    = '0';
+  requestAnimationFrame(function () {
+    requestAnimationFrame(function () {
+      card.style.transition = 'transform .28s ease, opacity .28s ease';
+      card.style.transform  = '';
+      card.style.opacity    = '';
+    });
   });
+}
+
+/* ── Add a Restore button to a card ── */
+function addRestoreBtn(card) {
+  if (card.querySelector('.restore-btn')) return;
+  var btn = document.createElement('button');
+  btn.className   = 'restore-btn';
+  btn.textContent = '↩ Restore';
+  btn.addEventListener('click', function () { unBinCard(card); });
+  var body = card.querySelector('.card-body');
+  if (body) body.appendChild(btn); else card.appendChild(btn);
+}
+
+/* ── Move card TO bin ── */
+function binCard(card) {
+  var id = card.dataset.cardId;
+  if (!id) return;
+
+  // Record home section before we move it
+  var homeSection = card.closest('.section[data-section]');
+  if (homeSection) card.dataset.homeSection = homeSection.dataset.section;
+
+  flyOut(card, function () {
+    addRestoreBtn(card);
+    binCards.appendChild(card);
+    card.style.display = '';     // always visible in bin regardless of filters
+    addToStorage(id);
+    syncBinEmpty();
+    syncBinBtn();
+    applyFilters();              // recount main-view results
+  });
+}
+
+/* ── Move card FROM bin back to its section ── */
+function unBinCard(card) {
+  var id = card.dataset.cardId;
+  var homeSection = card.dataset.homeSection;
+
+  // Remove restore button
+  var btn = card.querySelector('.restore-btn');
+  if (btn) btn.remove();
+
+  // Find destination section
+  var dest = homeSection
+    ? document.querySelector('.section[data-section="' + homeSection + '"]')
+    : null;
+
+  if (dest) {
+    dest.appendChild(card);
+  } else {
+    // Fallback: put before bin panel
+    binPanel.parentNode.insertBefore(card, binPanel);
+  }
+
+  flyIn(card);
+  removeFromStorage(id);
+  syncBinEmpty();
+  syncBinBtn();
+  applyFilters();
+}
+
+/* ── Wire dismiss X button onto every card ── */
+allCards.forEach(function (card) {
+  var xBtn = document.createElement('button');
+  xBtn.className = 'dismiss-btn';
+  xBtn.setAttribute('aria-label', 'Dismiss');
+  xBtn.textContent = '✕';
+  xBtn.addEventListener('click', function (e) {
+    e.stopPropagation();
+    binCard(card);
+  });
+  card.appendChild(xBtn);
+
+  /* ── Touch swipe-left ── */
+  var startX = 0, startY = 0, swiping = false;
+
+  card.addEventListener('touchstart', function (e) {
+    startX   = e.touches[0].clientX;
+    startY   = e.touches[0].clientY;
+    swiping  = false;
+    card.style.transition = 'none';
+  }, { passive: true });
+
+  card.addEventListener('touchmove', function (e) {
+    var dx = e.touches[0].clientX - startX;
+    var dy = e.touches[0].clientY - startY;
+    if (!swiping && Math.abs(dx) > 8 && Math.abs(dx) > Math.abs(dy) * 1.2) swiping = true;
+    if (swiping && dx < 0) {
+      card.style.transform = 'translateX(' + dx + 'px)';
+      card.style.opacity   = String(Math.max(0, 1 + dx / 160));
+    }
+  }, { passive: true });
+
+  card.addEventListener('touchend', function (e) {
+    var dx = e.changedTouches[0].clientX - startX;
+    card.style.transition = '';
+    if (swiping && dx < -75) {
+      binCard(card);
+    } else {
+      card.style.transform = '';
+      card.style.opacity   = '';
+    }
+    swiping = false;
+  });
+});
+
+/* ── View Bin toggle ── */
+viewBinBtn.addEventListener('click', function () {
+  var isOpen = binPanel.style.display !== 'none';
+  binPanel.style.display = isOpen ? 'none' : 'block';
+  viewBinBtn.classList.toggle('bin-open', !isOpen);
+  syncBinBtn();
+});
+
+/* ── Clear All ── */
+clearBinBtn.addEventListener('click', function () {
+  var cards = Array.from(binCards.querySelectorAll('.card'));
+  cards.forEach(function (card) {
+    var btn = card.querySelector('.restore-btn');
+    if (btn) btn.remove();
+    var homeSection = card.dataset.homeSection;
+    var dest = homeSection
+      ? document.querySelector('.section[data-section="' + homeSection + '"]')
+      : null;
+    if (dest) dest.appendChild(card);
+  });
+  saveBin([]);
+  syncBinEmpty();
+  syncBinBtn();
+  applyFilters();
+});
+
+/* ── Apply stored bin state on page load ── */
+purgeStale();
+readBin().forEach(function (id) {
+  var card = document.querySelector('.card[data-card-id="' + id + '"]');
+  if (!card) return;
+  var homeSection = card.closest('.section[data-section]');
+  if (homeSection) card.dataset.homeSection = homeSection.dataset.section;
+  addRestoreBtn(card);
+  binCards.appendChild(card);
+});
+syncBinEmpty();
+syncBinBtn();
+applyFilters();   // recount after bin state applied
 
 })();
 </script>
