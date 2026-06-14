@@ -97,15 +97,14 @@ a:hover { text-decoration: underline; }
 .filter-count { font-size: 11px; color: var(--muted); white-space: nowrap; }
 
 /* Bin toggle button in filter bar */
-#view-bin-btn {
+/* bin count badge in filter bar */
+#bin-count-badge {
   margin-left: auto;
   font-size: 11px; font-weight: 700;
-  padding: 4px 12px; border-radius: 20px;
+  padding: 3px 10px; border-radius: 20px;
   border: 1px solid #fca5a5; background: #fff1f1; color: var(--red);
-  cursor: pointer; transition: all .15s; white-space: nowrap; display: none;
+  white-space: nowrap; display: none;
 }
-#view-bin-btn:hover { background: #fee2e2; }
-#view-bin-btn.bin-open { background: var(--blue); color: #fff; border-color: var(--blue); }
 
 /* ── Layout ── */
 .container { max-width: 900px; margin: 0 auto; padding: 20px 16px 60px; }
@@ -174,7 +173,7 @@ a:hover { text-decoration: underline; }
 .restore-btn:hover { background: #bfdbfe; }
 
 /* ── Bin Panel ── */
-#bin-panel { display: none; }
+#bin-panel { display: block; }
 .bin-section-title {
   color: var(--red) !important; border-color: var(--red) !important;
 }
@@ -185,7 +184,7 @@ a:hover { text-decoration: underline; }
   transition: background .15s;
 }
 #clear-bin-btn:hover { background: #fee2e2; }
-#bin-empty-msg { color: var(--muted); font-style: italic; font-size: 13px; padding: 8px 0; display: none; }
+#bin-empty-msg { color: var(--muted); font-style: italic; font-size: 13px; padding: 8px 0; }
 
 /* ── Card body (unchanged) ── */
 .card-top {
@@ -289,7 +288,7 @@ a:hover { text-decoration: underline; }
     <button class="tb" data-cap="mid">Mid</button>
     <button class="tb" data-cap="small">Small</button>
     <span class="filter-count" id="filter-count">31 results</span>
-    <button id="view-bin-btn">🗑 Bin (0)</button>
+    <span id="bin-count-badge">🗑 Bin: <span id="bin-count-num">0</span></span>
   </div>
   <div class="filter-row">
     <span class="filter-label">MCap</span>
@@ -610,7 +609,7 @@ a:hover { text-decoration: underline; }
       
       <div class="sources-row">
         <span style="font-size:10px;color:var(--muted)">Sources:</span>
-        <span class="source-badge">nasdaq</span><span class="source-badge">finnhub</span><span class="source-badge">cache</span>
+        <span class="source-badge">nasdaq</span><span class="source-badge">finnhub</span><span class="source-badge">yfinance</span><span class="source-badge">cache</span>
       </div>
     </div>
   </div>
@@ -866,7 +865,7 @@ a:hover { text-decoration: underline; }
       
       <div class="sources-row">
         <span style="font-size:10px;color:var(--muted)">Sources:</span>
-        <span class="source-badge">nasdaq</span><span class="source-badge">finnhub</span><span class="source-badge">yfinance</span><span class="source-badge">cache</span>
+        <span class="source-badge">nasdaq</span><span class="source-badge">finnhub</span><span class="source-badge">cache</span>
       </div>
     </div>
   </div>
@@ -1305,37 +1304,6 @@ a:hover { text-decoration: underline; }
        data-type="8k"
        data-cap="large"
        data-confirmation=""
-       data-ticker="DASH"
-       data-company=""
-       data-mcap="65.611"
-       data-card-id="DASH-8k">
-    <div class="card-top">
-      <div class="ticker-block">
-        <span class="ticker">DASH</span>
-        <span class="company"></span>
-        
-        <span class="badge badge-prev">Previously Reported</span>
-      </div>
-      <div class="event-meta">
-        <div class="event-date">Fri Jun 12</div>
-        <div class="days-away">Filed 2d ago</div>
-      </div>
-    </div>
-    <div class="card-body">
-      <div class="summary-text">Best 4K Dashcam Deals for Safe Driving: Amazon Weekend Offers. Explore the best 4K dashcam deals on Amazon this weekend. Compare top models by night vision, parking mode, and GPS logg</div>
-      <div class="sources-row"><a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;company=&amp;type=8-K&amp;dateb=&amp;owner=include&amp;count=10" target="_blank" rel="noopener" style="font-size:12px;">View on EDGAR →</a></div>
-      <div class="sources-row">
-        <span style="font-size:10px;color:var(--muted)">Sources:</span>
-        <span class="source-badge">edgar</span><span class="source-badge">cache</span><span class="source-badge">newsdata</span>
-      </div>
-    </div>
-  </div>
-  
-  
-  <div class="card eightk prev-reported"
-       data-type="8k"
-       data-cap="large"
-       data-confirmation=""
        data-ticker="WES"
        data-company=""
        data-mcap="17.551"
@@ -1354,6 +1322,37 @@ a:hover { text-decoration: underline; }
     </div>
     <div class="card-body">
       <div class="summary-text">Departments looking to cut budgets to fund defence, Lisa Nandy says. The Culture Secretary insisted ‘discussions are ongoing’ on finding more cash for the Defence Investment Plan over which</div>
+      <div class="sources-row"><a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;company=&amp;type=8-K&amp;dateb=&amp;owner=include&amp;count=10" target="_blank" rel="noopener" style="font-size:12px;">View on EDGAR →</a></div>
+      <div class="sources-row">
+        <span style="font-size:10px;color:var(--muted)">Sources:</span>
+        <span class="source-badge">edgar</span><span class="source-badge">cache</span><span class="source-badge">newsdata</span>
+      </div>
+    </div>
+  </div>
+  
+  
+  <div class="card eightk prev-reported"
+       data-type="8k"
+       data-cap="large"
+       data-confirmation=""
+       data-ticker="DASH"
+       data-company=""
+       data-mcap="65.611"
+       data-card-id="DASH-8k">
+    <div class="card-top">
+      <div class="ticker-block">
+        <span class="ticker">DASH</span>
+        <span class="company"></span>
+        
+        <span class="badge badge-prev">Previously Reported</span>
+      </div>
+      <div class="event-meta">
+        <div class="event-date">Fri Jun 12</div>
+        <div class="days-away">Filed 2d ago</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="summary-text">Best 4K Dashcam Deals for Safe Driving: Amazon Weekend Offers. Explore the best 4K dashcam deals on Amazon this weekend. Compare top models by night vision, parking mode, and GPS logg</div>
       <div class="sources-row"><a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;company=&amp;type=8-K&amp;dateb=&amp;owner=include&amp;count=10" target="_blank" rel="noopener" style="font-size:12px;">View on EDGAR →</a></div>
       <div class="sources-row">
         <span style="font-size:10px;color:var(--muted)">Sources:</span>
@@ -1554,7 +1553,7 @@ a:hover { text-decoration: underline; }
     <div class="footer-item">
       <strong>Data Unavailable</strong>
       
-        <div class="unavailable-list">Options data missing for: IZM, PURE, AFJK, GNS, DTF, GAUZ, ATLN, ICG, AIMAU, VNCE, TLX, IMTE, WHLRL, ZEOX, EBZT, BRLS, PBSV, KOAN, SENR, DDDX, REBN, GURE, QEPC, SNOA, CURR, SNRG, RTON, BTTC, SEED, BHR-PD, MODD, BMR, TCNNF, GMS, EONR, CETY, SEGG, DPG, SOUB, VSTD, GLMD, IHT, XAIR, GITS, IVF, UNKNOWN, WDH, QMCO, DIDIY, YI, CDT, NAMM, SBSAA, STRM, VIVS, RYES, ALPS, RUBI, OPENZ, FMST, ADXN, AAME, STRS, DSWL, CODA, RTB, KCRD, EFR, CHAI, FRD, CYAN, WLYB, UXIN, JRSH, DTSS, TVTV, NMEX, EMCG, BGDE, LRHC, CHR, ENZ, CRCW, RGNT</div>
+        <div class="unavailable-list">Options data missing for: RGNT, PBSV, ENZ, SNRG, WDH, EMCG, DIDIY, BHR-PD, ICG, GLMD, XAIR, BMR, EFR, SEED, VIVS, RTB, KCRD, TVTV, FRD, EONR, REBN, IZM, TCNNF, DSWL, RUBI, NMEX, KOAN, IMTE, AIMAU, EBZT, GURE, IVF, CHR, SENR, WHLRL, JRSH, CODA, DTSS, CDT, DTF, CETY, STRM, AAME, SOUB, GMS, SBSAA, ZEOX, UNKNOWN, PURE, FMST, RTON, CRCW, GAUZ, UXIN, TLX, YI, STRS, ATLN, VNCE, QMCO, LRHC, NAMM, IHT, AFJK, QEPC, BTTC, DDDX, RYES, ALPS, VSTD, BGDE, GNS, MODD, BRLS, CHAI, WLYB, SEGG, CURR, OPENZ, CYAN, SNOA, GITS, ADXN, DPG</div>
       
     </div>
   </div>
@@ -1677,12 +1676,12 @@ document.getElementById('search-input').addEventListener('input', function (e) {
    BIN SYSTEM — Swipe-to-Bin daily triage
    ════════════════════════════════════════════════════════════════════ */
 
-var TODAY_KEY   = 'bin-' + new Date().toISOString().slice(0, 10);
-var binCards    = document.getElementById('bin-cards');
-var binPanel    = document.getElementById('bin-panel');
-var viewBinBtn  = document.getElementById('view-bin-btn');
-var binEmptyMsg = document.getElementById('bin-empty-msg');
-var clearBinBtn = document.getElementById('clear-bin-btn');
+var TODAY_KEY      = 'bin-' + new Date().toISOString().slice(0, 10);
+var binCards       = document.getElementById('bin-cards');
+var binEmptyMsg    = document.getElementById('bin-empty-msg');
+var clearBinBtn    = document.getElementById('clear-bin-btn');
+var binCountBadge  = document.getElementById('bin-count-badge');
+var binCountNum    = document.getElementById('bin-count-num');
 
 /* ── Storage ── */
 function purgeStale() {
@@ -1698,17 +1697,15 @@ function readBin() {
 function saveBin(list) {
   try { localStorage.setItem(TODAY_KEY, JSON.stringify(list)); } catch (e) {}
 }
-function addToStorage(id)    { var l = readBin(); if (l.indexOf(id) === -1) { l.push(id); saveBin(l); } }
+function addToStorage(id)      { var l = readBin(); if (l.indexOf(id) === -1) { l.push(id); saveBin(l); } }
 function removeFromStorage(id) { saveBin(readBin().filter(function (x) { return x !== id; })); }
 
-/* ── UI helpers ── */
-function syncBinBtn() {
+/* ── UI sync ── */
+function syncBin() {
   var n = binCards.querySelectorAll('.card').length;
-  viewBinBtn.style.display = n > 0 ? '' : 'none';
-  if (n > 0) viewBinBtn.textContent = (binPanel.style.display !== 'none' ? '← Main View' : '🗑 Bin (' + n + ')');
-}
-function syncBinEmpty() {
-  binEmptyMsg.style.display = binCards.querySelectorAll('.card').length === 0 ? 'block' : 'none';
+  binEmptyMsg.style.display  = n === 0 ? 'block' : 'none';
+  binCountBadge.style.display = n > 0  ? ''      : 'none';
+  if (binCountNum) binCountNum.textContent = n;
 }
 
 /* ── Animate a card flying left (into bin) ── */
@@ -1766,11 +1763,10 @@ function binCard(card) {
   flyOut(card, function () {
     addRestoreBtn(card);
     binCards.appendChild(card);
-    card.style.display = '';     // always visible in bin regardless of filters
+    card.style.display = '';
     addToStorage(id);
-    syncBinEmpty();
-    syncBinBtn();
-    applyFilters();              // recount main-view results
+    syncBin();
+    applyFilters();
   });
 }
 
@@ -1791,14 +1787,12 @@ function unBinCard(card) {
   if (dest) {
     dest.appendChild(card);
   } else {
-    // Fallback: put before bin panel
-    binPanel.parentNode.insertBefore(card, binPanel);
+    document.getElementById('bin-panel').parentNode.insertBefore(card, document.getElementById('bin-panel'));
   }
 
   flyIn(card);
   removeFromStorage(id);
-  syncBinEmpty();
-  syncBinBtn();
+  syncBin();
   applyFilters();
 }
 
@@ -1847,29 +1841,18 @@ allCards.forEach(function (card) {
   });
 });
 
-/* ── View Bin toggle ── */
-viewBinBtn.addEventListener('click', function () {
-  var isOpen = binPanel.style.display !== 'none';
-  binPanel.style.display = isOpen ? 'none' : 'block';
-  viewBinBtn.classList.toggle('bin-open', !isOpen);
-  syncBinBtn();
-});
-
 /* ── Clear All ── */
 clearBinBtn.addEventListener('click', function () {
-  var cards = Array.from(binCards.querySelectorAll('.card'));
-  cards.forEach(function (card) {
+  Array.from(binCards.querySelectorAll('.card')).forEach(function (card) {
     var btn = card.querySelector('.restore-btn');
     if (btn) btn.remove();
-    var homeSection = card.dataset.homeSection;
-    var dest = homeSection
-      ? document.querySelector('.section[data-section="' + homeSection + '"]')
+    var dest = card.dataset.homeSection
+      ? document.querySelector('.section[data-section="' + card.dataset.homeSection + '"]')
       : null;
     if (dest) dest.appendChild(card);
   });
   saveBin([]);
-  syncBinEmpty();
-  syncBinBtn();
+  syncBin();
   applyFilters();
 });
 
@@ -1883,9 +1866,8 @@ readBin().forEach(function (id) {
   addRestoreBtn(card);
   binCards.appendChild(card);
 });
-syncBinEmpty();
-syncBinBtn();
-applyFilters();   // recount after bin state applied
+syncBin();
+applyFilters();
 
 })();
 </script>
