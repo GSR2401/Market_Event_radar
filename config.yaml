@@ -1,0 +1,21 @@
+# Market Event Radar — Configuration
+# API keys are read from environment variables, never stored here
+
+settings:
+  top_n: 25                  # max non-watchlist tickers per run
+  event_window_days: 7       # look-ahead window in calendar days
+  dedup_mode: show           # show | suppress previously reported events
+  news_lookback_hours: 48    # how far back to scan for news catalysts
+
+options_filter:
+  min_open_interest: 1000
+  min_avg_daily_options_volume: 500
+  min_avg_daily_stock_volume: 500000
+
+edgar:
+  user_agent: "MarketEventRadar shreyasreddy25@gmail.com"
+  max_8k_items: 50           # max 8-K filings to fetch per run
+
+watchlist_path: tickers.txt
+output_dir: output
+cache_dir: cache

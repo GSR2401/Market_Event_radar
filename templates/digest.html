@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Market Event Radar — {{ run_date.strftime('%B %d, %Y') }}</title>
+<style>
+:root {
+  --blue:    #1f3864;
+  --blue-lt: #2e5395;
+  --green:   #1a6e3c;
+  --orange:  #b84c00;
+  --purple:  #5b2d8e;
+  --red:     #c0392b;
+  --bg:      #f4f6f9;
+  --card:    #ffffff;
+  --border:  #d8dde6;
+  --text:    #1a1a2e;
+  --muted:   #6b7280;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 14px;
+  line-height: 1.5;
+}
+a { color: var(--blue-lt); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* ── Header ── */
+.header {
+  background: var(--blue);
+  color: #fff;
+  padding: 20px 24px 16px;
+}
+.header h1 { font-size: 22px; font-weight: 700; letter-spacing: .5px; }
+.header .sub { opacity: .75; font-size: 13px; margin-top: 2px; }
+.header-meta {
+  display: flex; gap: 24px; margin-top: 12px; flex-wrap: wrap;
+}
+.header-meta span {
+  background: rgba(255,255,255,.12);
+  border-radius: 4px; padding: 3px 10px; font-size: 12px;
+}
+
+/* ── Layout ── */
+.container { max-width: 900px; margin: 0 auto; padding: 20px 16px 60px; }
+
+/* ── Section ── */
+.section { margin-bottom: 28px; }
+.section-title {
+  font-size: 13px; font-weight: 700; letter-spacing: 1px;
+  text-transform: uppercase; color: var(--blue);
+  border-bottom: 2px solid var(--blue);
+  padding-bottom: 6px; margin-bottom: 12px;
+}
+.section-empty {
+  color: var(--muted); font-style: italic; font-size: 13px; padding: 8px 0;
+}
+.section-error {
+  background: #fff3cd; border: 1px solid #ffc107;
+  border-radius: 6px; padding: 10px 14px; font-size: 13px;
+  color: #7c5f00; margin-bottom: 10px;
+}
+
+/* ── Event Card ── */
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--blue);
+  border-radius: 6px;
+  padding: 14px 16px;
+  margin-bottom: 10px;
+  box-shadow: 0 1px 3px rgba(0,0,0,.04);
+}
+.card.earnings  { border-left-color: var(--blue); }
+.card.ipo       { border-left-color: var(--green); }
+.card.eightk    { border-left-color: var(--orange); }
+.card.news      { border-left-color: var(--purple); }
+.card.prev-reported { opacity: .65; }
+
+.card-top {
+  display: flex; align-items: flex-start;
+  justify-content: space-between; gap: 12px; flex-wrap: wrap;
+}
+.ticker-block { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.ticker {
+  font-size: 17px; font-weight: 700; color: var(--blue);
+}
+.company { font-size: 13px; color: var(--muted); }
+
+/* ── Badges ── */
+.badge {
+  display: inline-block; border-radius: 3px;
+  font-size: 10px; font-weight: 700; letter-spacing: .4px;
+  padding: 2px 7px; text-transform: uppercase;
+}
+.badge-large   { background: #dbeafe; color: #1e40af; }
+.badge-mid     { background: #dcfce7; color: #166534; }
+.badge-small   { background: #fef9c3; color: #7c5f00; }
+.badge-confirmed { background: #d1fae5; color: #065f46; }
+.badge-estimated { background: #fef3c7; color: #92400e; border: 1px solid #fcd34d; }
+.badge-strong  { background: #fee2e2; color: #991b1b; }
+.badge-moderate { background: #ffedd5; color: #9a3412; }
+.badge-single-source { background: #f3e8ff; color: #581c87; }
+.badge-prev    { background: #e5e7eb; color: #374151; }
+
+/* ── Card body ── */
+.card-body { margin-top: 10px; }
+.card-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 8px 16px; margin-top: 8px;
+}
+.metric-label { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: .5px; }
+.metric-value { font-size: 13px; font-weight: 600; color: var(--text); }
+
+.summary-text {
+  margin-top: 10px; font-size: 12px; color: var(--muted);
+  border-top: 1px solid var(--border); padding-top: 8px;
+}
+
+.sources-row { margin-top: 8px; display: flex; gap: 5px; flex-wrap: wrap; align-items: center; }
+.source-badge {
+  font-size: 10px; background: var(--bg); border: 1px solid var(--border);
+  border-radius: 3px; padding: 1px 6px; color: var(--muted);
+}
+
+/* ── Right meta ── */
+.event-meta { text-align: right; }
+.event-date { font-size: 13px; font-weight: 600; }
+.days-away  { font-size: 11px; color: var(--muted); }
+
+/* ── Footer ── */
+.footer {
+  background: #fff; border: 1px solid var(--border);
+  border-radius: 6px; padding: 16px 18px; margin-top: 28px;
+}
+.footer h3 { font-size: 12px; text-transform: uppercase; letter-spacing: .8px; color: var(--muted); margin-bottom: 10px; }
+.footer-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.footer-item { font-size: 12px; }
+.footer-item strong { display: block; color: var(--text); }
+
+.unavailable-list { font-size: 12px; color: var(--red); margin-top: 6px; }
+
+/* ── Responsive ── */
+@media(max-width:600px) {
+  .card-top { flex-direction: column; }
+  .event-meta { text-align: left; }
+  .footer-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>📡 Market Event Radar</h1>
+  <div class="sub">Weekly Catalyst Digest &nbsp;·&nbsp; US Equities (NYSE / NASDAQ)</div>
+  <div class="header-meta">
+    <span>{{ run_date.strftime('%A, %B %d, %Y') }}</span>
+    <span>{{ total_events }} events found</span>
+    <span>Next 7 days</span>
+    <span>Free data only</span>
+  </div>
+</div>
+
+<div class="container">
+
+<!-- ═══════════════════════ SECTION A: EARNINGS ═══════════════════════ -->
+<div class="section">
+  <div class="section-title">A — Earnings This Week</div>
+
+  {% if section_errors.get('earnings') %}
+  <div class="section-error">⚠ {{ section_errors['earnings'] }}</div>
+  {% endif %}
+
+  {% if not earnings %}
+  <div class="section-empty">No earnings events found for the next 7 days.</div>
+  {% endif %}
+
+  {% for ev in earnings %}
+  {% set days = (ev.event_date - run_date).days %}
+  <div class="card earnings {% if ev.previously_reported %}prev-reported{% endif %}">
+    <div class="card-top">
+      <div class="ticker-block">
+        <span class="ticker">{{ ev.ticker }}</span>
+        <span class="company">{{ ev.company_name }}</span>
+        {% if ev.cap_tier == 'LARGE' %}<span class="badge badge-large">Large</span>
+        {% elif ev.cap_tier == 'MID' %}<span class="badge badge-mid">Mid</span>
+        {% elif ev.cap_tier == 'SMALL' %}<span class="badge badge-small">Small</span>{% endif %}
+        {% if ev.confirmation == 'CONFIRMED' %}
+          <span class="badge badge-confirmed">Confirmed</span>
+        {% else %}
+          <span class="badge badge-estimated">Estimated date</span>
+        {% endif %}
+        {% if ev.activity_level == 'STRONG' %}<span class="badge badge-strong">Options: Strong</span>
+        {% elif ev.activity_level == 'MODERATE' %}<span class="badge badge-moderate">Options: Elevated</span>{% endif %}
+        {% if ev.previously_reported %}<span class="badge badge-prev">Previously Reported</span>{% endif %}
+        {% if ev.sources|length == 1 %}<span class="badge badge-single-source">Single Source</span>{% endif %}
+      </div>
+      <div class="event-meta">
+        <div class="event-date">{{ ev.event_date.strftime('%a %b %d') }}{% if ev.report_time %} · {{ ev.report_time }}{% endif %}</div>
+        <div class="days-away">{% if days == 0 %}Today{% elif days == 1 %}Tomorrow{% else %}{{ days }} days away{% endif %}</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-grid">
+        <div>
+          <div class="metric-label">Market Cap</div>
+          <div class="metric-value">{{ ev.market_cap | fmt_cap }}</div>
+        </div>
+        {% if ev.eps_estimate is not none %}
+        <div>
+          <div class="metric-label">EPS Estimate</div>
+          <div class="metric-value">${{ "%.2f"|format(ev.eps_estimate) }}</div>
+        </div>
+        {% endif %}
+        {% if ev.options_total_oi %}
+        <div>
+          <div class="metric-label">Open Interest</div>
+          <div class="metric-value">{{ ev.options_total_oi | fmt_num }}</div>
+        </div>
+        {% endif %}
+        {% if ev.options_current_volume %}
+        <div>
+          <div class="metric-label">Options Vol Today</div>
+          <div class="metric-value">{{ ev.options_current_volume | fmt_num }}</div>
+        </div>
+        {% endif %}
+        {% if ev.put_call_ratio is not none %}
+        <div>
+          <div class="metric-label">Put/Call Ratio</div>
+          <div class="metric-value">{{ "%.2f"|format(ev.put_call_ratio) }}</div>
+        </div>
+        {% endif %}
+        {% if ev.stock_avg_volume_20d %}
+        <div>
+          <div class="metric-label">Avg Stock Vol (20d)</div>
+          <div class="metric-value">{{ ev.stock_avg_volume_20d | fmt_num }}</div>
+        </div>
+        {% endif %}
+      </div>
+      {% if ev.summary %}
+      <div class="summary-text">{{ ev.summary }}</div>
+      {% endif %}
+      <div class="sources-row">
+        <span style="font-size:10px;color:var(--muted)">Sources:</span>
+        {% for s in ev.sources %}<span class="source-badge">{{ s }}</span>{% endfor %}
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+<!-- ═══════════════════════ SECTION B: IPOs ═══════════════════════ -->
+<div class="section">
+  <div class="section-title">B — Upcoming IPOs &amp; New Listings</div>
+
+  {% if section_errors.get('ipo') %}
+  <div class="section-error">⚠ {{ section_errors['ipo'] }}</div>
+  {% endif %}
+
+  {% if not ipos %}
+  <div class="section-empty">No upcoming IPOs found for the next 7 days.</div>
+  {% endif %}
+
+  {% for ev in ipos %}
+  {% set days = (ev.event_date - run_date).days %}
+  <div class="card ipo {% if ev.previously_reported %}prev-reported{% endif %}">
+    <div class="card-top">
+      <div class="ticker-block">
+        <span class="ticker">{{ ev.ticker }}</span>
+        <span class="company">{{ ev.company_name }}</span>
+        <span class="badge badge-confirmed">IPO</span>
+        <span class="badge" style="background:#f0fdf4;color:#15803d;">No Chain Yet</span>
+        {% if ev.previously_reported %}<span class="badge badge-prev">Previously Reported</span>{% endif %}
+      </div>
+      <div class="event-meta">
+        <div class="event-date">{{ ev.event_date.strftime('%a %b %d') }}</div>
+        <div class="days-away">{% if days == 0 %}Today{% elif days == 1 %}Tomorrow{% else %}{{ days }} days away{% endif %}</div>
+      </div>
+    </div>
+    <div class="card-body">
+      {% if ev.summary %}<div class="summary-text">{{ ev.summary }}</div>{% endif %}
+      <div class="sources-row">
+        <span style="font-size:10px;color:var(--muted)">Sources:</span>
+        {% for s in ev.sources %}<span class="source-badge">{{ s }}</span>{% endfor %}
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+<!-- ═══════════════════════ SECTION C: 8-K FILINGS ═══════════════════════ -->
+<div class="section">
+  <div class="section-title">C — SEC 8-K Material Events</div>
+
+  {% if section_errors.get('8k') %}
+  <div class="section-error">⚠ {{ section_errors['8k'] }}</div>
+  {% endif %}
+
+  {% if not eightk %}
+  <div class="section-empty">No 8-K material filings in the last 48 hours.</div>
+  {% endif %}
+
+  {% for ev in eightk %}
+  {% set days = (ev.event_date - run_date).days %}
+  <div class="card eightk {% if ev.previously_reported %}prev-reported{% endif %}">
+    <div class="card-top">
+      <div class="ticker-block">
+        <span class="ticker">{{ ev.ticker if ev.ticker != 'UNKNOWN' else '—' }}</span>
+        <span class="company">{{ ev.company_name }}</span>
+        {% if ev.item_codes %}
+          {% for code in ev.item_codes %}
+          <span class="badge" style="background:#fff7ed;color:#9a3412;">{{ code }}</span>
+          {% endfor %}
+        {% endif %}
+        {% if ev.previously_reported %}<span class="badge badge-prev">Previously Reported</span>{% endif %}
+      </div>
+      <div class="event-meta">
+        <div class="event-date">{{ ev.event_date.strftime('%a %b %d') }}</div>
+        <div class="days-away">Filed {% if days == 0 %}today{% elif days < 0 %}{{ -days }}d ago{% else %}{{ days }}d ahead{% endif %}</div>
+      </div>
+    </div>
+    <div class="card-body">
+      {% if ev.summary %}<div class="summary-text">{{ ev.summary }}</div>{% endif %}
+      {% if ev.filing_url %}
+      <div class="sources-row">
+        <a href="{{ ev.filing_url }}" target="_blank" rel="noopener" style="font-size:12px;">View on EDGAR →</a>
+      </div>
+      {% endif %}
+      <div class="sources-row">
+        <span style="font-size:10px;color:var(--muted)">Sources:</span>
+        {% for s in ev.sources %}<span class="source-badge">{{ s }}</span>{% endfor %}
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+<!-- ═══════════════════════ SECTION D: NEWS ═══════════════════════ -->
+<div class="section">
+  <div class="section-title">D — News Catalysts</div>
+
+  {% if section_errors.get('news') %}
+  <div class="section-error">⚠ {{ section_errors['news'] }}</div>
+  {% endif %}
+
+  {% if not news %}
+  <div class="section-empty">No keyword-matched news catalysts found.</div>
+  {% endif %}
+
+  {% for ev in news %}
+  <div class="card news {% if ev.previously_reported %}prev-reported{% endif %}">
+    <div class="card-top">
+      <div class="ticker-block">
+        <span class="ticker">{{ ev.ticker }}</span>
+        <span class="company">{{ ev.company_name }}</span>
+        {% if ev.cap_tier == 'LARGE' %}<span class="badge badge-large">Large</span>
+        {% elif ev.cap_tier == 'MID' %}<span class="badge badge-mid">Mid</span>
+        {% elif ev.cap_tier == 'SMALL' %}<span class="badge badge-small">Small</span>{% endif %}
+        {% if ev.previously_reported %}<span class="badge badge-prev">Previously Reported</span>{% endif %}
+      </div>
+      <div class="event-meta">
+        <div class="event-date">{{ ev.event_date.strftime('%a %b %d') }}</div>
+      </div>
+    </div>
+    <div class="card-body">
+      {% if ev.summary %}<div class="summary-text">{{ ev.summary }}</div>{% endif %}
+      <div class="sources-row">
+        <span style="font-size:10px;color:var(--muted)">Sources:</span>
+        {% for s in ev.sources %}<span class="source-badge">{{ s }}</span>{% endfor %}
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+<!-- ═══════════════════════ DIAGNOSTICS FOOTER ═══════════════════════ -->
+<div class="footer">
+  <h3>Diagnostics</h3>
+  <div class="footer-grid">
+    <div class="footer-item">
+      <strong>Source Activity</strong>
+      {% if source_health %}
+        {% for src, count in source_health.items() %}
+        <div>{{ src }}: {{ count }} events contributed</div>
+        {% endfor %}
+      {% else %}
+        <div style="color:var(--muted)">No source data</div>
+      {% endif %}
+    </div>
+    <div class="footer-item">
+      <strong>Data Unavailable</strong>
+      {% if unavailable_tickers %}
+        <div class="unavailable-list">
+          Options data missing for: {{ unavailable_tickers | join(', ') }}
+        </div>
+      {% else %}
+        <div style="color:#15803d">All tickers resolved ✓</div>
+      {% endif %}
+    </div>
+  </div>
+  <div style="margin-top:12px;font-size:11px;color:var(--muted);">
+    Generated {{ run_date.strftime('%Y-%m-%d') }} · Free data sources only ·
+    <a href="archive.html">Past digests</a> ·
+    Events are factual only — no price predictions or trade recommendations.
+  </div>
+</div>
+
+</div><!-- /container -->
+</body>
+</html>

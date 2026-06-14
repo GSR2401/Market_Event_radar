@@ -1,0 +1,59 @@
+name: Daily Market Digest
+
+on:
+  schedule:
+    # 11:00 UTC = 7:00 AM ET (EDT, UTC-4). Weekdays only.
+    - cron: '0 11 * * 1-5'
+  workflow_dispatch:   # lets you trigger manually from the Actions tab anytime
+
+permissions:
+  contents: write      # needed to commit seen_events.json + cache/ back to main
+
+jobs:
+  generate-digest:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Create runtime directories
+        run: mkdir -p cache output
+
+      - name: Run daily digest
+        env:
+          FINNHUB_API_KEY:       ${{ secrets.FINNHUB_API_KEY }}
+          POLYGON_API_KEY:       ${{ secrets.POLYGON_API_KEY }}
+          ALPHA_VANTAGE_API_KEY: ${{ secrets.ALPHA_VANTAGE_API_KEY }}
+          NEWSDATA_API_KEY:      ${{ secrets.NEWSDATA_API_KEY }}
+        run: python run_daily.py
+
+      # Commit state files back so they persist across daily runs
+      - name: Commit state back to main
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add seen_events.json cache/ || true
+          git diff --staged --quiet || git commit -m "chore: state update $(date +%Y-%m-%d)"
+          git push origin main
+
+      # Deploy output/ to gh-pages branch → becomes the public website
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./output
+          keep_files: true          # preserves past dated digests in gh-pages
+          enable_jekyll: false
+          commit_message: "deploy: digest ${{ github.run_id }}"

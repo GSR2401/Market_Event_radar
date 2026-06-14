@@ -1,0 +1,701 @@
+% Market Event Radar PRD v1.1 (LaTeX master copy)
+% Compile: pdflatex market_event_radar_prd_v1.1.tex (run twice for TOC)
+\documentclass[11pt]{article}
+
+\usepackage[letterpaper, margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{helvet}
+\renewcommand{\familydefault}{\sfdefault}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{parskip}
+\usepackage[colorlinks=true, linkcolor=blue!60!black]{hyperref}
+
+\definecolor{prdblue}{HTML}{1F3864}
+\definecolor{prdaccent}{HTML}{2E5395}
+\definecolor{calloutbg}{HTML}{EEF3FA}
+\definecolor{warnbg}{HTML}{FDEBD0}
+
+\usepackage{sectsty}
+\allsectionsfont{\color{prdblue}}
+
+\usepackage[most]{tcolorbox}
+\newtcolorbox{callout}[1]{colback=calloutbg, colframe=prdaccent, boxrule=0.5pt,
+  arc=1mm, left=2mm, right=2mm, top=1.5mm, bottom=1.5mm, title=\textbf{#1},
+  coltitle=black, colbacktitle=calloutbg, attach title to upper={\par}}
+\newtcolorbox{warncallout}[1]{colback=warnbg, colframe=orange!70!black, boxrule=0.5pt,
+  arc=1mm, left=2mm, right=2mm, top=1.5mm, bottom=1.5mm, title=\textbf{#1},
+  coltitle=black, colbacktitle=warnbg, attach title to upper={\par}}
+
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\setlist[itemize]{topsep=2pt, itemsep=2pt, parsep=0pt, leftmargin=1.5em}
+\setlist[enumerate]{topsep=2pt, itemsep=2pt, parsep=0pt, leftmargin=1.8em}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Market Event Radar \,|\, PRD v1.1}
+\fancyhead[R]{\small\textbf{CONFIDENTIAL}}
+\fancyfoot[L]{\small Market Event Radar, Weekly Catalyst Digest}
+\fancyfoot[R]{\small Page \thepage\ of \pageref{LastPage}}
+\renewcommand{\headrulewidth}{0.4pt}
+
+\title{\vspace{-1.2em}{\Huge\bfseries\color{prdblue} MARKET EVENT RADAR}\\[0.3em]
+{\large\itshape Weekly Catalyst Digest, Product Requirements Document}\\[0.5em]
+{\normalsize Version 1.1 \,|\, June 2026 \,|\, US Equity Markets (NYSE, NASDAQ)}}
+\author{}
+\date{}
+
+\begin{document}
+
+\maketitle
+\vspace{-3em}
+
+\begin{center}
+\begin{tabular}{|l|l|l|l|}
+\hline
+\textbf{Status} & \textbf{Author} & \textbf{Market} & \textbf{Stack} \\
+\hline
+Draft v1.1 & Shreyas & NYSE / NASDAQ & Python, Free Only \\
+\hline
+\end{tabular}
+
+\vspace{0.8em}
+\textbf{CONFIDENTIAL, INTERNAL USE ONLY}
+\end{center}
+
+\tableofcontents
+\newpage
+
+%=====================================================================
+\section{Overview}
+
+Market Event Radar is a free, automated daily digest tool that surfaces high-impact events happening in the next 7 days across US-listed equities (NYSE and NASDAQ). It helps an individual investor or trader start each morning knowing exactly which stocks are about to face potential price-moving catalysts, without subscribing to any paid data service.
+
+The tool focuses exclusively on stocks with active options markets, ensuring every name in the digest has sufficient liquidity and institutional attention to be worth monitoring.
+
+\begin{callout}{Core Product Principle: Events, Not Predictions}
+This tool reports factual, verifiable event information only. It does not predict price direction, generate buy/sell signals, or label stocks bullish or bearish. All options-activity data is presented as raw, descriptive market facts (volume, open interest, put/call ratio) with no directional interpretation.
+\end{callout}
+
+%=====================================================================
+\section{Problem Statement}
+
+Market-moving events (earnings reports, IPO listings, M\&A announcements, legal rulings) are publicly schedulable, but they are scattered across dozens of sources: SEC EDGAR, financial news wires, earnings calendars, court dockets, and analyst feeds. A retail trader has no single, free, consolidated view of what is coming this week.
+
+Existing solutions are either expensive (Bloomberg, FactSet), noisy (generic news feeds with no event structure), or limited in scope (earnings-only calendars). Additionally, no single free data source is complete on its own: free providers routinely skip tickers, lag on updates, or cover only large, well-known names. This project fills the gap with a zero-cost, structured, daily digest built on redundant, cross-checked free sources.
+
+%=====================================================================
+\section{Goals \& Non-Goals}
+
+\subsection{Goals}
+\begin{itemize}
+  \item \textbf{Consolidated weekly event view:} Show all material upcoming events for the next 7 days in a single daily digest.
+  \item \textbf{Free-only data sources:} Zero API subscription cost. All data sourced from free tiers or open APIs.
+  \item \textbf{No single-source dependency:} Every critical data type (earnings dates, options data, market cap) is fetched from at least two independent free sources and merged, so a gap or outage in one source does not silently drop events.
+  \item \textbf{Options-volume gated:} Only show stocks with active, liquid options markets, no thinly traded names.
+  \item \textbf{Multi-category coverage:} Earnings reports, new IPO listings, SEC 8-K filings (M\&A, legal), and news catalysts.
+  \item \textbf{Market-cap classification:} Tag each stock as Large Cap, Mid Cap, or Small Cap for easy filtering.
+  \item \textbf{Actionable output:} A clean daily HTML digest the user can open each morning, ranked by event significance and options activity.
+\end{itemize}
+
+\subsection{Non-Goals}
+\begin{itemize}
+  \item No price prediction of any kind. The tool never states or implies whether a stock will go up or down.
+  \item No directional labels. Options positioning data (put/call ratio, volume spikes) is shown as raw numbers only, never translated into bullish/bearish sentiment tags.
+  \item No trade recommendations or buy/sell signals.
+  \item No real-time alerts or push notifications (Phase 1 scope is daily batch).
+  \item No coverage of non-US exchanges (India, Europe, etc.) in v1.
+  \item No paid APIs, subscriptions, or data licenses of any kind.
+  \item No proprietary order-flow or dark-pool data.
+\end{itemize}
+
+%=====================================================================
+\section{User Persona}
+
+\begin{tabularx}{\textwidth}{|L{3.2cm}|X|}
+\hline
+\textbf{Name} & Shreyas, Retail Investor / Swing Trader \\
+\hline
+\textbf{Goal} & Know what events are coming this week before the market opens \\
+\hline
+\textbf{Workflow} & Opens the digest each morning, scans for names on his watchlist or by cap tier, decides whether to enter or avoid a position \\
+\hline
+\textbf{Pain Point} & Currently checks 4-5 separate sites manually (earnings whispers, SEC EDGAR, financial Twitter, a news app). Misses events. No options filter exists anywhere for free. \\
+\hline
+\textbf{Technical Level} & Comfortable running a Python script. Does not want to manage paid APIs or complex infra. \\
+\hline
+\end{tabularx}
+
+%=====================================================================
+\section{Ticker Universe Definition \hfill {\small [NEW in v1.1]}}
+
+The candidate ticker universe for each daily run is constructed dynamically as the union of:
+
+\begin{itemize}
+  \item \textbf{Earnings calendar tickers:} All NYSE/NASDAQ tickers with earnings scheduled in the next 7 days (merged across sources, see Section~\ref{sec:sources}).
+  \item \textbf{IPO calendar entries:} Companies pricing or listing within the next 7 days (Phase 2).
+  \item \textbf{8-K filers:} All companies that filed a monitored 8-K item with the SEC in the last 24 hours.
+  \item \textbf{User watchlist:} Tickers listed in a local config file (\texttt{tickers.txt} / \texttt{config.yaml}). Watchlist tickers are always evaluated, every run, regardless of whether a calendar source surfaced them. This is the user's safety net against source coverage gaps.
+\end{itemize}
+
+The union is deduplicated, restricted to NYSE/NASDAQ common stock (no OTC, no ADRs, no ETFs), then passed through the options volume gate (Section~\ref{sec:optionsfilter}). News catalyst searches (Section~\ref{sec:news}) run only against tickers already in this universe, keeping news API usage bounded.
+
+%=====================================================================
+\section{Event Categories}
+
+The digest covers four primary categories of market-moving events. Each maps to specific data sources and has a defined priority weight in the output ranking.
+
+\subsection{Earnings Reports}
+Scheduled quarterly earnings releases where a company reports revenue, EPS, and guidance. These are the single highest-impact, most predictable event type for options traders.
+\begin{itemize}
+  \item Coverage window: Earnings due within the next 7 calendar days
+  \item Key fields: Ticker, Company Name, Report Date, Report Time (BMO / AMC), EPS Estimate, Revenue Estimate, Confirmation Status
+  \item \textbf{Confirmation status [NEW in v1.1]:} Each earnings entry is tagged CONFIRMED (company has announced the date) or ESTIMATED (provider projection). Estimated dates are a major noise source; the digest visually distinguishes them so the user knows which dates can move.
+  \item \textbf{Multi-source merge [NEW in v1.1]:} Earnings calendar is the union of Finnhub and yfinance results, cross-checked against Alpha Vantage when quota allows. See Section~\ref{sec:chains} for reconciliation rules.
+  \item Priority weight: HIGH
+\end{itemize}
+
+\subsection{IPO \& New Listings}
+Companies going public for the first time (IPO) or uplisting from OTC to NYSE/NASDAQ. These create sudden liquidity events and often have extreme first-day price swings.
+\begin{itemize}
+  \item Coverage window: IPOs priced or listing within the next 7 days
+  \item Key fields: Company Name, Expected Listing Date, Exchange, Estimated Price Range, Sector
+  \item Sources: Finnhub IPO calendar, cross-checked against SEC EDGAR S-1/424B filings
+  \item Note: IPOs may not yet have an options chain, flagged separately and exempted from the options gate
+  \item Priority weight: HIGH
+\end{itemize}
+
+\subsection{SEC 8-K Filings, Material Events}
+Companies must file an 8-K with the SEC within 4 business days of any material event. This includes M\&A agreements, major contracts, leadership changes, asset sales, and legal settlements. These are legally required disclosures and are highly reliable signals.
+\begin{itemize}
+  \item Coverage window: 8-K filings from the last 24 hours that reference forward-dated events within 7 days
+  \item Key item codes to monitor: 1.01 (Material Agreements), 1.02 (Terminations), 1.03 (Bankruptcy), 2.01 (Asset Acquisitions/Disposals), 5.02 (Executive Changes), 8.01 (Other Events)
+  \item Source: SEC EDGAR is authoritative and primary; Finnhub filing summaries serve as a secondary feed to catch EDGAR fetch failures
+  \item Priority weight: MEDIUM-HIGH (depends on item type)
+\end{itemize}
+
+\subsection{News Catalysts}\label{sec:news}
+Breaking or anticipated news that could influence stock price but is not yet reflected in a scheduled event. Examples: FDA decision dates, regulatory rulings, contract award announcements, court hearing outcomes.
+\begin{itemize}
+  \item Coverage window: News articles dated within the last 48 hours referencing events in the next 7 days
+  \item Sources: Finnhub company news (primary), NewsAPI keyword search (secondary), Alpha Vantage news feed (tertiary, quota permitting)
+  \item Filtered by: Keyword scoring (merger, acquisition, ruling, settlement, approval, award, verdict, etc.)
+  \item Scope: News lookups run only against tickers already in the universe (Section 5)
+  \item Priority weight: MEDIUM (signal quality varies)
+\end{itemize}
+
+%=====================================================================
+\section{Options Volume Filter}\label{sec:optionsfilter}
+
+\begin{callout}{Core Design Principle}
+Every stock in the digest must pass the options volume gate. A stock with no active options market is not actionable for most traders and is excluded entirely. (Exception: IPOs without a chain yet, flagged separately.)
+\end{callout}
+
+The filter operates in two layers:
+
+\subsection{Baseline Liquidity Gate (Pass / Fail)}
+A stock must meet ALL of the following criteria to appear in the digest:
+
+\begin{tabularx}{\textwidth}{|L{4.6cm}|L{3.8cm}|X|}
+\hline
+\textbf{Criterion} & \textbf{Threshold} & \textbf{Rationale} \\
+\hline
+Has options chain & Yes (any expiry) & Confirms options market exists \\
+\hline
+Total open interest & $>$ 1{,}000 contracts & Minimum institutional interest \\
+\hline
+Avg daily options volume (20d) & $>$ 500 contracts/day (per-tier thresholds under evaluation, see Open Questions) & Ensures tradeable liquidity \\
+\hline
+Avg daily stock volume (20d) & $>$ 500{,}000 shares/day & Basic equity liquidity check \\
+\hline
+\end{tabularx}
+
+\textbf{Source redundancy [NEW in v1.1]:} Options chain data is fetched from yfinance (primary) with Polygon.io free tier as fallback. If both fail for a ticker, the ticker is marked DATA UNAVAILABLE rather than silently dropped, and appears in a diagnostics footer of the digest.
+
+\subsection{Elevated Options Activity (Descriptive Only) \hfill {\small [REVISED in v1.1]}}
+After passing the gate, each stock's current options volume is compared against its own 20-day average. Elevated activity means more market participants are positioned in the name ahead of a known event; the digest reports this purely as a factual liquidity observation and uses it for ranking order only. No directional meaning is assigned.
+
+\begin{tabularx}{\textwidth}{|L{3.4cm}|X|L{3.6cm}|}
+\hline
+\textbf{Signal} & \textbf{Definition} & \textbf{Digest Rank Boost} \\
+\hline
+Elevated, Strong & Today's options vol $>$ 3x 20-day avg & +2 rank positions \\
+\hline
+Elevated, Moderate & Today's options vol $>$ 1.5x 20-day avg & +1 rank position \\
+\hline
+Put/Call Ratio & Raw ratio displayed as a number (e.g., P/C: 0.62). No bullish/bearish label is applied. & None (informational only) \\
+\hline
+\end{tabularx}
+
+\textit{Removed in v1.1: the Call/Put Skew and Put Skew rows that labeled stocks with a bullish or bearish lean. Directional interpretation conflicts with the events-only product principle (Section 1). The underlying put/call ratio remains visible as a raw figure for users who want to interpret it themselves.}
+
+%=====================================================================
+\section{Market Cap Classification}
+
+Every stock in the digest is tagged with its cap tier. This helps the user quickly filter to their preferred risk profile (large caps are more predictable; small caps can have wilder swings).
+
+\begin{tabularx}{\textwidth}{|L{2.4cm}|L{3.4cm}|X|L{2.4cm}|}
+\hline
+\textbf{Cap Tier} & \textbf{Market Cap Range} & \textbf{Typical Options Liquidity} & \textbf{Digest Tag} \\
+\hline
+Large Cap & $>$ \$10 Billion & High, weekly/daily chains & LARGE \\
+\hline
+Mid Cap & \$2B - \$10B & Moderate, monthly chains & MID \\
+\hline
+Small Cap & \$300M - \$2B & Thin, may fail OI gate & SMALL \\
+\hline
+Micro Cap & $<$ \$300M & Excluded by options gate & EXCLUDED \\
+\hline
+\end{tabularx}
+
+\textit{Market cap is sourced from yfinance (primary) with Finnhub company profile as fallback (v1.1). Classification is applied after the options gate; micro caps almost always fail the gate and are excluded automatically.}
+
+%=====================================================================
+\section{Data Sources \& Redundancy Strategy \hfill {\small [EXPANDED in v1.1]}}\label{sec:sources}
+
+\begin{callout}{Constraint}
+No paid APIs, subscriptions, or data licenses are permitted in this project. All sources below are free-tier or open-access.
+\end{callout}
+
+\begin{warncallout}{Redundancy Principle [NEW in v1.1]}
+No critical data type may depend on a single source. Free providers have incomplete coverage: yfinance can skip tickers or return data only for widely held names, Finnhub free tier truncates some calendars, and any source can be temporarily down. Each data type therefore has a defined primary source plus at least one fallback, and calendar-type data is merged as a union across sources, not taken from whichever source answers first.
+\end{warncallout}
+
+\subsection{Source Inventory}
+
+\begin{tabularx}{\textwidth}{|L{2.1cm}|X|L{1.9cm}|L{2.9cm}|L{1.4cm}|}
+\hline
+\textbf{Source} & \textbf{Data Provided} & \textbf{Auth} & \textbf{Rate Limit} & \textbf{Cost} \\
+\hline
+yfinance & Earnings dates, options chain (vol, OI), market cap, 20d avg volume, price history & None (Python lib) & Unofficial, generous & Free \\
+\hline
+Finnhub & Earnings calendar, IPO calendar, company news, filing summaries, company profile & Free API key & 60 calls/min & Free tier \\
+\hline
+SEC EDGAR & Full 8-K filings (M\&A, legal, executive changes), S-1/IPO filings, full-text search & None (open REST API) & 10 req/sec & Free \\
+\hline
+Alpha Vantage & News \& sentiment feed, earnings history/calendar & Free API key & 5 calls/min, 500/day & Free tier \\
+\hline
+Polygon.io & Options snapshot (15-min delayed), OI, volume by strike & Free API key & 5 calls/min on free tier (verify before build) & Free tier \\
+\hline
+NewsAPI & Broad financial news keyword search & Free API key & 100 req/day (24h delay) & Free tier \\
+\hline
+\end{tabularx}
+
+\textit{Correction in v1.1: Polygon.io free tier was previously listed as unlimited; it is rate-limited (approximately 5 calls/min). It is therefore demoted from batch options snapshot provider to per-ticker fallback only.}
+
+\subsection{Primary / Fallback Chains per Data Type}\label{sec:chains}
+
+\begin{tabularx}{\textwidth}{|L{2.9cm}|L{1.9cm}|L{2.6cm}|X|}
+\hline
+\textbf{Data Type} & \textbf{Primary} & \textbf{Secondary} & \textbf{Merge / Reconciliation Rule} \\
+\hline
+Earnings calendar & Finnhub & yfinance (+ Alpha Vantage spot-checks) & UNION of all sources. If dates disagree, show earliest date, tag ESTIMATED, list both dates in the event card \\
+\hline
+IPO calendar & Finnhub & SEC EDGAR S-1 / 424B scan & Union; EDGAR filing confirms Finnhub entries \\
+\hline
+8-K material events & SEC EDGAR & Finnhub filing feed & EDGAR is authoritative; Finnhub fills gaps only on EDGAR fetch failure \\
+\hline
+Options chain / OI / volume & yfinance & Polygon.io (delayed) & Primary wins; fallback used per-ticker on failure or empty chain. Both fail: tag DATA UNAVAILABLE, never silently drop \\
+\hline
+Market cap & yfinance & Finnhub company profile & Primary wins; fallback on missing/zero value \\
+\hline
+Company news & Finnhub & NewsAPI, Alpha Vantage & Union with URL-based dedup; quota-capped \\
+\hline
+\end{tabularx}
+
+\begin{itemize}
+  \item \textbf{Source attribution:} Every event object carries a \texttt{sources} field (e.g., \texttt{[finnhub, yfinance]}). The digest shows a small source tag per event so the user can judge reliability, and single-source events are visually marked since they lack cross-confirmation.
+  \item \textbf{Coverage diff logging:} On every run, the pipeline logs tickers found by one earnings source but not another. A persistently one-sided diff signals a source degrading, surfaced in the digest diagnostics footer.
+\end{itemize}
+
+%=====================================================================
+\section{Technical Architecture}
+
+\subsection{Pipeline Overview}
+The system runs as a single Python script executed once daily (e.g., 6:00 AM ET). It fetches from redundant sources, merges, filters, ranks, and writes an HTML digest file to disk.
+
+\begin{tabularx}{\textwidth}{|L{0.8cm}|L{3.1cm}|X|L{3.0cm}|}
+\hline
+\textbf{Step} & \textbf{Module} & \textbf{Action} & \textbf{Output} \\
+\hline
+1 & \texttt{event\_fetcher.py} & Pull earnings calendar (Finnhub + yfinance), IPO calendar (Finnhub + EDGAR), 8-K filings (EDGAR, Finnhub fallback) for next 7 days; include watchlist tickers & Raw event lists per source \\
+\hline
+2 & \texttt{source\_merger.py} [NEW] & Union-merge events across sources, dedup by (ticker, event type, date window), apply reconciliation rules (Sec.~\ref{sec:chains}), attach \texttt{sources} field & Unified event list \\
+\hline
+3 & \texttt{options\_filter.py} & Per ticker: fetch options chain (yfinance, Polygon fallback), check OI $>$ 1000, avg vol gate. Compute elevated-activity ratio and raw put/call ratio & Filtered tickers + activity metrics \\
+\hline
+4 & \texttt{enricher.py} & Fetch market cap (yfinance, Finnhub fallback), classify cap tier, fetch news (Finnhub/NewsAPI), parse 8-K item codes, set earnings confirmation status & Enriched event objects \\
+\hline
+5 & \texttt{dedup\_store.py} [NEW] & Compare against \texttt{seen\_events.json}; tag repeats as PREVIOUSLY REPORTED or suppress per config; persist today's event hashes & Deduplicated event list \\
+\hline
+6 & \texttt{ranker.py} & Score events: event type weight + activity boost + days until event (closer = higher) + cap weight & Ranked event list \\
+\hline
+7 & \texttt{digest\_writer.py} & Generate HTML digest with today's date. Group by event type. Tag cap tier, confirmation status, sources. Append diagnostics footer & \texttt{market\_radar\_YYYY-MM-DD.html} \\
+\hline
+\end{tabularx}
+
+\subsection{Technology Stack}
+
+\begin{tabularx}{\textwidth}{|L{3.6cm}|X|}
+\hline
+\textbf{Component} & \textbf{Choice} \\
+\hline
+Language & Python 3.10+ \\
+\hline
+Core data library & yfinance (\texttt{pip install yfinance}), no API key, completely free \\
+\hline
+HTTP requests & \texttt{requests} library for Finnhub, EDGAR, Alpha Vantage, Polygon, NewsAPI \\
+\hline
+Scheduling & cron (macOS/Linux) or Task Scheduler (Windows), Phase 2 \\
+\hline
+Output format & Self-contained HTML file with inline CSS, opens in any browser \\
+\hline
+Storage & Local filesystem: one HTML file per day, plus \texttt{seen\_events.json} and \texttt{cache/} directory. No database \\
+\hline
+\end{tabularx}
+
+\subsection{Rate Limit Management}
+\begin{itemize}
+  \item \textbf{Finnhub:} 1-second sleep between requests; batch ticker lookups where supported.
+  \item \textbf{SEC EDGAR:} Respect the 10 req/sec rule. Send a valid User-Agent header (required by EDGAR policy).
+  \item \textbf{Alpha Vantage:} Enrichment fallback only; skip when daily quota is near.
+  \item \textbf{Polygon.io:} Per-ticker fallback only, throttled to free-tier limit (about 5 calls/min).
+  \item \textbf{yfinance:} Unofficial, no hard limit, but add 0.5s sleep between tickers to avoid IP bans. Caching (Section 11) keeps total call volume low.
+\end{itemize}
+
+%=====================================================================
+\section{Resilience, Caching \& Deduplication \hfill {\small [NEW in v1.1]}}
+
+\subsection{Graceful Degradation}
+A source failure must never kill the whole run or silently shrink the digest.
+\begin{itemize}
+  \item If a primary source fails, the fallback in Section~\ref{sec:chains} is used automatically.
+  \item If all sources for a section fail, the digest still generates, with a visible banner in that section (e.g., \textit{Earnings section unavailable today: all sources failed}) instead of an empty or missing section.
+  \item Per-ticker failures are tagged DATA UNAVAILABLE and listed in a diagnostics footer with the failing source and error type.
+  \item The script exits 0 with a partial digest; it exits non-zero only if no section could be produced at all.
+\end{itemize}
+
+\subsection{Local Caching}
+\begin{itemize}
+  \item Market cap: cached locally, refreshed weekly (changes slowly).
+  \item 20-day average stock/options volume: cached daily per ticker.
+  \item Options chain snapshots: cached for the current run only (no staleness across days).
+  \item Purpose: cuts yfinance call volume sharply, reduces IP-ban risk, and protects the sub-3-minute runtime target as the universe grows.
+\end{itemize}
+
+\subsection{Event Deduplication Across Days}
+\begin{itemize}
+  \item Each event gets a stable hash: (ticker, event type, event date, source document ID where available).
+  \item Hashes are persisted in \texttt{seen\_events.json} (flat file, no database, consistent with the storage constraint).
+  \item Repeat events (e.g., the same 8-K appearing in tomorrow's 24h window overlap) are tagged PREVIOUSLY REPORTED, or fully suppressed via a config flag.
+  \item \texttt{seen\_events.json} entries expire after 14 days to keep the file small.
+\end{itemize}
+
+%=====================================================================
+\section{Digest Output Format}
+
+\subsection{Structure}
+\begin{itemize}
+  \item Header: Date, market summary (SPY/QQQ), total events found, source health summary
+  \item Section A: Earnings This Week (sorted by date, then activity score; CONFIRMED vs ESTIMATED visually distinct)
+  \item Section B: Upcoming IPOs \& New Listings
+  \item Section C: SEC 8-K Material Events (M\&A, Legal, Executive)
+  \item Section D: News Catalysts (keyword-matched, scored)
+  \item Footer: Diagnostics (per-source status, tickers with DATA UNAVAILABLE, coverage diffs)
+\end{itemize}
+
+\subsection{Per-Event Card Fields}
+
+\begin{tabularx}{\textwidth}{|L{3.6cm}|X|}
+\hline
+\textbf{Field} & \textbf{Description} \\
+\hline
+Ticker + Company & e.g., AAPL, Apple Inc. \\
+\hline
+Cap Tag & LARGE / MID / SMALL \\
+\hline
+Event Type & EARNINGS / IPO / 8-K: M\&A / 8-K: LEGAL / NEWS \\
+\hline
+Event Date & e.g., Tuesday Jun 17, BMO \\
+\hline
+Confirmation & CONFIRMED / ESTIMATED \quad [NEW in v1.1, earnings only] \\
+\hline
+Days Away & e.g., 2 days \\
+\hline
+Options Activity & Avg vol, OI, elevated-activity flag if today's vol $>$ 1.5x 20d avg \\
+\hline
+Put/Call Ratio & Raw number only (e.g., P/C: 0.62). No directional label. \quad [REVISED in v1.1] \\
+\hline
+Sources & Which providers reported the event (e.g., finnhub + yfinance). Single-source events marked. \quad [NEW in v1.1] \\
+\hline
+Brief Summary & 1-2 sentence plain-language, factual description of the event. No predictive language. \\
+\hline
+\end{tabularx}
+
+%=====================================================================
+\section{Ranking Logic}
+
+Events within each section are ranked by a composite score. Ranking affects display order only; it is a relevance ordering, not a trade signal.
+
+\begin{callout}{Rank Score Formula}
+score = (event\_type\_weight $\times$ 10) + (activity\_multiplier $\times$ 5) + (10 $-$ days\_away) + (cap\_weight $\times$ 2)
+\end{callout}
+
+\begin{tabularx}{\textwidth}{|X|L{1.6cm}|L{6.2cm}|}
+\hline
+\textbf{Variable} & \textbf{Value} & \textbf{Notes} \\
+\hline
+event\_type\_weight (Earnings) & 5 & Highest, most predictable impact \\
+\hline
+event\_type\_weight (IPO) & 4 & High, first-day volatility \\
+\hline
+event\_type\_weight (8-K M\&A / Legal) & 3 & Medium-high, material disclosure \\
+\hline
+event\_type\_weight (News Catalyst) & 2 & Medium, quality varies \\
+\hline
+activity\_multiplier (strong) & 2.0 & Options vol $>$ 3x 20d avg \\
+\hline
+activity\_multiplier (moderate) & 1.5 & Options vol $>$ 1.5x 20d avg \\
+\hline
+activity\_multiplier (normal) & 1.0 & No elevated activity \\
+\hline
+days\_away & 1-7 & Closer events rank higher (10 $-$ days) \\
+\hline
+cap\_weight (Large / Mid / Small) & 3 / 2 / 1 & Larger cap = more options liquidity \\
+\hline
+\end{tabularx}
+
+%=====================================================================
+\section{Implementation Plan \hfill {\small [NEW in v1.1]}}\label{sec:impl}
+
+Implementation is divided into four phases. Each phase has concrete steps, deliverables, and an exit criterion that must be met before moving on. Steps within a phase are ordered so that every step produces something runnable and testable on its own.
+
+\subsection{Phase 0: Project Setup \hfill {\small (target: half a day)}}
+
+\begin{enumerate}
+  \item \textbf{Repository \& environment:} Create the Git repo with the structure below. Set up Python 3.10+ virtualenv, \texttt{requirements.txt} (yfinance, requests, pyyaml, jinja2 for HTML templating, pytest).
+\begin{verbatim}
+market-event-radar/
+  config.yaml          # API keys (env-var refs), watchlist path,
+                       # thresholds, top-N, dedup mode
+  tickers.txt          # user watchlist, one ticker per line
+  src/
+    universe.py        # Phase 1, Step 2
+    event_fetcher.py   # Phase 1, Step 3
+    source_merger.py   # Phase 1, Step 4
+    options_filter.py  # Phase 1, Step 5
+    enricher.py        # Phase 1, Step 6
+    dedup_store.py     # Phase 1, Step 7
+    ranker.py          # Phase 1, Step 8
+    digest_writer.py   # Phase 1, Step 9
+    cache.py           # Phase 1, Step 5
+    sources/           # one thin client per provider
+      finnhub_client.py
+      yfinance_client.py
+      edgar_client.py
+      polygon_client.py
+  cache/               # gitignored
+  output/              # gitignored, daily HTML files
+  tests/
+  run_daily.py         # orchestrator entry point
+\end{verbatim}
+  \item \textbf{API keys:} Register free Finnhub and Polygon.io keys. Store as environment variables; \texttt{config.yaml} references variable names only, never raw keys (repo stays safe to publish).
+  \item \textbf{Source client skeletons:} Each provider client exposes typed functions (e.g., \texttt{get\_earnings\_calendar(start, end)}) with built-in rate-limit sleeps, retries (3 attempts, exponential backoff), timeout, and a uniform \texttt{SourceResult\{ok, data, error\}} return shape. This uniform shape is what makes Phase 1 fallback logic trivial.
+  \item \textbf{EDGAR compliance:} Hardcode the required User-Agent header (name + contact email) in \texttt{edgar\_client.py} from day one.
+\end{enumerate}
+\textbf{Exit criterion:} \texttt{python -c "import src"} clean; each client can make one successful authenticated call (smoke test script).
+
+\subsection{Phase 1: MVP, Earnings + 8-K Digest \hfill {\small (target: 1.5-2 weeks)}}
+
+\begin{enumerate}
+  \item \textbf{Step 1, Config loader:} Parse \texttt{config.yaml} and \texttt{tickers.txt}; validate thresholds and paths; fail fast with clear messages on bad config.
+  \item \textbf{Step 2, Universe builder (\texttt{universe.py}):} Implement the Section 5 union (earnings tickers + 8-K filers + watchlist), exchange filter (NYSE/NASDAQ common stock only), dedup. Unit-test with fixture lists.
+  \item \textbf{Step 3, Event fetchers (\texttt{event\_fetcher.py}):}
+    \begin{itemize}
+      \item Earnings via Finnhub (primary) and yfinance (secondary), each returning the common event schema.
+      \item 8-K via EDGAR full-text/submissions API filtered to monitored item codes; Finnhub filing feed as fallback.
+      \item Each fetcher is independently runnable from the CLI for debugging (e.g., \texttt{python -m src.event\_fetcher earnings}).
+    \end{itemize}
+  \item \textbf{Step 4, Source merger (\texttt{source\_merger.py}):} Union-merge with dedup key (ticker, event type, date window $\pm$2 days). Apply reconciliation rules from Section~\ref{sec:chains}; attach \texttt{sources} list and CONFIRMED/ESTIMATED status; emit the coverage diff log. Unit-test the disagreement cases explicitly (same ticker, dates 1 day apart vs 3 days apart).
+  \item \textbf{Step 5, Options gate + caching (\texttt{options\_filter.py}, \texttt{cache.py}):} Per-ticker chain fetch with yfinance, Polygon fallback, DATA UNAVAILABLE tagging. Compute OI total, 20d averages, elevated-activity ratio, raw put/call ratio. Implement the file-based cache (market cap weekly, averages daily) before scaling to the full universe, in this order, or the first full run risks an IP ban.
+  \item \textbf{Step 6, Enricher (\texttt{enricher.py}):} Market cap (yfinance, Finnhub fallback), cap tier classification, 8-K item code parsing into human-readable event subtypes.
+  \item \textbf{Step 7, Dedup store (\texttt{dedup\_store.py}):} Stable event hashing, \texttt{seen\_events.json} persistence, 14-day expiry, PREVIOUSLY REPORTED tagging with config-flag suppression.
+  \item \textbf{Step 8, Ranker (\texttt{ranker.py}):} Implement the Section 13 formula as a pure function. Unit-test with hand-computed expected scores.
+  \item \textbf{Step 9, Digest writer (\texttt{digest\_writer.py}):} Jinja2 HTML template, inline CSS, sections A and C, per-event cards with all v1.1 fields, diagnostics footer, section-failure banners.
+  \item \textbf{Step 10, Orchestrator + resilience (\texttt{run\_daily.py}):} Wire steps 1-9 with per-stage try/except implementing graceful degradation (Section 11.1) and structured logging to \texttt{output/run\_YYYY-MM-DD.log}.
+  \item \textbf{Step 11, Validation week:} Run manually every morning for 5 trading days. Measure against Section 16 metrics: earnings capture vs the union, runtime, quota usage, noise rate (subjective tally), zero illiquid leaks. Tune thresholds (Open Question 3) from real data.
+\end{enumerate}
+\textbf{Exit criterion:} 5 consecutive clean daily runs; $>$95\% S\&P 500 earnings capture; runtime $<$ 3 min; one simulated source outage (disable Finnhub key) still produces a partial digest with banner.
+
+\subsection{Phase 2: Coverage Expansion + Automation \hfill {\small (target: 1-1.5 weeks)}}
+
+\begin{enumerate}
+  \item \textbf{IPO calendar:} Finnhub IPO endpoint + EDGAR S-1/424B cross-check; Section B in the digest; options-gate exemption with NO CHAIN YET flag.
+  \item \textbf{News catalysts:} Finnhub company news per universe ticker, NewsAPI secondary, keyword scoring, URL dedup; Section D in the digest. Strict quota budgeting (skip enrichment sources when near limits).
+  \item \textbf{Macro event strip:} Static FOMC/CPI/PPI/jobs-report calendar (published yearly, stored as a local YAML, refreshed manually each quarter); rendered as a banner in the digest header.
+  \item \textbf{Corporate actions:} Ex-dividend dates and stock splits via yfinance for universe tickers.
+  \item \textbf{Lockup expirations:} Computed from IPO listing dates (+90/+180 days), persisted in a small local file as IPOs are observed.
+  \item \textbf{OPEX markers:} Deterministic third-Friday monthly options expiration dates rendered in the header.
+  \item \textbf{Scheduling:} cron (or Task Scheduler) at 6:00 AM ET with failure notification (non-zero exit writes an error HTML so the user sees something went wrong, not just a missing file). Resolve Open Question 5.
+\end{enumerate}
+\textbf{Exit criterion:} All four event categories live; scheduled run executes unattended for 5 trading days; quota usage stays within free tiers daily.
+
+\subsection{Phase 3: Usability \& Delivery \hfill {\small (target: as needed)}}
+
+\begin{enumerate}
+  \item \textbf{Watchlist customization UI:} Simple local web page (or CLI) to edit \texttt{tickers.txt} and thresholds without opening files by hand.
+  \item \textbf{Email delivery:} Send the daily digest via free SMTP (e.g., Gmail app password); HTML email variant of the template.
+  \item \textbf{Sector filtering:} Sector tags per ticker (yfinance/Finnhub profile) with client-side filter buttons in the HTML digest.
+  \item \textbf{Historical archive view:} Index page linking past digests; optional simple hit-rate review (did flagged events occur as scheduled), strictly factual, still no prediction.
+\end{enumerate}
+\textbf{Exit criterion:} User-defined; Phase 3 items ship independently as needed.
+
+\subsection{Cross-Phase Engineering Rules}
+\begin{itemize}
+  \item Every step lands with unit tests (pytest); fetchers are tested against recorded fixture responses, not live APIs.
+  \item No step may introduce a new critical data type with only one source (Constraint, Section 15).
+  \item All output text in the digest is reviewed against the events-only principle: factual descriptions, no predictive or directional language.
+  \item Secrets never enter the repo; config references environment variables only.
+\end{itemize}
+
+%=====================================================================
+\section{MVP Scope}
+
+\begin{callout}{MVP Goal}
+A working daily Python script that generates a clean HTML digest with earnings + 8-K events, merged from redundant free sources and filtered by options volume. Run manually each morning. (Maps to Phase 1 of the Implementation Plan, Section~\ref{sec:impl}.)
+\end{callout}
+
+\subsection{In Scope, MVP}
+\begin{itemize}
+  \item Earnings calendar: Finnhub + yfinance union merge with confirmation status \hfill [expanded in v1.1]
+  \item SEC 8-K filing fetch (EDGAR free API, Finnhub fallback)
+  \item Options volume filter (yfinance primary, Polygon fallback)
+  \item Market cap classification (yfinance primary, Finnhub fallback)
+  \item Elevated options activity detection (20-day average comparison) + raw put/call ratio display
+  \item Watchlist config file (\texttt{tickers.txt}) always included in the universe
+  \item Graceful degradation, local caching, \texttt{seen\_events.json} dedup \hfill [NEW in v1.1]
+  \item HTML digest output, one file per day, with diagnostics footer
+  \item Manual execution (run the script each morning)
+\end{itemize}
+
+\subsection{Out of Scope, MVP (Phase 2+)}
+\begin{itemize}
+  \item IPO calendar (Finnhub + EDGAR cross-check), Phase 2
+  \item News catalyst scoring (Finnhub / NewsAPI / Alpha Vantage), Phase 2
+  \item Macro event header strip: FOMC, CPI/PPI, jobs report dates, Phase 2 \hfill [NEW idea in v1.1]
+  \item Ex-dividend dates and stock splits via yfinance, Phase 2 \hfill [NEW idea in v1.1]
+  \item IPO lockup expiration tracking (listing date + 90/180 days), Phase 2 \hfill [NEW idea in v1.1]
+  \item Monthly options expiration (OPEX) date markers, Phase 2 \hfill [NEW idea in v1.1]
+  \item Automated scheduling (cron job), Phase 2
+  \item Watchlist customisation UI, Phase 3
+  \item Email delivery of the digest, Phase 3
+  \item Sector-based filtering UI, Phase 3
+\end{itemize}
+
+%=====================================================================
+\section{Constraints \& Assumptions}
+
+\subsection{Constraints}
+\begin{itemize}
+  \item \textbf{Zero cost:} No paid APIs, no SaaS subscriptions, no data licenses under any circumstance.
+  \item \textbf{US equities only:} NYSE and NASDAQ listed securities. No OTC, no ADRs, no ETF-specific events in v1.
+  \item \textbf{No single-source dependency:} Every critical data type must have a defined fallback (Section~\ref{sec:chains}). A new data type cannot ship with only one source. \hfill [NEW in v1.1]
+  \item \textbf{Delayed options data:} Free-tier options data from Polygon.io is 15-minute delayed. Sufficient for next-day planning but not intraday.
+  \item \textbf{yfinance reliability:} yfinance scrapes Yahoo Finance unofficially. It may break, skip tickers, or have thinner coverage outside widely held names. No SLA. This is the primary motivation for the redundancy strategy.
+  \item \textbf{SEC EDGAR policy:} Must send a valid User-Agent header. Stay at or below 10 req/sec.
+\end{itemize}
+
+\subsection{Assumptions}
+\begin{itemize}
+  \item The user runs the script once per morning (Phase 1), moving to scheduled runs in Phase 2.
+  \item A Python 3.10+ environment is available locally.
+  \item Free API keys for Finnhub and Polygon.io have been obtained by the user (both free to sign up).
+  \item The output HTML file is opened locally in a browser, no web server required.
+  \item Stocks with no options chain are not of interest and can be safely excluded (IPO exception noted in Section 6.2).
+\end{itemize}
+
+%=====================================================================
+\section{Success Metrics}
+
+\begin{tabularx}{\textwidth}{|X|L{6.6cm}|}
+\hline
+\textbf{Metric} & \textbf{Target} \\
+\hline
+Earnings events captured (next 7 days) & $>$ 95\% of actual S\&P 500 earnings, measured against the union of sources \hfill [raised in v1.1] \\
+\hline
+Single-source blind spots & 0 critical data types served by only one source; coverage diff logged daily \hfill [NEW in v1.1] \\
+\hline
+False positive rate (noise events) & $<$ 20\% of digest entries feel irrelevant \\
+\hline
+Estimated-date mislabeling & 0 ESTIMATED earnings dates displayed as CONFIRMED \hfill [NEW in v1.1] \\
+\hline
+Options gate accuracy & 0 illiquid / micro-cap stocks pass through \\
+\hline
+Resilience & Digest still generates (partial, with banner) when any single source is fully down \hfill [NEW in v1.1] \\
+\hline
+Script runtime & $<$ 3 minutes for full daily run (with caching) \\
+\hline
+API quota usage & Stays within free-tier limits every day \\
+\hline
+Digest readability & All key fields visible without horizontal scroll in browser \\
+\hline
+\end{tabularx}
+
+%=====================================================================
+\section{Open Questions \hfill {\small [UPDATED in v1.1]}}
+
+\subsection{Resolved in v1.1}
+
+\begin{tabularx}{\textwidth}{|L{0.6cm}|X|L{5.6cm}|}
+\hline
+\textbf{\#} & \textbf{Question} & \textbf{Decision} \\
+\hline
+1 & Watchlist: hardcoded list or config file? & Config file (\texttt{tickers.txt} / \texttt{config.yaml}). Never hardcode. \\
+\hline
+2 & Show all stocks passing the gate, or watchlist + top unknowns? & Watchlist always shown, plus top N non-watchlist by rank score; N configurable (default 25). \\
+\hline
+4 & Separate legal events from M\&A in the digest? & Merged in MVP; split later only if volume justifies it. \\
+\hline
+\end{tabularx}
+
+\subsection{Still Open}
+
+\begin{tabularx}{\textwidth}{|L{0.6cm}|X|L{4.2cm}|}
+\hline
+\textbf{\#} & \textbf{Question} & \textbf{Decision Needed By} \\
+\hline
+3 & Is 500-contract options volume the right threshold, or per-cap-tier (lower for small caps, e.g., 200)? Leaning per-tier so the SMALL tag is not dead weight. & During Phase 1, Step 11 (validation week) \\
+\hline
+5 & Phase 2 scheduling: cron, or Claude Cowork scheduled tasks? & Phase 2 planning \\
+\hline
+6 & When earnings sources disagree on a date by more than 2 days, show both dates or only the earliest? \hfill [NEW in v1.1] & During Phase 1, Step 11 \\
+\hline
+7 & Should PREVIOUSLY REPORTED events be shown collapsed or fully suppressed by default? \hfill [NEW in v1.1] & During Phase 1, Step 11 \\
+\hline
+\end{tabularx}
+
+%=====================================================================
+\section{Revision History}
+
+\begin{tabularx}{\textwidth}{|L{1.4cm}|L{1.7cm}|L{1.7cm}|X|}
+\hline
+\textbf{Version} & \textbf{Date} & \textbf{Author} & \textbf{Summary} \\
+\hline
+1.0 & Jun 2026 & Shreyas & Initial draft, requirements discussion with Claude Cowork \\
+\hline
+1.1 & Jun 2026 & Shreyas & Events-only principle formalized (directional labels removed, raw put/call ratio retained). Added: ticker universe definition, multi-source redundancy strategy with primary/fallback chains and union merge, earnings confirmation status, graceful degradation, local caching, cross-day event dedup, diagnostics footer, phased implementation plan (Section~\ref{sec:impl}), Phase 2 event ideas (macro calendar, ex-div/splits, lockup expirations, OPEX). Corrected Polygon.io free-tier rate limit. Resolved open questions 1, 2, 4. Document converted to LaTeX as the master format. \\
+\hline
+\end{tabularx}
+
+\vspace{1.5em}
+\begin{center}
+\textit{End of Document, Market Event Radar PRD v1.1}
+\end{center}
+
+\end{document}
