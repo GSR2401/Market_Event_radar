@@ -97,15 +97,14 @@ a:hover { text-decoration: underline; }
 .filter-count { font-size: 11px; color: var(--muted); white-space: nowrap; }
 
 /* Bin toggle button in filter bar */
-#view-bin-btn {
+/* bin count badge in filter bar */
+#bin-count-badge {
   margin-left: auto;
   font-size: 11px; font-weight: 700;
-  padding: 4px 12px; border-radius: 20px;
+  padding: 3px 10px; border-radius: 20px;
   border: 1px solid #fca5a5; background: #fff1f1; color: var(--red);
-  cursor: pointer; transition: all .15s; white-space: nowrap; display: none;
+  white-space: nowrap; display: none;
 }
-#view-bin-btn:hover { background: #fee2e2; }
-#view-bin-btn.bin-open { background: var(--blue); color: #fff; border-color: var(--blue); }
 
 /* ── Layout ── */
 .container { max-width: 900px; margin: 0 auto; padding: 20px 16px 60px; }
@@ -174,7 +173,7 @@ a:hover { text-decoration: underline; }
 .restore-btn:hover { background: #bfdbfe; }
 
 /* ── Bin Panel ── */
-#bin-panel { display: none; }
+#bin-panel { display: block; }
 .bin-section-title {
   color: var(--red) !important; border-color: var(--red) !important;
 }
@@ -185,7 +184,7 @@ a:hover { text-decoration: underline; }
   transition: background .15s;
 }
 #clear-bin-btn:hover { background: #fee2e2; }
-#bin-empty-msg { color: var(--muted); font-style: italic; font-size: 13px; padding: 8px 0; display: none; }
+#bin-empty-msg { color: var(--muted); font-style: italic; font-size: 13px; padding: 8px 0; }
 
 /* ── Card body (unchanged) ── */
 .card-top {
@@ -289,7 +288,7 @@ a:hover { text-decoration: underline; }
     <button class="tb" data-cap="mid">Mid</button>
     <button class="tb" data-cap="small">Small</button>
     <span class="filter-count" id="filter-count">{{ total_events }} results</span>
-    <button id="view-bin-btn">🗑 Bin (0)</button>
+    <span id="bin-count-badge">🗑 Bin: <span id="bin-count-num">0</span></span>
   </div>
   <div class="filter-row">
     <span class="filter-label">MCap</span>
@@ -638,12 +637,12 @@ document.getElementById('search-input').addEventListener('input', function (e) {
    BIN SYSTEM — Swipe-to-Bin daily triage
    ════════════════════════════════════════════════════════════════════ */
 
-var TODAY_KEY   = 'bin-' + new Date().toISOString().slice(0, 10);
-var binCards    = document.getElementById('bin-cards');
-var binPanel    = document.getElementById('bin-panel');
-var viewBinBtn  = document.getElementById('view-bin-btn');
-var binEmptyMsg = document.getElementById('bin-empty-msg');
-var clearBinBtn = document.getElementById('clear-bin-btn');
+var TODAY_KEY      = 'bin-' + new Date().toISOString().slice(0, 10);
+var binCards       = document.getElementById('bin-cards');
+var binEmptyMsg    = document.getElementById('bin-empty-msg');
+var clearBinBtn    = document.getElementById('clear-bin-btn');
+var binCountBadge  = document.getElementById('bin-count-badge');
+var binCountNum    = document.getElementById('bin-count-num');
 
 /* ── Storage ── */
 function purgeStale() {
@@ -659,17 +658,15 @@ function readBin() {
 function saveBin(list) {
   try { localStorage.setItem(TODAY_KEY, JSON.stringify(list)); } catch (e) {}
 }
-function addToStorage(id)    { var l = readBin(); if (l.indexOf(id) === -1) { l.push(id); saveBin(l); } }
+function addToStorage(id)      { var l = readBin(); if (l.indexOf(id) === -1) { l.push(id); saveBin(l); } }
 function removeFromStorage(id) { saveBin(readBin().filter(function (x) { return x !== id; })); }
 
-/* ── UI helpers ── */
-function syncBinBtn() {
+/* ── UI sync ── */
+function syncBin() {
   var n = binCards.querySelectorAll('.card').length;
-  viewBinBtn.style.display = n > 0 ? '' : 'none';
-  if (n > 0) viewBinBtn.textContent = (binPanel.style.display !== 'none' ? '← Main View' : '🗑 Bin (' + n + ')');
-}
-function syncBinEmpty() {
-  binEmptyMsg.style.display = binCards.querySelectorAll('.card').length === 0 ? 'block' : 'none';
+  binEmptyMsg.style.display  = n === 0 ? 'block' : 'none';
+  binCountBadge.style.display = n > 0  ? ''      : 'none';
+  if (binCountNum) binCountNum.textContent = n;
 }
 
 /* ── Animate a card flying left (into bin) ── */
@@ -727,11 +724,10 @@ function binCard(card) {
   flyOut(card, function () {
     addRestoreBtn(card);
     binCards.appendChild(card);
-    card.style.display = '';     // always visible in bin regardless of filters
+    card.style.display = '';
     addToStorage(id);
-    syncBinEmpty();
-    syncBinBtn();
-    applyFilters();              // recount main-view results
+    syncBin();
+    applyFilters();
   });
 }
 
@@ -752,14 +748,12 @@ function unBinCard(card) {
   if (dest) {
     dest.appendChild(card);
   } else {
-    // Fallback: put before bin panel
-    binPanel.parentNode.insertBefore(card, binPanel);
+    document.getElementById('bin-panel').parentNode.insertBefore(card, document.getElementById('bin-panel'));
   }
 
   flyIn(card);
   removeFromStorage(id);
-  syncBinEmpty();
-  syncBinBtn();
+  syncBin();
   applyFilters();
 }
 
@@ -808,29 +802,18 @@ allCards.forEach(function (card) {
   });
 });
 
-/* ── View Bin toggle ── */
-viewBinBtn.addEventListener('click', function () {
-  var isOpen = binPanel.style.display !== 'none';
-  binPanel.style.display = isOpen ? 'none' : 'block';
-  viewBinBtn.classList.toggle('bin-open', !isOpen);
-  syncBinBtn();
-});
-
 /* ── Clear All ── */
 clearBinBtn.addEventListener('click', function () {
-  var cards = Array.from(binCards.querySelectorAll('.card'));
-  cards.forEach(function (card) {
+  Array.from(binCards.querySelectorAll('.card')).forEach(function (card) {
     var btn = card.querySelector('.restore-btn');
     if (btn) btn.remove();
-    var homeSection = card.dataset.homeSection;
-    var dest = homeSection
-      ? document.querySelector('.section[data-section="' + homeSection + '"]')
+    var dest = card.dataset.homeSection
+      ? document.querySelector('.section[data-section="' + card.dataset.homeSection + '"]')
       : null;
     if (dest) dest.appendChild(card);
   });
   saveBin([]);
-  syncBinEmpty();
-  syncBinBtn();
+  syncBin();
   applyFilters();
 });
 
@@ -844,9 +827,8 @@ readBin().forEach(function (id) {
   addRestoreBtn(card);
   binCards.appendChild(card);
 });
-syncBinEmpty();
-syncBinBtn();
-applyFilters();   // recount after bin state applied
+syncBin();
+applyFilters();
 
 })();
 </script>
