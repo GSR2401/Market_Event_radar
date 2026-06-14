@@ -1,200 +1,273 @@
-2026-06-14 20:58:15,360 INFO run_daily: === Market Event Radar starting — 2026-06-14 ===
-2026-06-14 20:58:15,363 INFO run_daily: Step 1: fetching raw events
-2026-06-14 20:58:16,712 INFO src.event_fetcher: finnhub earnings: 59 entries
-2026-06-14 20:58:17,469 INFO src.event_fetcher: edgar 8-K filings: 100
-2026-06-14 20:58:17,716 INFO run_daily: Step 2: building universe
-2026-06-14 20:58:17,716 INFO src.universe: universe: 35 tickers (10 watchlist, 25 discovered)
-2026-06-14 20:58:17,717 INFO run_daily: Universe: 35 tickers
-2026-06-14 20:58:17,717 INFO run_daily: Step 3: merging earnings per ticker
-2026-06-14 20:58:18,624 ERROR yfinance: HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: AIMAU"}}}
-2026-06-14 20:58:22,042 ERROR yfinance: HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"No fundamentals data found for symbol: ENZ"}}}
-2026-06-14 20:58:37,528 INFO run_daily: Earnings events after merge: 18
-2026-06-14 20:58:37,528 INFO run_daily: Step 4: building 8-K events
-2026-06-14 20:58:37,530 INFO run_daily: Step 5: options filter (118 candidates)
-2026-06-14 20:58:37,831 ERROR yfinance: HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: AIMAU"}}}
-2026-06-14 20:58:38,052 ERROR yfinance: $AIMAU: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
-2026-06-14 20:58:42,463 WARNING src.options_filter: AIMAU: options data unavailable from all sources
-2026-06-14 20:58:46,665 WARNING src.options_filter: DIDIY: options data unavailable from all sources
-2026-06-14 20:58:47,114 ERROR yfinance: $ENZ: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
-2026-06-14 20:58:51,211 WARNING src.options_filter: ENZ: options data unavailable from all sources
-2026-06-14 20:58:55,510 WARNING src.options_filter: FRD: options data unavailable from all sources
-2026-06-14 20:59:02,299 WARNING src.options_filter: JRSH: options data unavailable from all sources
-2026-06-14 20:59:15,281 WARNING src.options_filter: PBSV: options data unavailable from all sources
-2026-06-14 20:59:18,878 WARNING src.options_filter: QEPC: options data unavailable from all sources
-2026-06-14 20:59:22,478 WARNING src.options_filter: SENR: options data unavailable from all sources
-2026-06-14 20:59:26,683 WARNING src.options_filter: SNOA: options data unavailable from all sources
-2026-06-14 20:59:30,279 WARNING src.options_filter: SOUB: options data unavailable from all sources
-2026-06-14 20:59:34,456 WARNING src.options_filter: VNCE: options data unavailable from all sources
-2026-06-14 20:59:37,295 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
-2026-06-14 20:59:41,388 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
-2026-06-14 20:59:41,551 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
-2026-06-14 20:59:45,650 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
-2026-06-14 20:59:45,770 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
-2026-06-14 20:59:49,869 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
-2026-06-14 20:59:49,990 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
-2026-06-14 20:59:54,092 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
-2026-06-14 20:59:54,221 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
-2026-06-14 20:59:58,319 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
-2026-06-14 20:59:58,442 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
-2026-06-14 21:00:02,539 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
-2026-06-14 21:00:02,661 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
-2026-06-14 21:00:06,756 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
-2026-06-14 21:00:06,970 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
-2026-06-14 21:00:11,069 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
-2026-06-14 21:00:11,183 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
-2026-06-14 21:00:15,277 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
-2026-06-14 21:00:15,423 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
-2026-06-14 21:00:19,522 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
-2026-06-14 21:00:20,117 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
-2026-06-14 21:00:24,389 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
-2026-06-14 21:00:24,529 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
-2026-06-14 21:00:28,676 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
-2026-06-14 21:00:28,796 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
-2026-06-14 21:00:32,895 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
-2026-06-14 21:00:33,071 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
-2026-06-14 21:00:37,204 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
-2026-06-14 21:00:37,320 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
-2026-06-14 21:00:41,412 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
-2026-06-14 21:00:41,529 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
-2026-06-14 21:00:45,622 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
-2026-06-14 21:00:45,742 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
-2026-06-14 21:00:49,836 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
-2026-06-14 21:00:49,986 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
-2026-06-14 21:00:54,088 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
-2026-06-14 21:00:54,300 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
-2026-06-14 21:00:58,397 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
-2026-06-14 21:00:58,517 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
-2026-06-14 21:01:02,612 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
-2026-06-14 21:01:06,207 WARNING src.options_filter: STRS: options data unavailable from all sources
-2026-06-14 21:01:06,325 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
-2026-06-14 21:01:10,418 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
-2026-06-14 21:01:10,535 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
-2026-06-14 21:01:14,761 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
-2026-06-14 21:01:14,880 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
-2026-06-14 21:01:18,974 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
-2026-06-14 21:01:19,132 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
-2026-06-14 21:01:23,224 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
-2026-06-14 21:01:23,412 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
-2026-06-14 21:01:27,506 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
-2026-06-14 21:01:27,687 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
-2026-06-14 21:01:31,779 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
-2026-06-14 21:01:31,900 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
-2026-06-14 21:01:35,995 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
-2026-06-14 21:01:36,162 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
-2026-06-14 21:01:40,286 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
-2026-06-14 21:01:40,401 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
-2026-06-14 21:01:44,499 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
-2026-06-14 21:01:44,653 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
-2026-06-14 21:01:48,746 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
-2026-06-14 21:01:48,892 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
-2026-06-14 21:01:52,985 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
-2026-06-14 21:01:56,615 WARNING src.options_filter: WHLRL: options data unavailable from all sources
-2026-06-14 21:02:00,211 WARNING src.options_filter: STRS: options data unavailable from all sources
-2026-06-14 21:02:00,363 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
-2026-06-14 21:02:04,455 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
-2026-06-14 21:02:04,570 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
-2026-06-14 21:02:08,666 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
-2026-06-14 21:02:08,792 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
-2026-06-14 21:02:12,888 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
-2026-06-14 21:02:13,036 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
-2026-06-14 21:02:17,138 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
-2026-06-14 21:02:17,286 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
-2026-06-14 21:02:21,378 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
-2026-06-14 21:02:21,494 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
-2026-06-14 21:02:25,586 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
-2026-06-14 21:02:25,710 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
-2026-06-14 21:02:29,805 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
-2026-06-14 21:02:29,959 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
-2026-06-14 21:02:34,053 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
-2026-06-14 21:02:34,178 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
-2026-06-14 21:02:38,273 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
-2026-06-14 21:02:38,395 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
-2026-06-14 21:02:42,488 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
-2026-06-14 21:02:42,616 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
-2026-06-14 21:02:46,738 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
-2026-06-14 21:02:46,886 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
-2026-06-14 21:02:50,986 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
-2026-06-14 21:02:51,154 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
-2026-06-14 21:02:55,247 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
-2026-06-14 21:02:55,370 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
-2026-06-14 21:02:59,464 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
-2026-06-14 21:02:59,580 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
-2026-06-14 21:03:03,673 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
-2026-06-14 21:03:03,795 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
-2026-06-14 21:03:07,892 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
-2026-06-14 21:03:08,005 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
-2026-06-14 21:03:12,132 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
-2026-06-14 21:03:12,267 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
-2026-06-14 21:03:16,364 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
-2026-06-14 21:03:16,497 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
-2026-06-14 21:03:20,591 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
-2026-06-14 21:03:20,743 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
-2026-06-14 21:03:24,840 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
-2026-06-14 21:03:24,959 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
-2026-06-14 21:03:29,050 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
-2026-06-14 21:03:29,167 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
-2026-06-14 21:03:33,425 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
-2026-06-14 21:03:33,544 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
-2026-06-14 21:03:37,636 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
-2026-06-14 21:03:37,841 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
-2026-06-14 21:03:41,933 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
-2026-06-14 21:03:42,046 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
-2026-06-14 21:03:46,139 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
-2026-06-14 21:03:46,411 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
-2026-06-14 21:03:50,509 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
-2026-06-14 21:03:50,623 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
-2026-06-14 21:03:54,748 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
-2026-06-14 21:03:58,344 WARNING src.options_filter: TCNNF: options data unavailable from all sources
-2026-06-14 21:03:58,478 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
-2026-06-14 21:04:02,585 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
-2026-06-14 21:04:02,719 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
-2026-06-14 21:04:06,818 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
-2026-06-14 21:04:06,929 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
-2026-06-14 21:04:11,023 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
-2026-06-14 21:04:11,147 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
-2026-06-14 21:04:15,239 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
-2026-06-14 21:04:15,353 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
-2026-06-14 21:04:19,443 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
-2026-06-14 21:04:19,560 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
-2026-06-14 21:04:23,654 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
-2026-06-14 21:04:23,765 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
-2026-06-14 21:04:27,862 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
-2026-06-14 21:04:27,979 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
-2026-06-14 21:04:32,074 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
-2026-06-14 21:04:32,204 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
-2026-06-14 21:04:36,297 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
-2026-06-14 21:04:36,423 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
-2026-06-14 21:04:40,517 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
-2026-06-14 21:04:40,636 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
-2026-06-14 21:04:44,727 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
-2026-06-14 21:04:48,332 WARNING src.options_filter: BHR-PD: options data unavailable from all sources
-2026-06-14 21:04:48,457 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
-2026-06-14 21:04:52,550 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
-2026-06-14 21:04:52,658 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
-2026-06-14 21:04:56,757 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
-2026-06-14 21:04:56,920 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
-2026-06-14 21:05:01,013 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
-2026-06-14 21:05:01,130 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
-2026-06-14 21:05:05,223 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
-2026-06-14 21:05:05,357 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
-2026-06-14 21:05:09,452 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
-2026-06-14 21:05:09,577 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
-2026-06-14 21:05:13,703 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
-2026-06-14 21:05:13,822 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
-2026-06-14 21:05:17,946 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
-2026-06-14 21:05:21,570 WARNING src.options_filter: OPENZ: options data unavailable from all sources
-2026-06-14 21:05:21,678 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
-2026-06-14 21:05:25,771 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
-2026-06-14 21:05:25,892 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
-2026-06-14 21:05:30,047 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
-2026-06-14 21:05:30,170 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
-2026-06-14 21:05:34,263 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
-2026-06-14 21:05:34,407 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
-2026-06-14 21:05:38,500 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
-2026-06-14 21:05:38,500 INFO run_daily: Passed options gate: 16 events
-2026-06-14 21:05:38,500 INFO run_daily: Step 6: enriching 16 events
-2026-06-14 21:05:52,995 INFO run_daily: Step 7: dedup
-2026-06-14 21:05:52,996 INFO run_daily: Step 8: ranking
-2026-06-14 21:05:52,996 INFO run_daily: Step 9: writing digest
-2026-06-14 21:05:53,021 INFO src.digest_writer: digest written: output/market_radar_2026-06-14.html
-2026-06-14 21:05:53,021 INFO run_daily: === Done: output/market_radar_2026-06-14.html ===
+2026-06-14 21:14:36,815 INFO run_daily: === Market Event Radar starting — 2026-06-14 ===
+2026-06-14 21:14:36,817 INFO run_daily: Step 1: fetching earnings calendar
+2026-06-14 21:14:49,477 INFO src.event_fetcher: nasdaq earnings: 88 entries across 7 days
+2026-06-14 21:14:50,858 INFO src.event_fetcher: finnhub earnings: 59 entries
+2026-06-14 21:14:50,859 INFO src.event_fetcher: merged earnings universe: 127 unique tickers
+2026-06-14 21:14:50,859 INFO run_daily: Step 2: fetching 8-K filings
+2026-06-14 21:14:51,484 INFO src.event_fetcher: edgar 8-K filings: 100
+2026-06-14 21:14:51,734 INFO run_daily: Step 3: building universe
+2026-06-14 21:14:51,735 INFO src.universe: universe: 35 tickers (10 watchlist, 25 discovered)
+2026-06-14 21:14:51,735 INFO run_daily: Universe: 35 tickers
+2026-06-14 21:14:51,735 INFO run_daily: Step 4: yfinance cross-check for 35 tickers
+2026-06-14 21:14:53,160 ERROR yfinance: HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: AIMAU"}}}
+2026-06-14 21:15:11,454 INFO run_daily: Step 5: building earnings events
+2026-06-14 21:15:11,454 INFO src.source_merger: earnings events built: 127
+2026-06-14 21:15:11,455 INFO run_daily: Step 5b: building 8-K events
+2026-06-14 21:15:11,457 INFO run_daily: Step 6: options filter (227 candidates)
+2026-06-14 21:15:15,103 ERROR yfinance: HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: AIMAU"}}}
+2026-06-14 21:15:15,422 ERROR yfinance: $AIMAU: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
+2026-06-14 21:15:19,770 WARNING src.options_filter: AIMAU: options data unavailable from all sources
+2026-06-14 21:15:23,957 WARNING src.options_filter: CRCW: options data unavailable from all sources
+2026-06-14 21:15:27,556 WARNING src.options_filter: CYAN: options data unavailable from all sources
+2026-06-14 21:15:31,190 WARNING src.options_filter: DPG: options data unavailable from all sources
+2026-06-14 21:15:34,784 WARNING src.options_filter: DTF: options data unavailable from all sources
+2026-06-14 21:15:39,079 WARNING src.options_filter: IHT: options data unavailable from all sources
+2026-06-14 21:15:42,675 WARNING src.options_filter: MODD: options data unavailable from all sources
+2026-06-14 21:15:46,858 WARNING src.options_filter: RTON: options data unavailable from all sources
+2026-06-14 21:15:51,033 WARNING src.options_filter: SBSAA: options data unavailable from all sources
+2026-06-14 21:15:57,549 WARNING src.options_filter: EFR: options data unavailable from all sources
+2026-06-14 21:16:01,143 WARNING src.options_filter: EMCG: options data unavailable from all sources
+2026-06-14 21:16:04,779 WARNING src.options_filter: FRD: options data unavailable from all sources
+2026-06-14 21:16:08,371 WARNING src.options_filter: IZM: options data unavailable from all sources
+2026-06-14 21:16:15,259 WARNING src.options_filter: PBSV: options data unavailable from all sources
+2026-06-14 21:16:18,881 WARNING src.options_filter: QEPC: options data unavailable from all sources
+2026-06-14 21:16:23,088 WARNING src.options_filter: YI: options data unavailable from all sources
+2026-06-14 21:16:23,507 ERROR yfinance: $GMS: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
+2026-06-14 21:16:27,638 WARNING src.options_filter: GMS: options data unavailable from all sources
+2026-06-14 21:16:31,232 WARNING src.options_filter: PURE: options data unavailable from all sources
+2026-06-14 21:16:34,830 WARNING src.options_filter: SEED: options data unavailable from all sources
+2026-06-14 21:16:38,423 WARNING src.options_filter: SOUB: options data unavailable from all sources
+2026-06-14 21:16:47,859 WARNING src.options_filter: CHAI: options data unavailable from all sources
+2026-06-14 21:16:51,460 WARNING src.options_filter: CODA: options data unavailable from all sources
+2026-06-14 21:16:55,054 WARNING src.options_filter: DDDX: options data unavailable from all sources
+2026-06-14 21:16:58,655 WARNING src.options_filter: DIDIY: options data unavailable from all sources
+2026-06-14 21:17:05,785 WARNING src.options_filter: EBZT: options data unavailable from all sources
+2026-06-14 21:17:06,024 ERROR yfinance: $ENZ: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
+2026-06-14 21:17:10,120 WARNING src.options_filter: ENZ: options data unavailable from all sources
+2026-06-14 21:17:13,761 WARNING src.options_filter: JRSH: options data unavailable from all sources
+2026-06-14 21:17:17,357 WARNING src.options_filter: KCRD: options data unavailable from all sources
+2026-06-14 21:17:21,566 WARNING src.options_filter: KOAN: options data unavailable from all sources
+2026-06-14 21:17:25,159 WARNING src.options_filter: NMEX: options data unavailable from all sources
+2026-06-14 21:17:31,379 WARNING src.options_filter: RYES: options data unavailable from all sources
+2026-06-14 21:17:34,976 WARNING src.options_filter: SENR: options data unavailable from all sources
+2026-06-14 21:17:38,570 WARNING src.options_filter: SNOA: options data unavailable from all sources
+2026-06-14 21:17:42,851 WARNING src.options_filter: SNRG: options data unavailable from all sources
+2026-06-14 21:17:43,144 ERROR yfinance: $STRM: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
+2026-06-14 21:17:47,268 WARNING src.options_filter: STRM: options data unavailable from all sources
+2026-06-14 21:17:47,348 ERROR yfinance: $TBHC: possibly delisted; no price data found  (period=1mo)
+2026-06-14 21:17:52,719 WARNING src.options_filter: TVTV: options data unavailable from all sources
+2026-06-14 21:17:56,374 WARNING src.options_filter: VNCE: options data unavailable from all sources
+2026-06-14 21:17:59,967 WARNING src.options_filter: XAIR: options data unavailable from all sources
+2026-06-14 21:18:04,146 WARNING src.options_filter: ZEOX: options data unavailable from all sources
+2026-06-14 21:18:20,825 WARNING src.options_filter: QMCO: options data unavailable from all sources
+2026-06-14 21:18:27,618 WARNING src.options_filter: GNS: options data unavailable from all sources
+2026-06-14 21:18:31,809 WARNING src.options_filter: ADXN: options data unavailable from all sources
+2026-06-14 21:18:36,014 WARNING src.options_filter: VSTD: options data unavailable from all sources
+2026-06-14 21:18:40,193 WARNING src.options_filter: IMTE: options data unavailable from all sources
+2026-06-14 21:18:49,978 WARNING src.options_filter: WLYB: options data unavailable from all sources
+2026-06-14 21:18:57,553 WARNING src.options_filter: WDH: options data unavailable from all sources
+2026-06-14 21:19:01,732 WARNING src.options_filter: UXIN: options data unavailable from all sources
+2026-06-14 21:19:05,951 WARNING src.options_filter: CURR: options data unavailable from all sources
+2026-06-14 21:19:13,166 WARNING src.options_filter: ALPS: options data unavailable from all sources
+2026-06-14 21:19:17,338 WARNING src.options_filter: ATLN: options data unavailable from all sources
+2026-06-14 21:19:21,559 WARNING src.options_filter: AAME: options data unavailable from all sources
+2026-06-14 21:19:25,734 WARNING src.options_filter: BRLS: options data unavailable from all sources
+2026-06-14 21:19:34,295 WARNING src.options_filter: GAUZ: options data unavailable from all sources
+2026-06-14 21:19:38,482 WARNING src.options_filter: REBN: options data unavailable from all sources
+2026-06-14 21:19:42,670 WARNING src.options_filter: CETY: options data unavailable from all sources
+2026-06-14 21:19:46,849 WARNING src.options_filter: RGNT: options data unavailable from all sources
+2026-06-14 21:19:51,245 WARNING src.options_filter: GITS: options data unavailable from all sources
+2026-06-14 21:19:55,430 WARNING src.options_filter: GURE: options data unavailable from all sources
+2026-06-14 21:19:59,673 WARNING src.options_filter: RTB: options data unavailable from all sources
+2026-06-14 21:20:03,844 WARNING src.options_filter: IVF: options data unavailable from all sources
+2026-06-14 21:20:24,685 WARNING src.options_filter: AFJK: options data unavailable from all sources
+2026-06-14 21:20:33,960 WARNING src.options_filter: DSWL: options data unavailable from all sources
+2026-06-14 21:20:41,077 WARNING src.options_filter: SEGG: options data unavailable from all sources
+2026-06-14 21:20:45,290 WARNING src.options_filter: DTSS: options data unavailable from all sources
+2026-06-14 21:20:49,464 WARNING src.options_filter: LRHC: options data unavailable from all sources
+2026-06-14 21:20:53,639 WARNING src.options_filter: BTTC: options data unavailable from all sources
+2026-06-14 21:21:01,248 WARNING src.options_filter: TLX: options data unavailable from all sources
+2026-06-14 21:21:23,121 WARNING src.options_filter: NAMM: options data unavailable from all sources
+2026-06-14 21:21:27,390 WARNING src.options_filter: ICG: options data unavailable from all sources
+2026-06-14 21:21:31,745 WARNING src.options_filter: BGDE: options data unavailable from all sources
+2026-06-14 21:21:35,937 WARNING src.options_filter: EONR: options data unavailable from all sources
+2026-06-14 21:21:40,128 WARNING src.options_filter: BMR: options data unavailable from all sources
+2026-06-14 21:21:44,305 WARNING src.options_filter: GLMD: options data unavailable from all sources
+2026-06-14 21:21:48,483 WARNING src.options_filter: CDT: options data unavailable from all sources
+2026-06-14 21:21:52,655 WARNING src.options_filter: VIVS: options data unavailable from all sources
+2026-06-14 21:21:59,511 WARNING src.options_filter: FMST: options data unavailable from all sources
+2026-06-14 21:22:05,195 WARNING src.options_filter: CHR: options data unavailable from all sources
+2026-06-14 21:22:09,383 WARNING src.options_filter: RUBI: options data unavailable from all sources
+2026-06-14 21:22:09,652 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
+2026-06-14 21:22:13,753 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-06-14 21:22:13,867 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
+2026-06-14 21:22:17,962 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-06-14 21:22:18,081 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
+2026-06-14 21:22:22,175 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-06-14 21:22:22,301 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
+2026-06-14 21:22:26,435 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-06-14 21:22:26,582 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
+2026-06-14 21:22:30,679 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-06-14 21:22:30,794 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
+2026-06-14 21:22:34,888 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-06-14 21:22:35,006 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
+2026-06-14 21:22:39,106 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-06-14 21:22:39,248 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
+2026-06-14 21:22:43,344 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-06-14 21:22:43,474 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
+2026-06-14 21:22:47,775 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-06-14 21:22:47,928 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
+2026-06-14 21:22:52,024 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-06-14 21:22:52,172 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
+2026-06-14 21:22:56,273 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-06-14 21:22:56,390 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
+2026-06-14 21:23:00,492 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-06-14 21:23:00,607 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
+2026-06-14 21:23:04,702 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-06-14 21:23:04,818 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
+2026-06-14 21:23:08,917 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-06-14 21:23:09,070 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
+2026-06-14 21:23:13,166 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-06-14 21:23:13,294 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
+2026-06-14 21:23:17,390 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-06-14 21:23:17,646 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
+2026-06-14 21:23:21,738 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-06-14 21:23:21,854 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
+2026-06-14 21:23:25,952 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-06-14 21:23:26,082 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
+2026-06-14 21:23:30,180 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-06-14 21:23:30,307 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
+2026-06-14 21:23:34,404 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-06-14 21:23:37,998 WARNING src.options_filter: STRS: options data unavailable from all sources
+2026-06-14 21:23:38,123 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
+2026-06-14 21:23:42,220 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-06-14 21:23:42,337 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
+2026-06-14 21:23:46,551 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-06-14 21:23:46,697 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
+2026-06-14 21:23:50,820 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-06-14 21:23:50,937 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
+2026-06-14 21:23:55,030 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-06-14 21:23:55,181 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
+2026-06-14 21:23:59,276 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-06-14 21:23:59,394 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
+2026-06-14 21:24:03,494 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-06-14 21:24:03,613 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
+2026-06-14 21:24:07,739 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-06-14 21:24:07,887 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
+2026-06-14 21:24:11,986 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-06-14 21:24:12,121 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
+2026-06-14 21:24:16,248 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-06-14 21:24:16,406 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
+2026-06-14 21:24:20,500 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-06-14 21:24:20,626 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
+2026-06-14 21:24:24,722 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-06-14 21:24:28,316 WARNING src.options_filter: WHLRL: options data unavailable from all sources
+2026-06-14 21:24:31,910 WARNING src.options_filter: STRS: options data unavailable from all sources
+2026-06-14 21:24:32,040 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
+2026-06-14 21:24:36,133 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-06-14 21:24:36,268 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
+2026-06-14 21:24:40,363 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-06-14 21:24:40,481 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
+2026-06-14 21:24:44,574 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-06-14 21:24:44,718 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
+2026-06-14 21:24:48,812 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-06-14 21:24:48,996 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
+2026-06-14 21:24:53,122 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-06-14 21:24:53,322 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
+2026-06-14 21:24:57,415 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-06-14 21:24:57,530 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
+2026-06-14 21:25:01,628 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-06-14 21:25:01,748 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
+2026-06-14 21:25:05,842 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-06-14 21:25:05,958 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
+2026-06-14 21:25:10,131 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-06-14 21:25:10,248 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
+2026-06-14 21:25:14,341 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-06-14 21:25:14,535 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
+2026-06-14 21:25:18,635 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-06-14 21:25:18,892 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
+2026-06-14 21:25:23,009 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-06-14 21:25:23,126 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
+2026-06-14 21:25:27,224 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-06-14 21:25:27,344 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
+2026-06-14 21:25:31,441 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-06-14 21:25:31,565 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
+2026-06-14 21:25:35,673 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-06-14 21:25:35,843 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
+2026-06-14 21:25:39,937 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-06-14 21:25:40,055 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
+2026-06-14 21:25:44,160 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-06-14 21:25:44,330 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
+2026-06-14 21:25:48,423 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-06-14 21:25:48,543 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
+2026-06-14 21:25:52,635 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-06-14 21:25:52,757 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
+2026-06-14 21:25:56,885 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-06-14 21:25:57,001 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
+2026-06-14 21:26:01,098 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-06-14 21:26:01,225 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
+2026-06-14 21:26:05,430 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-06-14 21:26:05,555 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
+2026-06-14 21:26:09,652 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-06-14 21:26:09,778 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
+2026-06-14 21:26:13,880 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-06-14 21:26:14,022 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
+2026-06-14 21:26:18,123 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-06-14 21:26:18,247 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
+2026-06-14 21:26:22,348 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-06-14 21:26:22,469 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
+2026-06-14 21:26:26,566 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-06-14 21:26:30,170 WARNING src.options_filter: TCNNF: options data unavailable from all sources
+2026-06-14 21:26:30,317 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
+2026-06-14 21:26:34,413 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-06-14 21:26:34,538 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
+2026-06-14 21:26:38,636 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-06-14 21:26:38,755 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
+2026-06-14 21:26:42,853 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-06-14 21:26:43,045 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
+2026-06-14 21:26:47,146 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-06-14 21:26:47,272 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
+2026-06-14 21:26:51,370 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-06-14 21:26:51,496 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
+2026-06-14 21:26:55,593 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-06-14 21:26:55,738 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
+2026-06-14 21:26:59,850 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-06-14 21:27:00,007 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
+2026-06-14 21:27:04,124 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-06-14 21:27:04,277 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
+2026-06-14 21:27:08,374 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-06-14 21:27:08,533 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
+2026-06-14 21:27:12,630 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-06-14 21:27:12,758 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
+2026-06-14 21:27:16,855 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-06-14 21:27:20,451 WARNING src.options_filter: BHR-PD: options data unavailable from all sources
+2026-06-14 21:27:20,579 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
+2026-06-14 21:27:24,676 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-06-14 21:27:24,799 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
+2026-06-14 21:27:28,899 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-06-14 21:27:29,013 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
+2026-06-14 21:27:33,108 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-06-14 21:27:33,228 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
+2026-06-14 21:27:37,326 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-06-14 21:27:37,446 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
+2026-06-14 21:27:41,588 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-06-14 21:27:41,773 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
+2026-06-14 21:27:45,872 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-06-14 21:27:46,020 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
+2026-06-14 21:27:50,117 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-06-14 21:27:53,713 WARNING src.options_filter: OPENZ: options data unavailable from all sources
+2026-06-14 21:27:53,910 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
+2026-06-14 21:27:58,006 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-06-14 21:27:58,212 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
+2026-06-14 21:28:02,313 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-06-14 21:28:02,432 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
+2026-06-14 21:28:06,532 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-06-14 21:28:06,653 ERROR yfinance: $UNKNOWN: possibly delisted; no price data found  (period=1mo) (Yahoo error = "No data found, symbol may be delisted")
+2026-06-14 21:28:10,748 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-06-14 21:28:10,748 INFO run_daily: Passed options gate: 31 events
+2026-06-14 21:28:10,748 INFO run_daily: Step 7: enriching 31 events
+2026-06-14 21:28:34,624 INFO run_daily: Step 8: dedup
+2026-06-14 21:28:34,625 INFO run_daily: Step 9: ranking
+2026-06-14 21:28:34,625 INFO run_daily: Step 10: writing digest
+2026-06-14 21:28:34,651 INFO src.digest_writer: digest written: output/market_radar_2026-06-14.html
+2026-06-14 21:28:34,652 INFO run_daily: === Done: output/market_radar_2026-06-14.html ===
