@@ -5,746 +5,848 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Market Event Radar — June 14, 2026</title>
 <style>
-:root {
-  --blue:    #1f3864;
-  --blue-lt: #2e5395;
-  --green:   #1a6e3c;
-  --orange:  #b84c00;
-  --purple:  #5b2d8e;
-  --red:     #c0392b;
-  --bg:      #f4f6f9;
-  --card:    #ffffff;
-  --border:  #d8dde6;
-  --text:    #1a1a2e;
-  --muted:   #6b7280;
-}
-* { box-sizing: border-box; margin: 0; padding: 0; }
+/* ── Reset & Base ─────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
 body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  background: var(--bg);
-  color: var(--text);
-  font-size: 14px;
-  line-height: 1.5;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: #0d0d14;
+  color: #e2e2f0;
+  overflow-x: hidden;
+  min-height: 100vh;
 }
-a { color: var(--blue-lt); text-decoration: none; }
-a:hover { text-decoration: underline; }
+::-webkit-scrollbar { height: 4px; background: #1a1a2e; }
+::-webkit-scrollbar-thumb { background: #2e2e50; border-radius: 2px; }
 
-/* ── Header ── */
+/* ── Header ───────────────────────────────────────────────────────── */
 .header {
-  background: var(--blue);
-  color: #fff;
-  padding: 20px 24px 16px;
+  background: linear-gradient(180deg, #0a0a12 0%, transparent 100%);
+  padding: 32px 60px 24px;
+  position: relative;
 }
-.header h1 { font-size: 22px; font-weight: 700; letter-spacing: .5px; }
-.header .sub { opacity: .75; font-size: 13px; margin-top: 2px; }
-.header-meta {
-  display: flex; gap: 24px; margin-top: 12px; flex-wrap: wrap;
+.header::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, #ffffff14, transparent);
 }
-.header-meta span {
-  background: rgba(255,255,255,.12);
-  border-radius: 4px; padding: 3px 10px; font-size: 12px;
+.header-top { display: flex; align-items: flex-start; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
+.logo { display: flex; align-items: center; gap: 12px; }
+.logo-dot {
+  width: 10px; height: 10px; border-radius: 50%;
+  background: #e53e3e; box-shadow: 0 0 12px #e53e3e;
+  animation: pulse 2s infinite;
 }
+@keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
+.logo-text { font-size: 22px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; color: #fff; }
+.logo-sub { font-size: 11px; color: #6b7280; letter-spacing: 1px; margin-top: 2px; }
+.header-meta { display: flex; gap: 20px; flex-wrap: wrap; align-items: center; }
+.meta-chip {
+  font-size: 12px; color: #9ca3af;
+  border: 1px solid #ffffff14; border-radius: 20px;
+  padding: 4px 12px;
+}
+.meta-chip strong { color: #e2e2f0; }
 
-/* ── Layout ── */
-.container { max-width: 900px; margin: 0 auto; padding: 20px 16px 60px; }
+/* ── Filter Bar ───────────────────────────────────────────────────── */
+.filter-bar {
+  padding: 16px 60px;
+  display: flex; gap: 8px; flex-wrap: wrap; align-items: center;
+  border-bottom: 1px solid #ffffff08;
+}
+.filter-label { font-size: 11px; color: #6b7280; letter-spacing: 1px; margin-right: 4px; }
+.filter-btn {
+  background: #1a1a2e; border: 1px solid #ffffff14;
+  color: #9ca3af; font-size: 11px; font-weight: 600;
+  letter-spacing: .6px; text-transform: uppercase;
+  padding: 5px 14px; border-radius: 20px; cursor: pointer;
+  transition: all .2s;
+}
+.filter-btn:hover { border-color: #ffffff30; color: #e2e2f0; }
+.filter-btn.active { background: #e2e2f0; color: #0d0d14; border-color: #e2e2f0; }
+.filter-sep { width: 1px; height: 20px; background: #ffffff14; margin: 0 4px; }
 
-/* ── Section ── */
-.section { margin-bottom: 28px; }
+/* ── Section Row ──────────────────────────────────────────────────── */
+.section { padding: 28px 0 8px; position: relative; }
+.section-header {
+  padding: 0 60px 14px;
+  display: flex; align-items: center; gap: 12px;
+}
 .section-title {
-  font-size: 13px; font-weight: 700; letter-spacing: 1px;
-  text-transform: uppercase; color: var(--blue);
-  border-bottom: 2px solid var(--blue);
-  padding-bottom: 6px; margin-bottom: 12px;
+  font-size: 13px; font-weight: 700;
+  letter-spacing: 1.5px; text-transform: uppercase;
+  color: #e2e2f0;
+}
+.section-count {
+  font-size: 11px; color: #6b7280;
+  background: #ffffff0a; border-radius: 10px; padding: 2px 8px;
 }
 .section-empty {
-  color: var(--muted); font-style: italic; font-size: 13px; padding: 8px 0;
+  padding: 0 60px 20px;
+  font-size: 13px; color: #4b5563; font-style: italic;
 }
 .section-error {
-  background: #fff3cd; border: 1px solid #ffc107;
-  border-radius: 6px; padding: 10px 14px; font-size: 13px;
-  color: #7c5f00; margin-bottom: 10px;
+  margin: 0 60px 12px;
+  background: #2d1b0e; border: 1px solid #b45309;
+  border-radius: 6px; padding: 10px 14px; font-size: 12px; color: #fbbf24;
 }
 
-/* ── Event Card ── */
+/* ── Row viewport: overflow visible so cards can expand upward ──── */
+.row-viewport {
+  position: relative;
+  overflow: visible;
+  padding: 50px 0 70px; /* room for card scale + details panel */
+  margin: -50px 0 -70px; /* cancel the layout shift from padding */
+}
+/* Gradient edge masks (hide partially-scrolled cards at edges) */
+.row-viewport::before,
+.row-viewport::after {
+  content: '';
+  position: absolute;
+  top: 0; bottom: 0; width: 60px;
+  z-index: 20; pointer-events: none;
+}
+.row-viewport::before { left: 0; background: linear-gradient(to right, #0d0d14 30%, transparent); }
+.row-viewport::after  { right: 0; background: linear-gradient(to left, #0d0d14 30%, transparent); }
+
+.row-track {
+  display: flex;
+  gap: 10px;
+  padding: 50px 60px 70px;
+  margin: -50px 0 -70px;
+  width: max-content;
+  transition: transform .45s cubic-bezier(.25,.1,.25,1);
+  will-change: transform;
+}
+
+/* ── Arrow Buttons ────────────────────────────────────────────────── */
+.arrow {
+  position: absolute; top: 50%; transform: translateY(-50%);
+  width: 48px; height: 96px;
+  background: rgba(13,13,20,.85);
+  border: 1px solid #ffffff12;
+  color: #e2e2f0; font-size: 22px;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; z-index: 30;
+  border-radius: 4px;
+  transition: background .2s, opacity .2s;
+  opacity: 0;
+}
+.row-viewport:hover .arrow { opacity: 1; }
+.arrow:hover { background: rgba(30,30,50,.95); }
+.arrow-left  { left: 6px; }
+.arrow-right { right: 6px; }
+.arrow.hidden { opacity: 0 !important; pointer-events: none; }
+
+/* ── Card ─────────────────────────────────────────────────────────── */
 .card {
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-left: 4px solid var(--blue);
+  flex: 0 0 200px;
+  height: 130px;
   border-radius: 6px;
-  padding: 14px 16px;
-  margin-bottom: 10px;
-  box-shadow: 0 1px 3px rgba(0,0,0,.04);
+  background: #16162a;
+  border: 1px solid #ffffff0c;
+  position: relative;
+  cursor: pointer;
+  transition: transform .3s cubic-bezier(.25,.1,.25,1), box-shadow .3s, z-index 0s .3s;
+  z-index: 1;
+  overflow: visible;
 }
-.card.earnings  { border-left-color: var(--blue); }
-.card.ipo       { border-left-color: var(--green); }
-.card.eightk    { border-left-color: var(--orange); }
-.card.news      { border-left-color: var(--purple); }
-.card.prev-reported { opacity: .65; }
+.card::before {
+  content: ''; position: absolute;
+  top: 0; left: 0; right: 0; height: 3px;
+  border-radius: 6px 6px 0 0;
+}
+.card.earnings::before  { background: linear-gradient(90deg, #3b82f6, #60a5fa); }
+.card.ipo::before       { background: linear-gradient(90deg, #10b981, #34d399); }
+.card.eightk::before    { background: linear-gradient(90deg, #f59e0b, #fbbf24); }
+.card.news::before      { background: linear-gradient(90deg, #8b5cf6, #a78bfa); }
 
-.card-top {
-  display: flex; align-items: flex-start;
-  justify-content: space-between; gap: 12px; flex-wrap: wrap;
+.card:hover {
+  transform: scale(1.48) translateY(-8px);
+  box-shadow: 0 20px 60px rgba(0,0,0,.9), 0 0 0 1px rgba(255,255,255,.1);
+  z-index: 100;
+  transition: transform .3s cubic-bezier(.25,.1,.25,1), box-shadow .3s, z-index 0s;
+  border-radius: 6px 6px 0 0;
 }
-.ticker-block { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
-.ticker {
-  font-size: 17px; font-weight: 700; color: var(--blue);
-}
-.company { font-size: 13px; color: var(--muted); }
 
-/* ── Badges ── */
+/* Card front content */
+.card-front {
+  padding: 12px 13px 10px;
+  height: 100%; display: flex; flex-direction: column; justify-content: space-between;
+}
+.card-ticker { font-size: 20px; font-weight: 800; color: #fff; letter-spacing: .5px; line-height: 1; }
+.card-company { font-size: 10px; color: #6b7280; margin-top: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.card-date { font-size: 11px; color: #9ca3af; }
+.card-badges { display: flex; gap: 4px; flex-wrap: wrap; margin-top: 4px; }
+
+/* Card detail panel — appears below card on hover */
+.card-detail {
+  position: absolute;
+  top: 100%; left: 0; right: 0;
+  background: #1e1e35;
+  border: 1px solid #ffffff14; border-top: none;
+  border-radius: 0 0 6px 6px;
+  padding: 10px 12px;
+  opacity: 0; pointer-events: none;
+  transition: opacity .15s .1s;
+  min-width: 200px;
+  z-index: 101;
+}
+.card:hover .card-detail {
+  opacity: 1; pointer-events: auto;
+}
+.detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 10px; }
+.detail-item {}
+.detail-label { font-size: 9px; color: #6b7280; text-transform: uppercase; letter-spacing: .5px; }
+.detail-value { font-size: 12px; font-weight: 600; color: #e2e2f0; }
+.detail-summary {
+  margin-top: 8px; font-size: 10px; color: #9ca3af;
+  border-top: 1px solid #ffffff0a; padding-top: 6px;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+}
+.detail-sources { margin-top: 6px; display: flex; gap: 4px; flex-wrap: wrap; }
+.src-tag {
+  font-size: 9px; background: #0d0d14; border: 1px solid #ffffff14;
+  border-radius: 3px; padding: 1px 5px; color: #6b7280;
+}
+
+/* ── Badges ───────────────────────────────────────────────────────── */
 .badge {
   display: inline-block; border-radius: 3px;
-  font-size: 10px; font-weight: 700; letter-spacing: .4px;
-  padding: 2px 7px; text-transform: uppercase;
+  font-size: 9px; font-weight: 700; letter-spacing: .3px;
+  padding: 1px 6px; text-transform: uppercase;
 }
-.badge-large   { background: #dbeafe; color: #1e40af; }
-.badge-mid     { background: #dcfce7; color: #166534; }
-.badge-small   { background: #fef9c3; color: #7c5f00; }
-.badge-confirmed { background: #d1fae5; color: #065f46; }
-.badge-estimated { background: #fef3c7; color: #92400e; border: 1px solid #fcd34d; }
-.badge-strong  { background: #fee2e2; color: #991b1b; }
-.badge-moderate { background: #ffedd5; color: #9a3412; }
-.badge-single-source { background: #f3e8ff; color: #581c87; }
-.badge-prev    { background: #e5e7eb; color: #374151; }
+.badge-large    { background: #1e3a5f; color: #60a5fa; }
+.badge-mid      { background: #14402a; color: #34d399; }
+.badge-small    { background: #422006; color: #fbbf24; }
+.badge-confirmed  { background: #064e3b; color: #6ee7b7; }
+.badge-estimated  { background: #451a03; color: #fb923c; border: 1px solid #78350f; }
+.badge-strong   { background: #450a0a; color: #f87171; }
+.badge-moderate { background: #431407; color: #fb923c; }
+.badge-prev     { background: #1f2937; color: #6b7280; }
+.badge-single   { background: #2e1a47; color: #a78bfa; }
 
-/* ── Card body ── */
-.card-body { margin-top: 10px; }
-.card-grid {
-  display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-  gap: 8px 16px; margin-top: 8px;
-}
-.metric-label { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: .5px; }
-.metric-value { font-size: 13px; font-weight: 600; color: var(--text); }
-
-.summary-text {
-  margin-top: 10px; font-size: 12px; color: var(--muted);
-  border-top: 1px solid var(--border); padding-top: 8px;
-}
-
-.sources-row { margin-top: 8px; display: flex; gap: 5px; flex-wrap: wrap; align-items: center; }
-.source-badge {
-  font-size: 10px; background: var(--bg); border: 1px solid var(--border);
-  border-radius: 3px; padding: 1px 6px; color: var(--muted);
-}
-
-/* ── Right meta ── */
-.event-meta { text-align: right; }
-.event-date { font-size: 13px; font-weight: 600; }
-.days-away  { font-size: 11px; color: var(--muted); }
-
-/* ── Footer ── */
+/* ── Diagnostics Footer ───────────────────────────────────────────── */
 .footer {
-  background: #fff; border: 1px solid var(--border);
-  border-radius: 6px; padding: 16px 18px; margin-top: 28px;
+  margin: 40px 60px 60px;
+  background: #111120; border: 1px solid #ffffff0a;
+  border-radius: 8px; padding: 20px 24px;
 }
-.footer h3 { font-size: 12px; text-transform: uppercase; letter-spacing: .8px; color: var(--muted); margin-bottom: 10px; }
+.footer h3 {
+  font-size: 10px; text-transform: uppercase; letter-spacing: 1px;
+  color: #4b5563; margin-bottom: 14px;
+}
 .footer-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-.footer-item { font-size: 12px; }
-.footer-item strong { display: block; color: var(--text); }
+.footer-item { font-size: 12px; color: #6b7280; }
+.footer-item strong { display: block; color: #9ca3af; margin-bottom: 4px; }
+.footer-note { margin-top: 14px; font-size: 10px; color: #374151; border-top: 1px solid #ffffff06; padding-top: 12px; }
+.footer-note a { color: #4b5563; }
+.unavailable { color: #ef4444; font-size: 11px; }
 
-.unavailable-list { font-size: 12px; color: var(--red); margin-top: 6px; }
-
-/* ── Responsive ── */
-@media(max-width:600px) {
-  .card-top { flex-direction: column; }
-  .event-meta { text-align: left; }
+/* ── Responsive ───────────────────────────────────────────────────── */
+@media (max-width: 640px) {
+  .header, .filter-bar, .section-header, .footer { padding-left: 20px; padding-right: 20px; }
+  .row-track { padding-left: 20px; padding-right: 20px; }
+  .row-viewport::before, .row-viewport::after { display: none; }
   .footer-grid { grid-template-columns: 1fr; }
+  .arrow { display: none; }
 }
 </style>
 </head>
 <body>
 
+<!-- ══════════════════════════ HEADER ══════════════════════════════ -->
 <div class="header">
-  <h1>📡 Market Event Radar</h1>
-  <div class="sub">Weekly Catalyst Digest &nbsp;·&nbsp; US Equities (NYSE / NASDAQ)</div>
-  <div class="header-meta">
-    <span>Sunday, June 14, 2026</span>
-    <span>15 events found</span>
-    <span>Next 7 days</span>
-    <span>Free data only</span>
+  <div class="header-top">
+    <div class="logo">
+      <div class="logo-dot"></div>
+      <div>
+        <div class="logo-text">Market Event Radar</div>
+        <div class="logo-sub">Weekly Catalyst Digest &nbsp;·&nbsp; NYSE / NASDAQ</div>
+      </div>
+    </div>
+    <div class="header-meta">
+      <span class="meta-chip">Sun, Jun 14 2026</span>
+      <span class="meta-chip"><strong>14</strong> events</span>
+      <span class="meta-chip">Next 7 days</span>
+      <span class="meta-chip"><a href="archive.html" style="color:inherit;text-decoration:none">Archive →</a></span>
+    </div>
   </div>
 </div>
 
-<div class="container">
+<!-- ══════════════════════════ FILTER BAR ══════════════════════════ -->
+<div class="filter-bar">
+  <span class="filter-label">Type</span>
+  <button class="filter-btn active" data-filter-type="all">All</button>
+  <button class="filter-btn" data-filter-type="earnings">Earnings</button>
+  <button class="filter-btn" data-filter-type="ipo">IPO</button>
+  <button class="filter-btn" data-filter-type="8k">8-K</button>
+  <button class="filter-btn" data-filter-type="news">News</button>
+  <div class="filter-sep"></div>
+  <span class="filter-label">Cap</span>
+  <button class="filter-btn active" data-filter-cap="all">All</button>
+  <button class="filter-btn" data-filter-cap="large">Large</button>
+  <button class="filter-btn" data-filter-cap="mid">Mid</button>
+  <button class="filter-btn" data-filter-cap="small">Small</button>
+</div>
 
-<!-- ═══════════════════════ SECTION A: EARNINGS ═══════════════════════ -->
-<div class="section">
-  <div class="section-title">A — Earnings This Week</div>
-
-  
-
-  
-
-  
-  
-  <div class="card earnings ">
-    <div class="card-top">
-      <div class="ticker-block">
-        <span class="ticker">JBL</span>
-        <span class="company">Jabil Inc.</span>
-        <span class="badge badge-large">Large</span>
-        
-        
-          <span class="badge badge-confirmed">Confirmed</span>
-        
-        
-        
-        
-      </div>
-      <div class="event-meta">
-        <div class="event-date">Wed Jun 17 · BMO</div>
-        <div class="days-away">3 days away</div>
-      </div>
-    </div>
-    <div class="card-body">
-      <div class="card-grid">
-        <div>
-          <div class="metric-label">Market Cap</div>
-          <div class="metric-value">$40.6B</div>
-        </div>
-        
-        <div>
-          <div class="metric-label">EPS Estimate</div>
-          <div class="metric-value">$3.11</div>
-        </div>
-        
-        
-        <div>
-          <div class="metric-label">Open Interest</div>
-          <div class="metric-value">11.7K</div>
-        </div>
-        
-        
-        <div>
-          <div class="metric-label">Options Vol Today</div>
-          <div class="metric-value">2.5K</div>
-        </div>
-        
-        
-        <div>
-          <div class="metric-label">Put/Call Ratio</div>
-          <div class="metric-value">2.28</div>
-        </div>
-        
-        
-        <div>
-          <div class="metric-label">Avg Stock Vol (20d)</div>
-          <div class="metric-value">$1M</div>
-        </div>
-        
-      </div>
-      
-      <div class="sources-row">
-        <span style="font-size:10px;color:var(--muted)">Sources:</span>
-        <span class="source-badge">finnhub</span><span class="source-badge">yfinance</span>
-      </div>
-    </div>
+<!-- ══════════════════════════ SECTION A: EARNINGS ═════════════════ -->
+<div class="section" data-section-type="earnings">
+  <div class="section-header">
+    <span class="section-title">Earnings This Week</span>
+    <span class="section-count">2</span>
   </div>
+
   
+
   
-  <div class="card earnings ">
-    <div class="card-top">
-      <div class="ticker-block">
-        <span class="ticker">SWBI</span>
-        <span class="company">Smith &amp; Wesson Brands, Inc.</span>
-        <span class="badge badge-small">Small</span>
-        
-          <span class="badge badge-confirmed">Confirmed</span>
-        
-        
-        
-        
-      </div>
-      <div class="event-meta">
-        <div class="event-date">Wed Jun 17 · AMC</div>
-        <div class="days-away">3 days away</div>
-      </div>
-    </div>
-    <div class="card-body">
-      <div class="card-grid">
-        <div>
-          <div class="metric-label">Market Cap</div>
-          <div class="metric-value">$657M</div>
+  <div class="row-viewport">
+    <button class="arrow arrow-left" aria-label="Scroll left">&#8249;</button>
+    <div class="row-track">
+      
+      
+      <div class="card earnings"
+           data-type="earnings"
+           data-cap="large"
+           data-prev="true">
+        <div class="card-front">
+          <div>
+            <div class="card-ticker">JBL</div>
+            <div class="card-company">JBL</div>
+          </div>
+          <div>
+            <div class="card-date">
+              Jun 17 · BMO
+              &nbsp;·&nbsp;
+              3d
+            </div>
+            <div class="card-badges">
+              <span class="badge badge-large">Large</span>
+              
+              <span class="badge badge-confirmed">✓</span>
+              
+              
+              <span class="badge badge-prev">Seen</span>
+              
+            </div>
+          </div>
         </div>
-        
-        <div>
-          <div class="metric-label">EPS Estimate</div>
-          <div class="metric-value">$0.23</div>
+        <div class="card-detail">
+          <div class="detail-grid">
+            <div class="detail-item">
+              <div class="detail-label">Market Cap</div>
+              <div class="detail-value">$40.6B</div>
+            </div>
+            
+            <div class="detail-item">
+              <div class="detail-label">EPS Est.</div>
+              <div class="detail-value">$3.11</div>
+            </div>
+            
+            
+            <div class="detail-item">
+              <div class="detail-label">Open Interest</div>
+              <div class="detail-value">11.7K</div>
+            </div>
+            
+            
+            <div class="detail-item">
+              <div class="detail-label">Options Vol</div>
+              <div class="detail-value">2.5K</div>
+            </div>
+            
+            
+            <div class="detail-item">
+              <div class="detail-label">P/C Ratio</div>
+              <div class="detail-value">2.28</div>
+            </div>
+            
+            
+            <div class="detail-item">
+              <div class="detail-label">Avg Vol 20d</div>
+              <div class="detail-value">$1M</div>
+            </div>
+            
+          </div>
+          
+          <div class="detail-sources">
+            <span class="src-tag">finnhub</span><span class="src-tag">yfinance</span><span class="src-tag">cache</span>
+          </div>
         </div>
-        
-        
-        <div>
-          <div class="metric-label">Open Interest</div>
-          <div class="metric-value">25.0K</div>
-        </div>
-        
-        
-        <div>
-          <div class="metric-label">Options Vol Today</div>
-          <div class="metric-value">1.8K</div>
-        </div>
-        
-        
-        <div>
-          <div class="metric-label">Put/Call Ratio</div>
-          <div class="metric-value">1.51</div>
-        </div>
-        
-        
-        <div>
-          <div class="metric-label">Avg Stock Vol (20d)</div>
-          <div class="metric-value">556.1K</div>
-        </div>
-        
       </div>
       
-      <div class="sources-row">
-        <span style="font-size:10px;color:var(--muted)">Sources:</span>
-        <span class="source-badge">finnhub</span><span class="source-badge">yfinance</span>
-      </div>
-    </div>
-  </div>
-  
-  
-  <div class="card earnings ">
-    <div class="card-top">
-      <div class="ticker-block">
-        <span class="ticker">MEI</span>
-        <span class="company">Methode Electronics, Inc.</span>
-        <span class="badge badge-small">Small</span>
-        
-          <span class="badge badge-estimated">Estimated date</span>
-        
-        
-        
-        
-      </div>
-      <div class="event-meta">
-        <div class="event-date">Thu Jun 18 · BMO</div>
-        <div class="days-away">4 days away</div>
-      </div>
-    </div>
-    <div class="card-body">
-      <div class="card-grid">
-        <div>
-          <div class="metric-label">Market Cap</div>
-          <div class="metric-value">$426M</div>
+      
+      <div class="card earnings"
+           data-type="earnings"
+           data-cap="small"
+           data-prev="true">
+        <div class="card-front">
+          <div>
+            <div class="card-ticker">MEI</div>
+            <div class="card-company">MEI</div>
+          </div>
+          <div>
+            <div class="card-date">
+              Jun 18 · BMO
+              &nbsp;·&nbsp;
+              4d
+            </div>
+            <div class="card-badges">
+              <span class="badge badge-small">Small</span>
+              <span class="badge badge-estimated">Est</span>
+              
+              <span class="badge badge-prev">Seen</span>
+              
+            </div>
+          </div>
         </div>
-        
-        <div>
-          <div class="metric-label">EPS Estimate</div>
-          <div class="metric-value">$-0.21</div>
+        <div class="card-detail">
+          <div class="detail-grid">
+            <div class="detail-item">
+              <div class="detail-label">Market Cap</div>
+              <div class="detail-value">$426M</div>
+            </div>
+            
+            <div class="detail-item">
+              <div class="detail-label">EPS Est.</div>
+              <div class="detail-value">$-0.21</div>
+            </div>
+            
+            
+            <div class="detail-item">
+              <div class="detail-label">Open Interest</div>
+              <div class="detail-value">13.6K</div>
+            </div>
+            
+            
+            <div class="detail-item">
+              <div class="detail-label">Options Vol</div>
+              <div class="detail-value">1.2K</div>
+            </div>
+            
+            
+            <div class="detail-item">
+              <div class="detail-label">P/C Ratio</div>
+              <div class="detail-value">0.14</div>
+            </div>
+            
+            
+            <div class="detail-item">
+              <div class="detail-label">Avg Vol 20d</div>
+              <div class="detail-value">$1M</div>
+            </div>
+            
+          </div>
+          
+          <div class="detail-sources">
+            <span class="src-tag">finnhub</span><span class="src-tag">cache</span>
+          </div>
         </div>
-        
-        
-        <div>
-          <div class="metric-label">Open Interest</div>
-          <div class="metric-value">13.6K</div>
-        </div>
-        
-        
-        <div>
-          <div class="metric-label">Options Vol Today</div>
-          <div class="metric-value">1.2K</div>
-        </div>
-        
-        
-        <div>
-          <div class="metric-label">Put/Call Ratio</div>
-          <div class="metric-value">0.14</div>
-        </div>
-        
-        
-        <div>
-          <div class="metric-label">Avg Stock Vol (20d)</div>
-          <div class="metric-value">$1M</div>
-        </div>
-        
       </div>
       
-      <div class="sources-row">
-        <span style="font-size:10px;color:var(--muted)">Sources:</span>
-        <span class="source-badge">finnhub</span><span class="source-badge">yfinance</span>
-      </div>
     </div>
+    <button class="arrow arrow-right" aria-label="Scroll right">&#8250;</button>
   </div>
   
 </div>
 
-<!-- ═══════════════════════ SECTION B: IPOs ═══════════════════════ -->
-<div class="section">
-  <div class="section-title">B — Upcoming IPOs &amp; New Listings</div>
+<!-- ══════════════════════════ SECTION B: IPOs ══════════════════════ -->
+<div class="section" data-section-type="ipo">
+  <div class="section-header">
+    <span class="section-title">Upcoming IPOs &amp; Listings</span>
+    <span class="section-count">0</span>
+  </div>
 
   
 
   
-  <div class="section-empty">No upcoming IPOs found for the next 7 days.</div>
-  
-
+  <div class="section-empty">No upcoming IPOs in the next 7 days.</div>
   
 </div>
 
-<!-- ═══════════════════════ SECTION C: 8-K FILINGS ═══════════════════════ -->
-<div class="section">
-  <div class="section-title">C — SEC 8-K Material Events</div>
+<!-- ══════════════════════════ SECTION C: 8-K ══════════════════════ -->
+<div class="section" data-section-type="8k">
+  <div class="section-header">
+    <span class="section-title">SEC 8-K Material Events</span>
+    <span class="section-count">12</span>
+  </div>
 
   
 
   
-
-  
-  
-  <div class="card eightk ">
-    <div class="card-top">
-      <div class="ticker-block">
-        <span class="ticker">MCK</span>
-        <span class="company"></span>
-        
-        
-      </div>
-      <div class="event-meta">
-        <div class="event-date">Fri Jun 12</div>
-        <div class="days-away">Filed 2d ago</div>
-      </div>
-    </div>
-    <div class="card-body">
-      <div class="summary-text">Barclays Maintains Overweight Rating on McKesson (MCK). McKesson Corporation (NYSE:MCK) is one of the Top 10 Strong Buy Stocks to Invest In. On June 10, 2026, Barclays lowered</div>
+  <div class="row-viewport">
+    <button class="arrow arrow-left">&#8249;</button>
+    <div class="row-track">
       
-      <div class="sources-row">
-        <a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;filenum=&amp;type=8-K&amp;dateb=&amp;owner=include&amp;count=10&amp;search_text=" target="_blank" rel="noopener" style="font-size:12px;">View on EDGAR →</a>
-      </div>
-      
-      <div class="sources-row">
-        <span style="font-size:10px;color:var(--muted)">Sources:</span>
-        <span class="source-badge">edgar</span><span class="source-badge">yfinance</span><span class="source-badge">newsdata</span>
-      </div>
-    </div>
-  </div>
-  
-  
-  <div class="card eightk ">
-    <div class="card-top">
-      <div class="ticker-block">
-        <span class="ticker">SCI</span>
-        <span class="company"></span>
-        
-        
-      </div>
-      <div class="event-meta">
-        <div class="event-date">Fri Jun 12</div>
-        <div class="days-away">Filed 2d ago</div>
-      </div>
-    </div>
-    <div class="card-body">
-      <div class="summary-text">Long-Fiber Thermoplastics Market Dynamics and Industry Growth Factors. The global Long Fiber Thermoplastics (LFT) Market was valued at USD 4.06 billion in 2021 and is projected to reach USD 9</div>
-      
-      <div class="sources-row">
-        <a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;filenum=&amp;type=8-K&amp;dateb=&amp;owner=include&amp;count=10&amp;search_text=" target="_blank" rel="noopener" style="font-size:12px;">View on EDGAR →</a>
+      <div class="card eightk" data-type="8k"
+           data-cap="large"
+           data-prev="true">
+        <div class="card-front">
+          <div>
+            <div class="card-ticker">MCK</div>
+            <div class="card-company"></div>
+          </div>
+          <div>
+            <div class="card-date">Jun 12</div>
+            <div class="card-badges">
+              
+              <span class="badge badge-prev">Seen</span>
+            </div>
+          </div>
+        </div>
+        <div class="card-detail">
+          <div class="detail-summary" style="-webkit-line-clamp:3;">Barclays Maintains Overweight Rating on McKesson (MCK). McKesson Corporation (NYSE:MCK) is one of the Top 10 Strong Buy Stocks to Invest In. On June 10, 2026, Barclays lowered</div>
+          
+          <div style="margin-top:8px;">
+            <a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;filenum=&amp;type=8-K&amp;dateb=&amp;owner=include&amp;count=10&amp;search_text=" target="_blank" rel="noopener" style="font-size:10px;color:#f59e0b;">View on EDGAR →</a>
+          </div>
+          
+          <div class="detail-sources" style="margin-top:6px;">
+            <span class="src-tag">edgar</span><span class="src-tag">cache</span><span class="src-tag">newsdata</span>
+          </div>
+        </div>
       </div>
       
-      <div class="sources-row">
-        <span style="font-size:10px;color:var(--muted)">Sources:</span>
-        <span class="source-badge">edgar</span><span class="source-badge">yfinance</span><span class="source-badge">newsdata</span>
-      </div>
-    </div>
-  </div>
-  
-  
-  <div class="card eightk ">
-    <div class="card-top">
-      <div class="ticker-block">
-        <span class="ticker">TGT</span>
-        <span class="company"></span>
-        
-        
-      </div>
-      <div class="event-meta">
-        <div class="event-date">Fri Jun 12</div>
-        <div class="days-away">Filed 2d ago</div>
-      </div>
-    </div>
-    <div class="card-body">
-      <div class="summary-text">Target’s (TGT) ‘Specialization at Scale’ Strategy Wins Support from Guggenheim. Target Corporation (NYSE:TGT) is included among the 10 Best S&amp;P 500 Dividend Stocks to Buy Right Now. Guggenheim raised</div>
-      
-      <div class="sources-row">
-        <a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;filenum=&amp;type=8-K&amp;dateb=&amp;owner=include&amp;count=10&amp;search_text=" target="_blank" rel="noopener" style="font-size:12px;">View on EDGAR →</a>
-      </div>
-      
-      <div class="sources-row">
-        <span style="font-size:10px;color:var(--muted)">Sources:</span>
-        <span class="source-badge">edgar</span><span class="source-badge">yfinance</span><span class="source-badge">newsdata</span>
-      </div>
-    </div>
-  </div>
-  
-  
-  <div class="card eightk ">
-    <div class="card-top">
-      <div class="ticker-block">
-        <span class="ticker">DKS</span>
-        <span class="company"></span>
-        
-        
-      </div>
-      <div class="event-meta">
-        <div class="event-date">Fri Jun 12</div>
-        <div class="days-away">Filed 2d ago</div>
-      </div>
-    </div>
-    <div class="card-body">
-      <div class="summary-text">Bidadi Township row turns into DKS vs HDK showdown as land acquisition sparks fresh political battle. With the government issuing the final notification for the Bidadi Township project, H.D. Kumaraswamy and Nikhil Kumarasw</div>
-      
-      <div class="sources-row">
-        <a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;filenum=&amp;type=8-K&amp;dateb=&amp;owner=include&amp;count=10&amp;search_text=" target="_blank" rel="noopener" style="font-size:12px;">View on EDGAR →</a>
+      <div class="card eightk" data-type="8k"
+           data-cap="large"
+           data-prev="true">
+        <div class="card-front">
+          <div>
+            <div class="card-ticker">SCI</div>
+            <div class="card-company"></div>
+          </div>
+          <div>
+            <div class="card-date">Jun 12</div>
+            <div class="card-badges">
+              
+              <span class="badge badge-prev">Seen</span>
+            </div>
+          </div>
+        </div>
+        <div class="card-detail">
+          <div class="detail-summary" style="-webkit-line-clamp:3;">Long-Fiber Thermoplastics Market Dynamics and Industry Growth Factors. The global Long Fiber Thermoplastics (LFT) Market was valued at USD 4.06 billion in 2021 and is projected to reach USD 9</div>
+          
+          <div style="margin-top:8px;">
+            <a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;filenum=&amp;type=8-K&amp;dateb=&amp;owner=include&amp;count=10&amp;search_text=" target="_blank" rel="noopener" style="font-size:10px;color:#f59e0b;">View on EDGAR →</a>
+          </div>
+          
+          <div class="detail-sources" style="margin-top:6px;">
+            <span class="src-tag">edgar</span><span class="src-tag">cache</span><span class="src-tag">newsdata</span>
+          </div>
+        </div>
       </div>
       
-      <div class="sources-row">
-        <span style="font-size:10px;color:var(--muted)">Sources:</span>
-        <span class="source-badge">edgar</span><span class="source-badge">yfinance</span><span class="source-badge">newsdata</span>
-      </div>
-    </div>
-  </div>
-  
-  
-  <div class="card eightk ">
-    <div class="card-top">
-      <div class="ticker-block">
-        <span class="ticker">CTVA</span>
-        <span class="company"></span>
-        
-        
-      </div>
-      <div class="event-meta">
-        <div class="event-date">Fri Jun 12</div>
-        <div class="days-away">Filed 2d ago</div>
-      </div>
-    </div>
-    <div class="card-body">
-      <div class="summary-text">Adams Natural Resources Fund Inc. Lowers Position in Corteva, Inc. $CTVA. Adams Natural Resources Fund Inc. trimmed its holdings in shares of Corteva, Inc. (NYSE:CTVA – Free Report) by 37.0% dur</div>
-      
-      <div class="sources-row">
-        <a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;filenum=&amp;type=8-K&amp;dateb=&amp;owner=include&amp;count=10&amp;search_text=" target="_blank" rel="noopener" style="font-size:12px;">View on EDGAR →</a>
-      </div>
-      
-      <div class="sources-row">
-        <span style="font-size:10px;color:var(--muted)">Sources:</span>
-        <span class="source-badge">edgar</span><span class="source-badge">yfinance</span><span class="source-badge">newsdata</span>
-      </div>
-    </div>
-  </div>
-  
-  
-  <div class="card eightk ">
-    <div class="card-top">
-      <div class="ticker-block">
-        <span class="ticker">WES</span>
-        <span class="company"></span>
-        
-        
-      </div>
-      <div class="event-meta">
-        <div class="event-date">Fri Jun 12</div>
-        <div class="days-away">Filed 2d ago</div>
-      </div>
-    </div>
-    <div class="card-body">
-      <div class="summary-text">Wes Streeting plans to increase high-skilled immigration if he becomes PM. Leadership hopeful to also say tax revenues from new North Sea oil and gasfields should be used to cut energy bills</div>
-      
-      <div class="sources-row">
-        <a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;filenum=&amp;type=8-K&amp;dateb=&amp;owner=include&amp;count=10&amp;search_text=" target="_blank" rel="noopener" style="font-size:12px;">View on EDGAR →</a>
+      <div class="card eightk" data-type="8k"
+           data-cap="large"
+           data-prev="true">
+        <div class="card-front">
+          <div>
+            <div class="card-ticker">TGT</div>
+            <div class="card-company"></div>
+          </div>
+          <div>
+            <div class="card-date">Jun 12</div>
+            <div class="card-badges">
+              
+              <span class="badge badge-prev">Seen</span>
+            </div>
+          </div>
+        </div>
+        <div class="card-detail">
+          <div class="detail-summary" style="-webkit-line-clamp:3;">Target’s (TGT) ‘Specialization at Scale’ Strategy Wins Support from Guggenheim. Target Corporation (NYSE:TGT) is included among the 10 Best S&amp;P 500 Dividend Stocks to Buy Right Now. Guggenheim raised</div>
+          
+          <div style="margin-top:8px;">
+            <a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;filenum=&amp;type=8-K&amp;dateb=&amp;owner=include&amp;count=10&amp;search_text=" target="_blank" rel="noopener" style="font-size:10px;color:#f59e0b;">View on EDGAR →</a>
+          </div>
+          
+          <div class="detail-sources" style="margin-top:6px;">
+            <span class="src-tag">edgar</span><span class="src-tag">cache</span><span class="src-tag">newsdata</span>
+          </div>
+        </div>
       </div>
       
-      <div class="sources-row">
-        <span style="font-size:10px;color:var(--muted)">Sources:</span>
-        <span class="source-badge">edgar</span><span class="source-badge">yfinance</span><span class="source-badge">newsdata</span>
-      </div>
-    </div>
-  </div>
-  
-  
-  <div class="card eightk ">
-    <div class="card-top">
-      <div class="ticker-block">
-        <span class="ticker">DASH</span>
-        <span class="company"></span>
-        
-        
-      </div>
-      <div class="event-meta">
-        <div class="event-date">Fri Jun 12</div>
-        <div class="days-away">Filed 2d ago</div>
-      </div>
-    </div>
-    <div class="card-body">
-      <div class="summary-text">Best 4K Dashcam Deals for Safe Driving: Amazon Weekend Offers. Explore the best 4K dashcam deals on Amazon this weekend. Compare top models by night vision, parking mode, and GPS logg</div>
-      
-      <div class="sources-row">
-        <a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;filenum=&amp;type=8-K&amp;dateb=&amp;owner=include&amp;count=10&amp;search_text=" target="_blank" rel="noopener" style="font-size:12px;">View on EDGAR →</a>
-      </div>
-      
-      <div class="sources-row">
-        <span style="font-size:10px;color:var(--muted)">Sources:</span>
-        <span class="source-badge">edgar</span><span class="source-badge">yfinance</span><span class="source-badge">newsdata</span>
-      </div>
-    </div>
-  </div>
-  
-  
-  <div class="card eightk ">
-    <div class="card-top">
-      <div class="ticker-block">
-        <span class="ticker">WRBY</span>
-        <span class="company"></span>
-        
-        
-      </div>
-      <div class="event-meta">
-        <div class="event-date">Fri Jun 12</div>
-        <div class="days-away">Filed 2d ago</div>
-      </div>
-    </div>
-    <div class="card-body">
-      <div class="summary-text">Youngme Moon Sells 10,000 Shares of Warby Parker (NYSE:WRBY) Stock. Warby Parker Inc. (NYSE:WRBY – Get Free Report) Director Youngme Moon sold 10,000 shares of the stock in a transaction d</div>
-      
-      <div class="sources-row">
-        <a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;filenum=&amp;type=8-K&amp;dateb=&amp;owner=include&amp;count=10&amp;search_text=" target="_blank" rel="noopener" style="font-size:12px;">View on EDGAR →</a>
+      <div class="card eightk" data-type="8k"
+           data-cap="large"
+           data-prev="true">
+        <div class="card-front">
+          <div>
+            <div class="card-ticker">DKS</div>
+            <div class="card-company"></div>
+          </div>
+          <div>
+            <div class="card-date">Jun 12</div>
+            <div class="card-badges">
+              
+              <span class="badge badge-prev">Seen</span>
+            </div>
+          </div>
+        </div>
+        <div class="card-detail">
+          <div class="detail-summary" style="-webkit-line-clamp:3;">Bidadi Township row turns into DKS vs HDK showdown as land acquisition sparks fresh political battle. With the government issuing the final notification for the Bidadi Township project, H.D. Kumaraswamy and Nikhil Kumarasw</div>
+          
+          <div style="margin-top:8px;">
+            <a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;filenum=&amp;type=8-K&amp;dateb=&amp;owner=include&amp;count=10&amp;search_text=" target="_blank" rel="noopener" style="font-size:10px;color:#f59e0b;">View on EDGAR →</a>
+          </div>
+          
+          <div class="detail-sources" style="margin-top:6px;">
+            <span class="src-tag">edgar</span><span class="src-tag">cache</span><span class="src-tag">newsdata</span>
+          </div>
+        </div>
       </div>
       
-      <div class="sources-row">
-        <span style="font-size:10px;color:var(--muted)">Sources:</span>
-        <span class="source-badge">edgar</span><span class="source-badge">yfinance</span><span class="source-badge">newsdata</span>
-      </div>
-    </div>
-  </div>
-  
-  
-  <div class="card eightk ">
-    <div class="card-top">
-      <div class="ticker-block">
-        <span class="ticker">OPTU</span>
-        <span class="company"></span>
-        
-        
-      </div>
-      <div class="event-meta">
-        <div class="event-date">Fri Jun 12</div>
-        <div class="days-away">Filed 2d ago</div>
-      </div>
-    </div>
-    <div class="card-body">
-      <div class="summary-text">SEC 8-K filing by </div>
-      
-      <div class="sources-row">
-        <a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;filenum=&amp;type=8-K&amp;dateb=&amp;owner=include&amp;count=10&amp;search_text=" target="_blank" rel="noopener" style="font-size:12px;">View on EDGAR →</a>
-      </div>
-      
-      <div class="sources-row">
-        <span style="font-size:10px;color:var(--muted)">Sources:</span>
-        <span class="source-badge">edgar</span><span class="source-badge">yfinance</span>
-      </div>
-    </div>
-  </div>
-  
-  
-  <div class="card eightk ">
-    <div class="card-top">
-      <div class="ticker-block">
-        <span class="ticker">LENZ</span>
-        <span class="company"></span>
-        
-        
-      </div>
-      <div class="event-meta">
-        <div class="event-date">Fri Jun 12</div>
-        <div class="days-away">Filed 2d ago</div>
-      </div>
-    </div>
-    <div class="card-body">
-      <div class="summary-text">Results from Incyte&#39;s Pivotal Phase 3 frontMIND Trial of Tafasitamab Combination Presented at the 2026 European Hematology Association Congress Plenary Showed Prolonged Progression Free Survival. - frontMIND study evaluating tafasitamab (Monjuvi ® /Minjuvi ® ) in patients with previously untreated high-risk diffuse</div>
-      
-      <div class="sources-row">
-        <a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;filenum=&amp;type=8-K&amp;dateb=&amp;owner=include&amp;count=10&amp;search_text=" target="_blank" rel="noopener" style="font-size:12px;">View on EDGAR →</a>
+      <div class="card eightk" data-type="8k"
+           data-cap="large"
+           data-prev="true">
+        <div class="card-front">
+          <div>
+            <div class="card-ticker">CTVA</div>
+            <div class="card-company"></div>
+          </div>
+          <div>
+            <div class="card-date">Jun 12</div>
+            <div class="card-badges">
+              
+              <span class="badge badge-prev">Seen</span>
+            </div>
+          </div>
+        </div>
+        <div class="card-detail">
+          <div class="detail-summary" style="-webkit-line-clamp:3;">Adams Natural Resources Fund Inc. Lowers Position in Corteva, Inc. $CTVA. Adams Natural Resources Fund Inc. trimmed its holdings in shares of Corteva, Inc. (NYSE:CTVA – Free Report) by 37.0% dur</div>
+          
+          <div style="margin-top:8px;">
+            <a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;filenum=&amp;type=8-K&amp;dateb=&amp;owner=include&amp;count=10&amp;search_text=" target="_blank" rel="noopener" style="font-size:10px;color:#f59e0b;">View on EDGAR →</a>
+          </div>
+          
+          <div class="detail-sources" style="margin-top:6px;">
+            <span class="src-tag">edgar</span><span class="src-tag">cache</span><span class="src-tag">newsdata</span>
+          </div>
+        </div>
       </div>
       
-      <div class="sources-row">
-        <span style="font-size:10px;color:var(--muted)">Sources:</span>
-        <span class="source-badge">edgar</span><span class="source-badge">yfinance</span><span class="source-badge">newsdata</span>
-      </div>
-    </div>
-  </div>
-  
-  
-  <div class="card eightk ">
-    <div class="card-top">
-      <div class="ticker-block">
-        <span class="ticker">ENVX</span>
-        <span class="company"></span>
-        
-        
-      </div>
-      <div class="event-meta">
-        <div class="event-date">Fri Jun 12</div>
-        <div class="days-away">Filed 2d ago</div>
-      </div>
-    </div>
-    <div class="card-body">
-      <div class="summary-text">SEC 8-K filing by </div>
-      
-      <div class="sources-row">
-        <a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;filenum=&amp;type=8-K&amp;dateb=&amp;owner=include&amp;count=10&amp;search_text=" target="_blank" rel="noopener" style="font-size:12px;">View on EDGAR →</a>
-      </div>
-      
-      <div class="sources-row">
-        <span style="font-size:10px;color:var(--muted)">Sources:</span>
-        <span class="source-badge">edgar</span><span class="source-badge">yfinance</span>
-      </div>
-    </div>
-  </div>
-  
-  
-  <div class="card eightk ">
-    <div class="card-top">
-      <div class="ticker-block">
-        <span class="ticker">DNUT</span>
-        <span class="company"></span>
-        
-        
-      </div>
-      <div class="event-meta">
-        <div class="event-date">Fri Jun 12</div>
-        <div class="days-away">Filed 2d ago</div>
-      </div>
-    </div>
-    <div class="card-body">
-      <div class="summary-text">Krispy Kreme Sees Unusually High Options Volume (NASDAQ:DNUT). Krispy Kreme, Inc. (NASDAQ:DNUT – Get Free Report) saw some unusual options trading on Friday. Traders acquired 6,231 ca</div>
-      
-      <div class="sources-row">
-        <a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;filenum=&amp;type=8-K&amp;dateb=&amp;owner=include&amp;count=10&amp;search_text=" target="_blank" rel="noopener" style="font-size:12px;">View on EDGAR →</a>
+      <div class="card eightk" data-type="8k"
+           data-cap="large"
+           data-prev="true">
+        <div class="card-front">
+          <div>
+            <div class="card-ticker">WES</div>
+            <div class="card-company"></div>
+          </div>
+          <div>
+            <div class="card-date">Jun 12</div>
+            <div class="card-badges">
+              
+              <span class="badge badge-prev">Seen</span>
+            </div>
+          </div>
+        </div>
+        <div class="card-detail">
+          <div class="detail-summary" style="-webkit-line-clamp:3;">Wes Streeting plans to increase high-skilled immigration if he becomes PM. Leadership hopeful to also say tax revenues from new North Sea oil and gasfields should be used to cut energy bills</div>
+          
+          <div style="margin-top:8px;">
+            <a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;filenum=&amp;type=8-K&amp;dateb=&amp;owner=include&amp;count=10&amp;search_text=" target="_blank" rel="noopener" style="font-size:10px;color:#f59e0b;">View on EDGAR →</a>
+          </div>
+          
+          <div class="detail-sources" style="margin-top:6px;">
+            <span class="src-tag">edgar</span><span class="src-tag">cache</span><span class="src-tag">newsdata</span>
+          </div>
+        </div>
       </div>
       
-      <div class="sources-row">
-        <span style="font-size:10px;color:var(--muted)">Sources:</span>
-        <span class="source-badge">edgar</span><span class="source-badge">yfinance</span><span class="source-badge">newsdata</span>
+      <div class="card eightk" data-type="8k"
+           data-cap="large"
+           data-prev="true">
+        <div class="card-front">
+          <div>
+            <div class="card-ticker">DASH</div>
+            <div class="card-company"></div>
+          </div>
+          <div>
+            <div class="card-date">Jun 12</div>
+            <div class="card-badges">
+              
+              <span class="badge badge-prev">Seen</span>
+            </div>
+          </div>
+        </div>
+        <div class="card-detail">
+          <div class="detail-summary" style="-webkit-line-clamp:3;">Best 4K Dashcam Deals for Safe Driving: Amazon Weekend Offers. Explore the best 4K dashcam deals on Amazon this weekend. Compare top models by night vision, parking mode, and GPS logg</div>
+          
+          <div style="margin-top:8px;">
+            <a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;filenum=&amp;type=8-K&amp;dateb=&amp;owner=include&amp;count=10&amp;search_text=" target="_blank" rel="noopener" style="font-size:10px;color:#f59e0b;">View on EDGAR →</a>
+          </div>
+          
+          <div class="detail-sources" style="margin-top:6px;">
+            <span class="src-tag">edgar</span><span class="src-tag">cache</span><span class="src-tag">newsdata</span>
+          </div>
+        </div>
       </div>
+      
+      <div class="card eightk" data-type="8k"
+           data-cap="mid"
+           data-prev="true">
+        <div class="card-front">
+          <div>
+            <div class="card-ticker">WRBY</div>
+            <div class="card-company"></div>
+          </div>
+          <div>
+            <div class="card-date">Jun 12</div>
+            <div class="card-badges">
+              
+              <span class="badge badge-prev">Seen</span>
+            </div>
+          </div>
+        </div>
+        <div class="card-detail">
+          <div class="detail-summary" style="-webkit-line-clamp:3;">Youngme Moon Sells 10,000 Shares of Warby Parker (NYSE:WRBY) Stock. Warby Parker Inc. (NYSE:WRBY – Get Free Report) Director Youngme Moon sold 10,000 shares of the stock in a transaction d</div>
+          
+          <div style="margin-top:8px;">
+            <a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;filenum=&amp;type=8-K&amp;dateb=&amp;owner=include&amp;count=10&amp;search_text=" target="_blank" rel="noopener" style="font-size:10px;color:#f59e0b;">View on EDGAR →</a>
+          </div>
+          
+          <div class="detail-sources" style="margin-top:6px;">
+            <span class="src-tag">edgar</span><span class="src-tag">cache</span><span class="src-tag">newsdata</span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="card eightk" data-type="8k"
+           data-cap="small"
+           data-prev="true">
+        <div class="card-front">
+          <div>
+            <div class="card-ticker">OPTU</div>
+            <div class="card-company"></div>
+          </div>
+          <div>
+            <div class="card-date">Jun 12</div>
+            <div class="card-badges">
+              
+              <span class="badge badge-prev">Seen</span>
+            </div>
+          </div>
+        </div>
+        <div class="card-detail">
+          <div class="detail-summary" style="-webkit-line-clamp:3;">SEC 8-K filing by </div>
+          
+          <div style="margin-top:8px;">
+            <a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;filenum=&amp;type=8-K&amp;dateb=&amp;owner=include&amp;count=10&amp;search_text=" target="_blank" rel="noopener" style="font-size:10px;color:#f59e0b;">View on EDGAR →</a>
+          </div>
+          
+          <div class="detail-sources" style="margin-top:6px;">
+            <span class="src-tag">edgar</span><span class="src-tag">cache</span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="card eightk" data-type="8k"
+           data-cap="micro"
+           data-prev="true">
+        <div class="card-front">
+          <div>
+            <div class="card-ticker">LENZ</div>
+            <div class="card-company"></div>
+          </div>
+          <div>
+            <div class="card-date">Jun 12</div>
+            <div class="card-badges">
+              
+              <span class="badge badge-prev">Seen</span>
+            </div>
+          </div>
+        </div>
+        <div class="card-detail">
+          <div class="detail-summary" style="-webkit-line-clamp:3;">Results from Incyte&#39;s Pivotal Phase 3 frontMIND Trial of Tafasitamab Combination Presented at the 2026 European Hematology Association Congress Plenary Showed Prolonged Progression Free Survival. - frontMIND study evaluating tafasitamab (Monjuvi ® /Minjuvi ® ) in patients with previously untreated high-risk diffuse</div>
+          
+          <div style="margin-top:8px;">
+            <a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;filenum=&amp;type=8-K&amp;dateb=&amp;owner=include&amp;count=10&amp;search_text=" target="_blank" rel="noopener" style="font-size:10px;color:#f59e0b;">View on EDGAR →</a>
+          </div>
+          
+          <div class="detail-sources" style="margin-top:6px;">
+            <span class="src-tag">edgar</span><span class="src-tag">cache</span><span class="src-tag">newsdata</span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="card eightk" data-type="8k"
+           data-cap="small"
+           data-prev="true">
+        <div class="card-front">
+          <div>
+            <div class="card-ticker">ENVX</div>
+            <div class="card-company"></div>
+          </div>
+          <div>
+            <div class="card-date">Jun 12</div>
+            <div class="card-badges">
+              
+              <span class="badge badge-prev">Seen</span>
+            </div>
+          </div>
+        </div>
+        <div class="card-detail">
+          <div class="detail-summary" style="-webkit-line-clamp:3;">SEC 8-K filing by </div>
+          
+          <div style="margin-top:8px;">
+            <a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;filenum=&amp;type=8-K&amp;dateb=&amp;owner=include&amp;count=10&amp;search_text=" target="_blank" rel="noopener" style="font-size:10px;color:#f59e0b;">View on EDGAR →</a>
+          </div>
+          
+          <div class="detail-sources" style="margin-top:6px;">
+            <span class="src-tag">edgar</span><span class="src-tag">cache</span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="card eightk" data-type="8k"
+           data-cap="small"
+           data-prev="true">
+        <div class="card-front">
+          <div>
+            <div class="card-ticker">DNUT</div>
+            <div class="card-company"></div>
+          </div>
+          <div>
+            <div class="card-date">Jun 12</div>
+            <div class="card-badges">
+              
+              <span class="badge badge-prev">Seen</span>
+            </div>
+          </div>
+        </div>
+        <div class="card-detail">
+          <div class="detail-summary" style="-webkit-line-clamp:3;">Krispy Kreme Sees Unusually High Options Volume (NASDAQ:DNUT). Krispy Kreme, Inc. (NASDAQ:DNUT – Get Free Report) saw some unusual options trading on Friday. Traders acquired 6,231 ca</div>
+          
+          <div style="margin-top:8px;">
+            <a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;filenum=&amp;type=8-K&amp;dateb=&amp;owner=include&amp;count=10&amp;search_text=" target="_blank" rel="noopener" style="font-size:10px;color:#f59e0b;">View on EDGAR →</a>
+          </div>
+          
+          <div class="detail-sources" style="margin-top:6px;">
+            <span class="src-tag">edgar</span><span class="src-tag">cache</span><span class="src-tag">newsdata</span>
+          </div>
+        </div>
+      </div>
+      
     </div>
+    <button class="arrow arrow-right">&#8250;</button>
   </div>
   
 </div>
 
-<!-- ═══════════════════════ SECTION D: NEWS ═══════════════════════ -->
-<div class="section">
-  <div class="section-title">D — News Catalysts</div>
+<!-- ══════════════════════════ SECTION D: NEWS ══════════════════════ -->
+<div class="section" data-section-type="news">
+  <div class="section-header">
+    <span class="section-title">News Catalysts</span>
+    <span class="section-count">0</span>
+  </div>
 
   
 
   
   <div class="section-empty">No keyword-matched news catalysts found.</div>
   
-
-  
 </div>
 
-<!-- ═══════════════════════ DIAGNOSTICS FOOTER ═══════════════════════ -->
+<!-- ══════════════════════════ FOOTER ══════════════════════════════ -->
 <div class="footer">
   <h3>Diagnostics</h3>
   <div class="footer-grid">
@@ -752,32 +854,131 @@ a:hover { text-decoration: underline; }
       <strong>Source Activity</strong>
       
         
-        <div>finnhub: 3 events contributed</div>
+        <div>finnhub: 2 events</div>
         
-        <div>yfinance: 15 events contributed</div>
+        <div>yfinance: 1 events</div>
         
-        <div>edgar: 12 events contributed</div>
+        <div>cache: 14 events</div>
         
-        <div>newsdata: 10 events contributed</div>
+        <div>edgar: 12 events</div>
+        
+        <div>newsdata: 10 events</div>
         
       
     </div>
     <div class="footer-item">
       <strong>Data Unavailable</strong>
       
-        <div class="unavailable-list">
-          Options data missing for: CODA, CYAN, GMS, QEPC, SENR, KCRD, TCNNF, MODD, EBZT, XAIR, DPG, OPENZ, UNKNOWN, NMEX, RYES, WHLRL, STRM, DTF, STRS, BHR-PD, ENZ
-        </div>
+        <div class="unavailable">EMCG, SEED, PURE, SENR, WHLRL, CYAN, RYES, DTF, OPENZ, UNKNOWN, TVTV, STRS, TCNNF, SOUB, AIMAU, CODA, IZM, BHR-PD, DDDX</div>
       
     </div>
   </div>
-  <div style="margin-top:12px;font-size:11px;color:var(--muted);">
-    Generated 2026-06-14 · Free data sources only ·
-    <a href="archive.html">Past digests</a> ·
-    Events are factual only — no price predictions or trade recommendations.
+  <div class="footer-note">
+    Generated 2026-06-14 &nbsp;·&nbsp;
+    Free data sources only &nbsp;·&nbsp;
+    <a href="archive.html">Past digests</a> &nbsp;·&nbsp;
+    Events only — no price predictions or trade recommendations.
   </div>
 </div>
 
-</div><!-- /container -->
+<!-- ══════════════════════════ JAVASCRIPT ══════════════════════════ -->
+<script>
+(function () {
+
+  /* ── Netflix-style row scrolling ─────────────────────────────── */
+  document.querySelectorAll('.row-viewport').forEach(function (viewport) {
+    var track      = viewport.querySelector('.row-track');
+    var btnLeft    = viewport.querySelector('.arrow-left');
+    var btnRight   = viewport.querySelector('.arrow-right');
+    if (!track) return;
+
+    var offset = 0;
+    var STEP   = 620; // px per arrow click
+
+    function visibleCards() {
+      return Array.from(track.querySelectorAll('.card:not([style*="display: none"])'));
+    }
+
+    function trackWidth() {
+      var cards = visibleCards();
+      if (!cards.length) return 0;
+      var gap = 10;
+      return cards.reduce(function (w, c) { return w + c.offsetWidth + gap; }, 0) - gap;
+    }
+
+    function viewportWidth() {
+      return viewport.offsetWidth - 120; // subtract arrow space
+    }
+
+    function maxOffset() {
+      return Math.max(0, trackWidth() - viewportWidth());
+    }
+
+    function applyOffset(newOffset) {
+      offset = Math.max(0, Math.min(newOffset, maxOffset()));
+      track.style.transform = 'translateX(-' + offset + 'px)';
+      if (btnLeft)  btnLeft.classList.toggle('hidden', offset <= 0);
+      if (btnRight) btnRight.classList.toggle('hidden', offset >= maxOffset());
+    }
+
+    if (btnLeft)  btnLeft.addEventListener('click',  function () { applyOffset(offset - STEP); });
+    if (btnRight) btnRight.addEventListener('click', function () { applyOffset(offset + STEP); });
+
+    applyOffset(0);
+    window.addEventListener('resize', function () { applyOffset(offset); });
+
+    // expose reset for filter to call
+    viewport._resetScroll = function () { applyOffset(0); };
+  });
+
+  /* ── Filter buttons ─────────────────────────────────────────── */
+  var activeType = 'all';
+  var activeCap  = 'all';
+
+  function applyFilters() {
+    document.querySelectorAll('.card').forEach(function (card) {
+      var typeOk = (activeType === 'all') || (card.dataset.type === activeType);
+      var capOk  = (activeCap  === 'all') || (card.dataset.cap  === activeCap);
+      card.style.display = (typeOk && capOk) ? '' : 'none';
+    });
+
+    // Hide entire section if no cards visible, show section-empty
+    document.querySelectorAll('.section').forEach(function (section) {
+      var sType   = section.dataset.sectionType;
+      var visible = section.querySelectorAll('.card:not([style*="display: none"])').length;
+      var empty   = section.querySelector('.section-empty');
+      if (empty) empty.style.display = visible === 0 ? 'block' : 'none';
+
+      // hide section if type filter excludes it entirely
+      var typeMatch = (activeType === 'all') || (sType === activeType);
+      section.style.display = typeMatch ? '' : 'none';
+    });
+
+    // Reset row scroll after filter
+    document.querySelectorAll('.row-viewport').forEach(function (vp) {
+      if (vp._resetScroll) vp._resetScroll();
+    });
+  }
+
+  document.querySelectorAll('[data-filter-type]').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      document.querySelectorAll('[data-filter-type]').forEach(function (b) { b.classList.remove('active'); });
+      btn.classList.add('active');
+      activeType = btn.dataset.filterType;
+      applyFilters();
+    });
+  });
+
+  document.querySelectorAll('[data-filter-cap]').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      document.querySelectorAll('[data-filter-cap]').forEach(function (b) { b.classList.remove('active'); });
+      btn.classList.add('active');
+      activeCap = btn.dataset.filterCap;
+      applyFilters();
+    });
+  });
+
+})();
+</script>
 </body>
 </html>
