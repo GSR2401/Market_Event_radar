@@ -2,8 +2,8 @@ name: Daily Market Digest
 
 on:
   schedule:
-    # 11:00 UTC = 7:00 AM ET (EDT, UTC-4). Weekdays only.
-    - cron: '0 11 * * 1-5'
+    - cron: '0 13 * * 1-5'   # 6:00 AM PDT (UTC-7, Mar–Nov)
+    - cron: '0 14 * * 1-5'   # 6:00 AM PST (UTC-8, Nov–Mar)
   workflow_dispatch:   # lets you trigger manually from the Actions tab anytime
 
 permissions:
