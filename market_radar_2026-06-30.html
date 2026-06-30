@@ -260,7 +260,7 @@ a:hover { text-decoration: underline; }
   <div class="sub">Weekly Catalyst Digest &nbsp;·&nbsp; US Equities (NYSE / NASDAQ)</div>
   <div class="header-meta">
     <span>Tuesday, June 30, 2026</span>
-    <span>12 events found</span>
+    <span>16 events found</span>
     <span>Next 7 days</span>
     <span>Free data only</span>
   </div>
@@ -287,7 +287,7 @@ a:hover { text-decoration: underline; }
     <button class="tb" data-cap="large">Large</button>
     <button class="tb" data-cap="mid">Mid</button>
     <button class="tb" data-cap="small">Small</button>
-    <span class="filter-count" id="filter-count">12 results</span>
+    <span class="filter-count" id="filter-count">16 results</span>
     <span id="bin-count-badge">🗑 Bin: <span id="bin-count-num">0</span></span>
   </div>
   <div class="filter-row">
@@ -356,7 +356,7 @@ a:hover { text-decoration: underline; }
       
       <div class="sources-row">
         <span style="font-size:10px;color:var(--muted)">Sources:</span>
-        <span class="source-badge">nasdaq</span><span class="source-badge">finnhub</span><span class="source-badge">yfinance</span><span class="source-badge">cache</span>
+        <span class="source-badge">nasdaq</span><span class="source-badge">finnhub</span><span class="source-badge">cache</span>
       </div>
     </div>
   </div>
@@ -568,7 +568,7 @@ a:hover { text-decoration: underline; }
       
       <div class="sources-row">
         <span style="font-size:10px;color:var(--muted)">Sources:</span>
-        <span class="source-badge">nasdaq</span><span class="source-badge">yfinance</span><span class="source-badge">cache</span>
+        <span class="source-badge">nasdaq</span><span class="source-badge">cache</span>
       </div>
     </div>
   </div>
@@ -745,7 +745,7 @@ a:hover { text-decoration: underline; }
   </div>
   
   
-  <div class="card earnings "
+  <div class="card earnings prev-reported"
        data-type="earnings"
        data-cap="large"
        data-confirmation="confirmed"
@@ -762,7 +762,7 @@ a:hover { text-decoration: underline; }
         <span class="badge badge-confirmed">Confirmed</span>
         
         
-        
+        <span class="badge badge-prev">Previously Reported</span>
         
       </div>
       <div class="event-meta">
@@ -788,23 +788,23 @@ a:hover { text-decoration: underline; }
   </div>
   
   
-  <div class="card earnings "
+  <div class="card earnings prev-reported"
        data-type="earnings"
        data-cap="mid"
        data-confirmation="estimated"
        data-ticker="PENG"
-       data-company="penguin solutions, inc."
+       data-company="peng"
        data-mcap="3.785"
        data-card-id="PENG-earnings">
     <div class="card-top">
       <div class="ticker-block">
         <span class="ticker">PENG</span>
-        <span class="company">Penguin Solutions, Inc.</span>
+        <span class="company">PENG</span>
         <span class="badge badge-mid">Mid</span>
         
         <span class="badge badge-estimated">Estimated date</span>
         
-        
+        <span class="badge badge-prev">Previously Reported</span>
         
       </div>
       <div class="event-meta">
@@ -824,7 +824,7 @@ a:hover { text-decoration: underline; }
       
       <div class="sources-row">
         <span style="font-size:10px;color:var(--muted)">Sources:</span>
-        <span class="source-badge">finnhub</span><span class="source-badge">yfinance</span>
+        <span class="source-badge">finnhub</span><span class="source-badge">cache</span>
       </div>
     </div>
   </div>
@@ -844,10 +844,134 @@ a:hover { text-decoration: underline; }
 <!-- ══ SECTION C: 8-K ════════════════════════════════════════════════ -->
 <div class="section" data-section="8k">
   <div class="section-title">C — SEC 8-K Material Events</div>
-  <div class="section-error">⚠ EDGAR 8-K failed: 500 Server Error: Internal Server Error for url: https://efts.sec.gov/LATEST/search-index?q=%22%22&amp;forms=8-K&amp;dateRange=custom&amp;startdt=2026-06-28&amp;enddt=2026-06-30&amp;_source=hits.hits._source.period_of_report%2Chits.hits._source.file_date%2Chits.hits._source.entity_name%2Chits.hits._source.file_num%2Chits.hits._source.form_type&amp;from=0&amp;size=50; 8-K section unavailable today: EDGAR unreachable</div>
-  <div class="section-empty">No 8-K material filings in the last 48 hours.</div>
+  
+  
   <div class="section-filter-empty">No 8-K filings match your current filters.</div>
 
+  
+  
+  <div class="card eightk "
+       data-type="8k"
+       data-cap="mid"
+       data-confirmation=""
+       data-ticker="QBTS"
+       data-company=""
+       data-mcap="8.876"
+       data-card-id="QBTS-8k">
+    <div class="card-top">
+      <div class="ticker-block">
+        <span class="ticker">QBTS</span>
+        <span class="company"></span>
+        
+        
+      </div>
+      <div class="event-meta">
+        <div class="event-date">Tue Jun 30</div>
+        <div class="days-away">Filed today</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="summary-text">Quantum Computing Stocks To Research – June 29th. IonQ, D-Wave Quantum, and Quantinuum are the three Quantum Computing stocks to watch today, according to MarketBeat’s st</div>
+      <div class="sources-row"><a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;company=&amp;type=8-K&amp;dateb=&amp;owner=include&amp;count=10" target="_blank" rel="noopener" style="font-size:12px;">View on EDGAR →</a></div>
+      <div class="sources-row">
+        <span style="font-size:10px;color:var(--muted)">Sources:</span>
+        <span class="source-badge">edgar</span><span class="source-badge">yfinance</span><span class="source-badge">newsdata</span>
+      </div>
+    </div>
+  </div>
+  
+  
+  <div class="card eightk "
+       data-type="8k"
+       data-cap="mid"
+       data-confirmation=""
+       data-ticker="LCII"
+       data-company=""
+       data-mcap="2.522"
+       data-card-id="LCII-8k">
+    <div class="card-top">
+      <div class="ticker-block">
+        <span class="ticker">LCII</span>
+        <span class="company"></span>
+        
+        
+      </div>
+      <div class="event-meta">
+        <div class="event-date">Tue Jun 30</div>
+        <div class="days-away">Filed today</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="summary-text">LCI Industries &amp; Patrick Industries Announce All-Stock Merger. LCI Industries and Patrick Industries announced an all-stock merger agreement, creating a premier component solutions pr</div>
+      <div class="sources-row"><a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;company=&amp;type=8-K&amp;dateb=&amp;owner=include&amp;count=10" target="_blank" rel="noopener" style="font-size:12px;">View on EDGAR →</a></div>
+      <div class="sources-row">
+        <span style="font-size:10px;color:var(--muted)">Sources:</span>
+        <span class="source-badge">edgar</span><span class="source-badge">yfinance</span><span class="source-badge">newsdata</span>
+      </div>
+    </div>
+  </div>
+  
+  
+  <div class="card eightk prev-reported"
+       data-type="8k"
+       data-cap="mid"
+       data-confirmation=""
+       data-ticker="LCII"
+       data-company=""
+       data-mcap="2.522"
+       data-card-id="LCII-8k">
+    <div class="card-top">
+      <div class="ticker-block">
+        <span class="ticker">LCII</span>
+        <span class="company"></span>
+        
+        <span class="badge badge-prev">Previously Reported</span>
+      </div>
+      <div class="event-meta">
+        <div class="event-date">Tue Jun 30</div>
+        <div class="days-away">Filed today</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="summary-text">LCI Industries &amp; Patrick Industries Announce All-Stock Merger. LCI Industries and Patrick Industries announced an all-stock merger agreement, creating a premier component solutions pr</div>
+      <div class="sources-row"><a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;company=&amp;type=8-K&amp;dateb=&amp;owner=include&amp;count=10" target="_blank" rel="noopener" style="font-size:12px;">View on EDGAR →</a></div>
+      <div class="sources-row">
+        <span style="font-size:10px;color:var(--muted)">Sources:</span>
+        <span class="source-badge">edgar</span><span class="source-badge">cache</span><span class="source-badge">newsdata</span>
+      </div>
+    </div>
+  </div>
+  
+  
+  <div class="card eightk "
+       data-type="8k"
+       data-cap="small"
+       data-confirmation=""
+       data-ticker="SPCE"
+       data-company=""
+       data-mcap="0.322"
+       data-card-id="SPCE-8k">
+    <div class="card-top">
+      <div class="ticker-block">
+        <span class="ticker">SPCE</span>
+        <span class="company"></span>
+        
+        
+      </div>
+      <div class="event-meta">
+        <div class="event-date">Mon Jun 29</div>
+        <div class="days-away">Filed 1d ago</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="summary-text">SEC 8-K filing by </div>
+      <div class="sources-row"><a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;company=&amp;type=8-K&amp;dateb=&amp;owner=include&amp;count=10" target="_blank" rel="noopener" style="font-size:12px;">View on EDGAR →</a></div>
+      <div class="sources-row">
+        <span style="font-size:10px;color:var(--muted)">Sources:</span>
+        <span class="source-badge">edgar</span><span class="source-badge">yfinance</span>
+      </div>
+    </div>
+  </div>
   
 </div>
 
@@ -880,13 +1004,13 @@ a:hover { text-decoration: underline; }
     <div class="footer-item">
       <strong>Source Activity</strong>
       
-        <div>nasdaq: 11 events</div><div>finnhub: 5 events</div><div>yfinance: 3 events</div><div>cache: 11 events</div>
+        <div>nasdaq: 11 events</div><div>finnhub: 5 events</div><div>cache: 13 events</div><div>edgar: 4 events</div><div>yfinance: 3 events</div><div>newsdata: 3 events</div>
       
     </div>
     <div class="footer-item">
       <strong>Data Unavailable</strong>
       
-        <div class="unavailable-list">Options data missing for: GDTC, JHI, HIX, SFWL, ICG, RDZN, TOPS, AOD, BNRG, ACP, GLMD, PRFX, VRAX, CET, FLYE, GURE, MHI, NZF, MOJO, ASII, DTSS, PDT, HIRU, FMST, TLX, ZCMD, PLRZ, INLF, RYOJ, HGYN, NUV, NVG, AUC, BDRX, EONR, RGNT, AACG, ERC, BABB, IFBD, BWMG, BTTC, FPF, AAME, LEGT, NRSN, HOLO, REBN, KRUS, APM, ELLO, CEV, EAD, FRGT, BRLS, SFHG, NAD, MLGO, LRHC, CETY, CURR, NIVF, ALPS, VIVS, GDEV, SEGG, BHM, CHR, LOT, OLOX, UK, CHBH, SANW, CDT, NSRX, SBSAA, NEA, WALD, UTSI, CHSCP, UCFI, RVSN, QTEX, VIOT, AVK, ZOOZ, IMTE, EACO, FAX, BGDE, PRZO, CYBL, RUBI, CCG, AIDG, VSTD, NTZ, NAMM, HBSI, HTD, MTC, GAUZ, HUIZ, FCO, NEXR, GNS, SVRN, CRMT, NMZ, IAF, WLDSW, BRW, BMR</div>
+        <div class="unavailable-list">Options data missing for: MLGO, FLYE, EONR, INLF, BTTC, CRMT, EACO, AIDG, NTZ, NVG, NZF, CCG, NEXR, NRSN, UCFI, NIVF, CET, AUC, NAMM, SFWL, VIOT, RUBI, KRUS, RVSN, CETY, GDEV, IAF, TOPS, RDZN, TLX, ICG, BHM, APM, IFBD, HBSI, RYOJ, CYBL, BNRG, MSIF, FCO, BZFDW, UTSI, PDT, OLOX, ELLO, BRW, BENFW, HTD, IMTE, EAD, SVRN, AIRTP, AACG, CHR, LEGT, SYF-PB, HIRU, HUIZ, PRZO, SFHG, FRGT, SANW, BDRX, UNKNOWN, CURR, CEV, ALPS, GNS, GAUZ, AVK, GURE, WLDSW, BWMG, GLMD, RBKB, AOD, CHSCP, PLRZ, CHBH, ASII, BGDE, WALD, NSRX, PRFX, NAD, SI, NUV, GDTC, ACP, NEA, HIX, VSTD, VIVS, BHR-PD, CDT, SEGG, HGYN, UK, FPF, STRRP, LOT, FAX, HOLO, BRLS, DTSS, REBN, AAME, RGNT, FMST, SBSAA, MHI, BMR, NMZ, ZCMD, MOJO, BABB, ERC, ZOOZ, VRAX, QTEX, MTC, LRHC, JHI</div>
       
     </div>
   </div>
