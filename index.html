@@ -260,7 +260,7 @@ a:hover { text-decoration: underline; }
   <div class="sub">Weekly Catalyst Digest &nbsp;·&nbsp; US Equities (NYSE / NASDAQ)</div>
   <div class="header-meta">
     <span>Thursday, September 10, 2026</span>
-    <span>34 events found</span>
+    <span>36 events found</span>
     <span>Next 7 days</span>
     <span>Free data only</span>
   </div>
@@ -287,7 +287,7 @@ a:hover { text-decoration: underline; }
     <button class="tb" data-cap="large">Large</button>
     <button class="tb" data-cap="mid">Mid</button>
     <button class="tb" data-cap="small">Small</button>
-    <span class="filter-count" id="filter-count">34 results</span>
+    <span class="filter-count" id="filter-count">36 results</span>
     <span id="bin-count-badge">🗑 Bin: <span id="bin-count-num">0</span></span>
   </div>
   <div class="filter-row">
@@ -485,7 +485,7 @@ a:hover { text-decoration: underline; }
       
       <div class="sources-row">
         <span style="font-size:10px;color:var(--muted)">Sources:</span>
-        <span class="source-badge">nasdaq</span><span class="source-badge">cache</span>
+        <span class="source-badge">nasdaq</span><span class="source-badge">yfinance</span><span class="source-badge">cache</span>
       </div>
     </div>
   </div>
@@ -613,7 +613,7 @@ a:hover { text-decoration: underline; }
       
       <div class="sources-row">
         <span style="font-size:10px;color:var(--muted)">Sources:</span>
-        <span class="source-badge">nasdaq</span><span class="source-badge">finnhub</span><span class="source-badge">cache</span>
+        <span class="source-badge">nasdaq</span><span class="source-badge">finnhub</span><span class="source-badge">yfinance</span><span class="source-badge">cache</span>
       </div>
     </div>
   </div>
@@ -697,7 +697,7 @@ a:hover { text-decoration: underline; }
       
       <div class="sources-row">
         <span style="font-size:10px;color:var(--muted)">Sources:</span>
-        <span class="source-badge">nasdaq</span><span class="source-badge">cache</span>
+        <span class="source-badge">nasdaq</span><span class="source-badge">yfinance</span><span class="source-badge">cache</span>
       </div>
     </div>
   </div>
@@ -865,7 +865,7 @@ a:hover { text-decoration: underline; }
       
       <div class="sources-row">
         <span style="font-size:10px;color:var(--muted)">Sources:</span>
-        <span class="source-badge">nasdaq</span><span class="source-badge">finnhub</span><span class="source-badge">cache</span>
+        <span class="source-badge">nasdaq</span><span class="source-badge">finnhub</span><span class="source-badge">yfinance</span><span class="source-badge">cache</span>
       </div>
     </div>
   </div>
@@ -907,7 +907,7 @@ a:hover { text-decoration: underline; }
       
       <div class="sources-row">
         <span style="font-size:10px;color:var(--muted)">Sources:</span>
-        <span class="source-badge">finnhub</span><span class="source-badge">yfinance</span>
+        <span class="source-badge">finnhub</span><span class="source-badge">cache</span>
       </div>
     </div>
   </div>
@@ -993,7 +993,7 @@ a:hover { text-decoration: underline; }
       
       <div class="sources-row">
         <span style="font-size:10px;color:var(--muted)">Sources:</span>
-        <span class="source-badge">nasdaq</span><span class="source-badge">finnhub</span><span class="source-badge">yfinance</span>
+        <span class="source-badge">nasdaq</span><span class="source-badge">finnhub</span><span class="source-badge">yfinance</span><span class="source-badge">cache</span>
       </div>
     </div>
   </div>
@@ -1034,7 +1034,7 @@ a:hover { text-decoration: underline; }
       
       <div class="sources-row">
         <span style="font-size:10px;color:var(--muted)">Sources:</span>
-        <span class="source-badge">finnhub</span><span class="source-badge">yfinance</span>
+        <span class="source-badge">finnhub</span><span class="source-badge">cache</span>
       </div>
     </div>
   </div>
@@ -1251,7 +1251,7 @@ a:hover { text-decoration: underline; }
   </div>
   
   
-  <div class="card earnings "
+  <div class="card earnings prev-reported"
        data-type="earnings"
        data-cap="mid"
        data-confirmation="confirmed"
@@ -1268,7 +1268,7 @@ a:hover { text-decoration: underline; }
         <span class="badge badge-confirmed">Confirmed</span>
         
         
-        
+        <span class="badge badge-prev">Previously Reported</span>
         
       </div>
       <div class="event-meta">
@@ -1335,7 +1335,7 @@ a:hover { text-decoration: underline; }
   </div>
   
   
-  <div class="card earnings "
+  <div class="card earnings prev-reported"
        data-type="earnings"
        data-cap="small"
        data-confirmation="confirmed"
@@ -1351,7 +1351,7 @@ a:hover { text-decoration: underline; }
         <span class="badge badge-confirmed">Confirmed</span>
         
         
-        
+        <span class="badge badge-prev">Previously Reported</span>
         
       </div>
       <div class="event-meta">
@@ -1371,7 +1371,7 @@ a:hover { text-decoration: underline; }
       
       <div class="sources-row">
         <span style="font-size:10px;color:var(--muted)">Sources:</span>
-        <span class="source-badge">nasdaq</span><span class="source-badge">finnhub</span><span class="source-badge">yfinance</span>
+        <span class="source-badge">nasdaq</span><span class="source-badge">finnhub</span><span class="source-badge">cache</span>
       </div>
     </div>
   </div>
@@ -1459,37 +1459,6 @@ a:hover { text-decoration: underline; }
   </div>
   
   
-  <div class="card eightk "
-       data-type="8k"
-       data-cap="large"
-       data-confirmation=""
-       data-ticker="DD"
-       data-company=""
-       data-mcap="17.219"
-       data-card-id="DD-8k">
-    <div class="card-top">
-      <div class="ticker-block">
-        <span class="ticker">DD</span>
-        <span class="company"></span>
-        
-        
-      </div>
-      <div class="event-meta">
-        <div class="event-date">Thu Sep 10</div>
-        <div class="days-away">Filed today</div>
-      </div>
-    </div>
-    <div class="card-body">
-      <div class="summary-text">Alcoa Corporation Announces Pricing of Debt Offering to Finance Cash Consideration for Acquisition of South32’s Bauxite, Alumina and Aluminum Assets.</div>
-      <div class="sources-row"><a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;company=&amp;type=8-K&amp;dateb=&amp;owner=include&amp;count=10" target="_blank" rel="noopener" style="font-size:12px;">View on EDGAR →</a></div>
-      <div class="sources-row">
-        <span style="font-size:10px;color:var(--muted)">Sources:</span>
-        <span class="source-badge">edgar</span><span class="source-badge">yfinance</span><span class="source-badge">newsdata</span>
-      </div>
-    </div>
-  </div>
-  
-  
   <div class="card eightk prev-reported"
        data-type="8k"
        data-cap="large"
@@ -1512,6 +1481,68 @@ a:hover { text-decoration: underline; }
     </div>
     <div class="card-body">
       <div class="summary-text">Oracle, Adobe, Copart and more set to report earnings Thursday. Oracle, Adobe, Copart and more set to report earnings Thursday</div>
+      <div class="sources-row"><a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;company=&amp;type=8-K&amp;dateb=&amp;owner=include&amp;count=10" target="_blank" rel="noopener" style="font-size:12px;">View on EDGAR →</a></div>
+      <div class="sources-row">
+        <span style="font-size:10px;color:var(--muted)">Sources:</span>
+        <span class="source-badge">edgar</span><span class="source-badge">cache</span><span class="source-badge">newsdata</span>
+      </div>
+    </div>
+  </div>
+  
+  
+  <div class="card eightk prev-reported"
+       data-type="8k"
+       data-cap="large"
+       data-confirmation=""
+       data-ticker="THC"
+       data-company=""
+       data-mcap="21.408"
+       data-card-id="THC-8k">
+    <div class="card-top">
+      <div class="ticker-block">
+        <span class="ticker">THC</span>
+        <span class="company"></span>
+        
+        <span class="badge badge-prev">Previously Reported</span>
+      </div>
+      <div class="event-meta">
+        <div class="event-date">Tue Sep 08</div>
+        <div class="days-away">Filed 2d ago</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="summary-text">St. Louis weighs tighter oversight of smoke shops. St. Louis is deciding how much power it should have over new smoke shops. The Planning Commission takes up the proposal</div>
+      <div class="sources-row"><a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;company=&amp;type=8-K&amp;dateb=&amp;owner=include&amp;count=10" target="_blank" rel="noopener" style="font-size:12px;">View on EDGAR →</a></div>
+      <div class="sources-row">
+        <span style="font-size:10px;color:var(--muted)">Sources:</span>
+        <span class="source-badge">edgar</span><span class="source-badge">cache</span><span class="source-badge">newsdata</span>
+      </div>
+    </div>
+  </div>
+  
+  
+  <div class="card eightk prev-reported"
+       data-type="8k"
+       data-cap="large"
+       data-confirmation=""
+       data-ticker="FCX"
+       data-company=""
+       data-mcap="110.444"
+       data-card-id="FCX-8k">
+    <div class="card-top">
+      <div class="ticker-block">
+        <span class="ticker">FCX</span>
+        <span class="company"></span>
+        
+        <span class="badge badge-prev">Previously Reported</span>
+      </div>
+      <div class="event-meta">
+        <div class="event-date">Tue Sep 08</div>
+        <div class="days-away">Filed 2d ago</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="summary-text">Mining Stocks To Watch Now – September 9th. IREN, Caterpillar, Franco-Nevada, Vale, BitMine Immersion Technologies, Cipher Mining, and Freeport-McMoRan are the seve</div>
       <div class="sources-row"><a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;company=&amp;type=8-K&amp;dateb=&amp;owner=include&amp;count=10" target="_blank" rel="noopener" style="font-size:12px;">View on EDGAR →</a></div>
       <div class="sources-row">
         <span style="font-size:10px;color:var(--muted)">Sources:</span>
@@ -1546,7 +1577,7 @@ a:hover { text-decoration: underline; }
       <div class="sources-row"><a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;company=&amp;type=8-K&amp;dateb=&amp;owner=include&amp;count=10" target="_blank" rel="noopener" style="font-size:12px;">View on EDGAR →</a></div>
       <div class="sources-row">
         <span style="font-size:10px;color:var(--muted)">Sources:</span>
-        <span class="source-badge">edgar</span><span class="source-badge">yfinance</span><span class="source-badge">newsdata</span>
+        <span class="source-badge">edgar</span><span class="source-badge">cache</span><span class="source-badge">newsdata</span>
       </div>
     </div>
   </div>
@@ -1670,7 +1701,38 @@ a:hover { text-decoration: underline; }
       <div class="sources-row"><a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;company=&amp;type=8-K&amp;dateb=&amp;owner=include&amp;count=10" target="_blank" rel="noopener" style="font-size:12px;">View on EDGAR →</a></div>
       <div class="sources-row">
         <span style="font-size:10px;color:var(--muted)">Sources:</span>
-        <span class="source-badge">edgar</span><span class="source-badge">yfinance</span><span class="source-badge">newsdata</span>
+        <span class="source-badge">edgar</span><span class="source-badge">cache</span><span class="source-badge">newsdata</span>
+      </div>
+    </div>
+  </div>
+  
+  
+  <div class="card eightk "
+       data-type="8k"
+       data-cap="micro"
+       data-confirmation=""
+       data-ticker="EGHT"
+       data-company=""
+       data-mcap="0.264"
+       data-card-id="EGHT-8k">
+    <div class="card-top">
+      <div class="ticker-block">
+        <span class="ticker">EGHT</span>
+        <span class="company"></span>
+        
+        
+      </div>
+      <div class="event-meta">
+        <div class="event-date">Wed Sep 09</div>
+        <div class="days-away">Filed 1d ago</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="summary-text">SEC 8-K filing by </div>
+      <div class="sources-row"><a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;company=&amp;type=8-K&amp;dateb=&amp;owner=include&amp;count=10" target="_blank" rel="noopener" style="font-size:12px;">View on EDGAR →</a></div>
+      <div class="sources-row">
+        <span style="font-size:10px;color:var(--muted)">Sources:</span>
+        <span class="source-badge">edgar</span><span class="source-badge">yfinance</span>
       </div>
     </div>
   </div>
@@ -1706,13 +1768,13 @@ a:hover { text-decoration: underline; }
     <div class="footer-item">
       <strong>Source Activity</strong>
       
-        <div>nasdaq: 20 events</div><div>finnhub: 14 events</div><div>cache: 27 events</div><div>yfinance: 8 events</div><div>edgar: 9 events</div><div>newsdata: 9 events</div>
+        <div>nasdaq: 20 events</div><div>finnhub: 14 events</div><div>cache: 35 events</div><div>yfinance: 7 events</div><div>edgar: 11 events</div><div>newsdata: 10 events</div>
       
     </div>
     <div class="footer-item">
       <strong>Data Unavailable</strong>
       
-        <div class="unavailable-list">Options data missing for: UNKNOWN, HTLM, REBN, PBSV, DEC, TMXN, GWLL, GTEN, BFH-PB, HSCS, CHRN, KPHMW, BUKS, NOBH, ZONE, IHT, REF, IVDN, OWPC, DDDX, DSWL, SANG, BRTX, SNYR, PLUR, FRGT, GAUZ, KMTS, HERE, GRI, ALAR, BDRX, YIBO, AENT, IPST, VALU, TC, JVA, TBBA, YYGH, HEOL, SEGG, GFLT, GURE, EBZT, BTTC, HYSR, HUHU, BNR, VNCE, RYDE, JF, KARX, GWOX, ATCH, ZEOX, SATLW, BRLS, HUIZ, RENT, CODA, KAVL, KXIN, AAME, PTN, INTE, CMMB, CMND, WDSP, COE, ITOX, CURR, AXR, FGNV, TRT, BRRE, LKSP, GFAI, RSKIA, LEN.B, YI, ALPS, ADNH, SHPH, GME-WT, EVI, ESP, KRKR, NWSLL, SKKY, LBSR, SMXT, CRMT, OCCI, EONR, LGCY, SJ, AACG, CLSD</div>
+        <div class="unavailable-list">Options data missing for: SHPH, GWLL, HEOL, CMND, RSKIA, SNYR, AAME, DDDX, HERE, KMTS, PLUR, SKKY, JF, GAUZ, VALU, BTTC, HUHU, LKSP, CODA, OWPC, SEGG, ALPS, EONR, LEN.B, GTEN, WDSP, IVDN, NWSLL, ATCH, OCCI, TRT, CHRN, IHT, ITOX, DSWL, YYGH, ZONE, YIBO, VNCE, KRKR, SMXT, KAVL, REF, BDRX, GME-WT, LGCY, HTLM, GFLT, TMXN, KPHMW, GWOX, BFH-PB, NOBH, CURR, AENT, BRLS, REBN, JVA, AXR, GURE, ALAR, INTE, DEC, IPST, BRTX, SATLW, CMMB, UNKNOWN, TC, GFAI, AACG, BNR, RYDE, PBSV, EBZT, GRI, ESP, ADNH, COE, BUKS, CRMT, RENT, LBSR, FRGT, BRRE, ZEOX, HUIZ, CLSD, EVI, HSCS, PTN, HYSR, SJ, KXIN, SANG, FGNV, TBBA, YI, KARX</div>
       
     </div>
   </div>
