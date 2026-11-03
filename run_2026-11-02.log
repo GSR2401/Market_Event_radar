@@ -1,0 +1,679 @@
+2026-11-02 22:13:17,225 INFO run_daily: === Market Event Radar starting — 2026-11-02 ===
+2026-11-02 22:13:17,227 INFO run_daily: Step 1: fetching earnings calendar
+2026-11-02 22:13:28,856 INFO src.event_fetcher: nasdaq earnings: 1638 entries across 7 days
+2026-11-02 22:13:30,114 INFO src.event_fetcher: finnhub earnings: 1500 entries
+2026-11-02 22:13:30,115 INFO src.event_fetcher: merged earnings universe: 2064 unique tickers
+2026-11-02 22:13:30,115 INFO run_daily: Step 2: fetching 8-K filings
+2026-11-02 22:13:30,723 INFO src.event_fetcher: edgar 8-K filings: 100
+2026-11-02 22:13:31,173 INFO run_daily: Step 3: building universe
+2026-11-02 22:13:31,175 INFO src.universe: universe: 35 tickers (10 watchlist, 25 discovered)
+2026-11-02 22:13:31,175 INFO run_daily: Universe: 35 tickers
+2026-11-02 22:13:31,175 INFO run_daily: Step 4: yfinance cross-check for 35 tickers
+2026-11-02 22:13:51,643 INFO run_daily: Step 5: building earnings events
+2026-11-02 22:13:51,648 INFO src.source_merger: earnings events built: 2064
+2026-11-02 22:13:51,648 INFO run_daily: Step 5b: building 8-K events
+2026-11-02 22:13:51,650 INFO run_daily: Step 6: options filter (2164 candidates)
+2026-11-02 22:14:03,678 WARNING src.options_filter: ACBM: options data unavailable from all sources
+2026-11-02 22:14:11,682 WARNING src.options_filter: AERT: options data unavailable from all sources
+2026-11-02 22:14:19,721 WARNING src.options_filter: AGIG: options data unavailable from all sources
+2026-11-02 22:14:23,462 ERROR yfinance: $AHNR: No data found, symbol may be delisted
+2026-11-02 22:14:27,725 WARNING src.options_filter: AHNR: options data unavailable from all sources
+2026-11-02 22:14:32,153 WARNING src.options_filter: AIRE: options data unavailable from all sources
+2026-11-02 22:14:50,144 ERROR yfinance: $APGE: possibly delisted; no price data found  (period=1mo)
+2026-11-02 22:14:54,405 WARNING src.options_filter: APGE: options data unavailable from all sources
+2026-11-02 22:15:02,687 WARNING src.options_filter: AREB: options data unavailable from all sources
+2026-11-02 22:15:09,233 ERROR yfinance: $ASRT: possibly delisted; no price data found  (period=1mo)
+2026-11-02 22:15:13,499 WARNING src.options_filter: ASRT: options data unavailable from all sources
+2026-11-02 22:15:32,877 WARNING src.options_filter: BBGI: options data unavailable from all sources
+2026-11-02 22:15:47,569 WARNING src.options_filter: BIVI: options data unavailable from all sources
+2026-11-02 22:16:31,511 WARNING src.options_filter: CHKR: options data unavailable from all sources
+2026-11-02 22:16:38,798 WARNING src.options_filter: CIBN: options data unavailable from all sources
+2026-11-02 22:16:43,233 WARNING src.options_filter: CKX: options data unavailable from all sources
+2026-11-02 22:16:47,777 WARNING src.options_filter: CMCT: options data unavailable from all sources
+2026-11-02 22:16:52,194 WARNING src.options_filter: CNCK: options data unavailable from all sources
+2026-11-02 22:17:05,761 WARNING src.options_filter: CRMZ: options data unavailable from all sources
+2026-11-02 22:17:15,941 WARNING src.options_filter: CURR: options data unavailable from all sources
+2026-11-02 22:17:20,437 WARNING src.options_filter: CVKD: options data unavailable from all sources
+2026-11-02 22:17:30,470 WARNING src.options_filter: CYAN: options data unavailable from all sources
+2026-11-02 22:17:38,504 WARNING src.options_filter: DBIN: options data unavailable from all sources
+2026-11-02 22:17:48,305 WARNING src.options_filter: DDS: options data unavailable from all sources
+2026-11-02 22:17:52,736 WARNING src.options_filter: DFNS: options data unavailable from all sources
+2026-11-02 22:18:06,151 ERROR yfinance: HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: ECOX"}}}
+2026-11-02 22:18:06,693 ERROR yfinance: $ECOX: No data found, symbol may be delisted
+2026-11-02 22:18:10,953 WARNING src.options_filter: ECOX: options data unavailable from all sources
+2026-11-02 22:18:19,110 WARNING src.options_filter: ELPW: options data unavailable from all sources
+2026-11-02 22:18:40,938 WARNING src.options_filter: EXOD: options data unavailable from all sources
+2026-11-02 22:18:45,360 WARNING src.options_filter: EXOZ: options data unavailable from all sources
+2026-11-02 22:18:49,777 WARNING src.options_filter: FCUV: options data unavailable from all sources
+2026-11-02 22:18:54,330 WARNING src.options_filter: FDSB: options data unavailable from all sources
+2026-11-02 22:19:04,620 WARNING src.options_filter: FFBW: options data unavailable from all sources
+2026-11-02 22:19:11,554 WARNING src.options_filter: FOXO: options data unavailable from all sources
+2026-11-02 22:19:24,460 ERROR yfinance: $GBTG: possibly delisted; no price data found  (period=1mo)
+2026-11-02 22:19:28,724 WARNING src.options_filter: GBTG: options data unavailable from all sources
+2026-11-02 22:19:36,053 WARNING src.options_filter: GIFT: options data unavailable from all sources
+2026-11-02 22:19:40,478 WARNING src.options_filter: GLNS: options data unavailable from all sources
+2026-11-02 22:19:45,232 WARNING src.options_filter: GMRS: options data unavailable from all sources
+2026-11-02 22:19:49,678 WARNING src.options_filter: GOAI: options data unavailable from all sources
+2026-11-02 22:19:54,176 WARNING src.options_filter: GPFT: options data unavailable from all sources
+2026-11-02 22:20:04,515 WARNING src.options_filter: GYRO: options data unavailable from all sources
+2026-11-02 22:20:08,961 WARNING src.options_filter: HBIA: options data unavailable from all sources
+2026-11-02 22:20:13,482 WARNING src.options_filter: HFBL: options data unavailable from all sources
+2026-11-02 22:20:20,495 WARNING src.options_filter: HHS: options data unavailable from all sources
+2026-11-02 22:20:51,304 WARNING src.options_filter: HYSR: options data unavailable from all sources
+2026-11-02 22:20:55,828 WARNING src.options_filter: IAE: options data unavailable from all sources
+2026-11-02 22:21:02,358 WARNING src.options_filter: IEHC: options data unavailable from all sources
+2026-11-02 22:21:06,800 WARNING src.options_filter: IFS: options data unavailable from all sources
+2026-11-02 22:21:31,806 WARNING src.options_filter: JENA: options data unavailable from all sources
+2026-11-02 22:22:08,332 ERROR yfinance: $LPSN: possibly delisted; no price data found  (period=1mo)
+2026-11-02 22:22:12,596 WARNING src.options_filter: LPSN: options data unavailable from all sources
+2026-11-02 22:22:17,027 WARNING src.options_filter: LSF: options data unavailable from all sources
+2026-11-02 22:22:29,840 WARNING src.options_filter: MAMO: options data unavailable from all sources
+2026-11-02 22:22:34,271 WARNING src.options_filter: MCDIF: options data unavailable from all sources
+2026-11-02 22:22:38,700 WARNING src.options_filter: MCIC: options data unavailable from all sources
+2026-11-02 22:22:43,287 WARNING src.options_filter: MDCX: options data unavailable from all sources
+2026-11-02 22:22:43,445 ERROR yfinance: $MHGU: possibly delisted; no price data found  (period=1mo)
+2026-11-02 22:22:47,717 WARNING src.options_filter: MHGU: options data unavailable from all sources
+2026-11-02 22:22:52,232 WARNING src.options_filter: MLAB: options data unavailable from all sources
+2026-11-02 22:22:56,664 WARNING src.options_filter: MLP: options data unavailable from all sources
+2026-11-02 22:23:08,468 WARNING src.options_filter: MTNB: options data unavailable from all sources
+2026-11-02 22:23:09,002 ERROR yfinance: $MVO: No data found, symbol may be delisted
+2026-11-02 22:23:13,336 WARNING src.options_filter: MVO: options data unavailable from all sources
+2026-11-02 22:23:21,516 WARNING src.options_filter: NEWH: options data unavailable from all sources
+2026-11-02 22:23:31,750 WARNING src.options_filter: NINE: options data unavailable from all sources
+2026-11-02 22:23:39,790 WARNING src.options_filter: NRBT: options data unavailable from all sources
+2026-11-02 22:23:52,750 WARNING src.options_filter: NXGL: options data unavailable from all sources
+2026-11-02 22:24:03,913 WARNING src.options_filter: OLVI: options data unavailable from all sources
+2026-11-02 22:24:08,352 WARNING src.options_filter: ONEN: options data unavailable from all sources
+2026-11-02 22:24:08,805 ERROR yfinance: $ONTF: No data found, symbol may be delisted
+2026-11-02 22:24:13,127 WARNING src.options_filter: ONTF: options data unavailable from all sources
+2026-11-02 22:24:24,192 WARNING src.options_filter: ORBT: options data unavailable from all sources
+2026-11-02 22:24:38,473 WARNING src.options_filter: OTGA: options data unavailable from all sources
+2026-11-02 22:24:42,905 WARNING src.options_filter: OXBR: options data unavailable from all sources
+2026-11-02 22:24:51,248 WARNING src.options_filter: OZVN: options data unavailable from all sources
+2026-11-02 22:24:58,465 WARNING src.options_filter: PALI: options data unavailable from all sources
+2026-11-02 22:25:02,903 WARNING src.options_filter: PASG: options data unavailable from all sources
+2026-11-02 22:25:13,757 WARNING src.options_filter: PGAC: options data unavailable from all sources
+2026-11-02 22:25:18,183 WARNING src.options_filter: PIII: options data unavailable from all sources
+2026-11-02 22:25:29,246 WARNING src.options_filter: POLE: options data unavailable from all sources
+2026-11-02 22:25:43,722 WARNING src.options_filter: PRSO: options data unavailable from all sources
+2026-11-02 22:25:54,338 WARNING src.options_filter: PXLW: options data unavailable from all sources
+2026-11-02 22:26:05,565 WARNING src.options_filter: QTI: options data unavailable from all sources
+2026-11-02 22:26:22,026 WARNING src.options_filter: RANG: options data unavailable from all sources
+2026-11-02 22:26:22,592 ERROR yfinance: $RGST: No data found, symbol may be delisted
+2026-11-02 22:26:26,853 WARNING src.options_filter: RGST: options data unavailable from all sources
+2026-11-02 22:26:40,927 WARNING src.options_filter: RSCF: options data unavailable from all sources
+2026-11-02 22:26:45,581 ERROR yfinance: $SALM: possibly delisted; no price data found  (period=1mo)
+2026-11-02 22:26:49,846 WARNING src.options_filter: SALM: options data unavailable from all sources
+2026-11-02 22:26:58,021 WARNING src.options_filter: SEAT: options data unavailable from all sources
+2026-11-02 22:27:04,459 ERROR yfinance: $SELX: No data found, symbol may be delisted
+2026-11-02 22:27:08,719 WARNING src.options_filter: SELX: options data unavailable from all sources
+2026-11-02 22:27:22,138 WARNING src.options_filter: SGRB: options data unavailable from all sources
+2026-11-02 22:27:35,819 WARNING src.options_filter: SNES: options data unavailable from all sources
+2026-11-02 22:27:40,236 WARNING src.options_filter: SNTI: options data unavailable from all sources
+2026-11-02 22:27:48,268 WARNING src.options_filter: SPRB: options data unavailable from all sources
+2026-11-02 22:27:58,316 WARNING src.options_filter: SVCC: options data unavailable from all sources
+2026-11-02 22:27:58,488 ERROR yfinance: $TBPH: possibly delisted; no price data found  (period=1mo)
+2026-11-02 22:28:02,748 WARNING src.options_filter: TBPH: options data unavailable from all sources
+2026-11-02 22:28:07,176 WARNING src.options_filter: TELO: options data unavailable from all sources
+2026-11-02 22:28:15,242 WARNING src.options_filter: THMG: options data unavailable from all sources
+2026-11-02 22:28:19,691 WARNING src.options_filter: TLF: options data unavailable from all sources
+2026-11-02 22:28:20,130 ERROR yfinance: $TLGYF: No data found, symbol may be delisted
+2026-11-02 22:28:24,389 WARNING src.options_filter: TLGYF: options data unavailable from all sources
+2026-11-02 22:28:28,817 WARNING src.options_filter: TLNC: options data unavailable from all sources
+2026-11-02 22:28:38,344 ERROR yfinance: $TPIC: No data found, symbol may be delisted
+2026-11-02 22:28:42,605 WARNING src.options_filter: TPIC: options data unavailable from all sources
+2026-11-02 22:28:57,697 WARNING src.options_filter: TULP: options data unavailable from all sources
+2026-11-02 22:29:15,108 WARNING src.options_filter: VKQ: options data unavailable from all sources
+2026-11-02 22:29:19,578 WARNING src.options_filter: VMO: options data unavailable from all sources
+2026-11-02 22:29:29,982 WARNING src.options_filter: VRTS: options data unavailable from all sources
+2026-11-02 22:29:30,462 ERROR yfinance: $WDSP: No data found, symbol may be delisted
+2026-11-02 22:29:34,731 WARNING src.options_filter: WDSP: options data unavailable from all sources
+2026-11-02 22:29:48,228 WARNING src.options_filter: WTM: options data unavailable from all sources
+2026-11-02 22:30:01,052 WARNING src.options_filter: YTRA: options data unavailable from all sources
+2026-11-02 22:30:25,483 WARNING src.options_filter: AEI: options data unavailable from all sources
+2026-11-02 22:30:43,641 WARNING src.options_filter: AUUD: options data unavailable from all sources
+2026-11-02 22:30:48,182 WARNING src.options_filter: AWX: options data unavailable from all sources
+2026-11-02 22:30:55,925 WARNING src.options_filter: BDVB: options data unavailable from all sources
+2026-11-02 22:31:16,323 WARNING src.options_filter: BZYR: options data unavailable from all sources
+2026-11-02 22:31:30,501 WARNING src.options_filter: DIT: options data unavailable from all sources
+2026-11-02 22:31:59,992 WARNING src.options_filter: GTEC: options data unavailable from all sources
+2026-11-02 22:32:07,410 WARNING src.options_filter: HBSI: options data unavailable from all sources
+2026-11-02 22:32:22,979 WARNING src.options_filter: IBO: options data unavailable from all sources
+2026-11-02 22:32:30,369 WARNING src.options_filter: KFFB: options data unavailable from all sources
+2026-11-02 22:32:47,147 WARNING src.options_filter: MSGS: options data unavailable from all sources
+2026-11-02 22:32:51,601 WARNING src.options_filter: NKX: options data unavailable from all sources
+2026-11-02 22:32:56,037 WARNING src.options_filter: NYC: options data unavailable from all sources
+2026-11-02 22:33:04,280 WARNING src.options_filter: OPHC: options data unavailable from all sources
+2026-11-02 22:33:12,505 WARNING src.options_filter: PFSB: options data unavailable from all sources
+2026-11-02 22:33:20,783 WARNING src.options_filter: PSQL: options data unavailable from all sources
+2026-11-02 22:33:44,092 WARNING src.options_filter: TOMZ: options data unavailable from all sources
+2026-11-02 22:33:48,624 WARNING src.options_filter: TPHS: options data unavailable from all sources
+2026-11-02 22:34:12,320 WARNING src.options_filter: XTNT: options data unavailable from all sources
+2026-11-02 22:34:23,973 WARNING src.options_filter: ABLT: options data unavailable from all sources
+2026-11-02 22:34:31,443 ERROR yfinance: $AC: No data found, symbol may be delisted
+2026-11-02 22:34:35,712 WARNING src.options_filter: AC: options data unavailable from all sources
+2026-11-02 22:37:03,294 WARNING src.options_filter: ATII: options data unavailable from all sources
+2026-11-02 22:37:07,723 WARNING src.options_filter: ATLC: options data unavailable from all sources
+2026-11-02 22:37:35,085 WARNING src.options_filter: BBLR: options data unavailable from all sources
+2026-11-02 22:37:42,460 WARNING src.options_filter: BCOW: options data unavailable from all sources
+2026-11-02 22:37:46,881 WARNING src.options_filter: BDSX: options data unavailable from all sources
+2026-11-02 22:37:55,059 WARNING src.options_filter: BEAT: options data unavailable from all sources
+2026-11-02 22:38:04,764 WARNING src.options_filter: BGDE: options data unavailable from all sources
+2026-11-02 22:38:05,337 ERROR yfinance: $BH.A: No data found, symbol may be delisted
+2026-11-02 22:38:09,616 WARNING src.options_filter: BH.A: options data unavailable from all sources
+2026-11-02 22:38:37,158 WARNING src.options_filter: BMNM: options data unavailable from all sources
+2026-11-02 22:38:44,493 WARNING src.options_filter: BRFH: options data unavailable from all sources
+2026-11-02 22:38:47,111 ERROR yfinance: $BRNS: possibly delisted; no price data found  (period=1mo)
+2026-11-02 22:38:51,389 WARNING src.options_filter: BRNS: options data unavailable from all sources
+2026-11-02 22:38:51,918 ERROR yfinance: $BSTT: No data found, symbol may be delisted
+2026-11-02 22:38:56,177 WARNING src.options_filter: BSTT: options data unavailable from all sources
+2026-11-02 22:39:07,750 WARNING src.options_filter: CABO: options data unavailable from all sources
+2026-11-02 22:39:28,091 WARNING src.options_filter: CBDY: options data unavailable from all sources
+2026-11-02 22:39:49,855 WARNING src.options_filter: CEF: options data unavailable from all sources
+2026-11-02 22:40:01,457 WARNING src.options_filter: CELZ: options data unavailable from all sources
+2026-11-02 22:40:48,372 WARNING src.options_filter: COCH: options data unavailable from all sources
+2026-11-02 22:41:12,901 WARNING src.options_filter: CPHC: options data unavailable from all sources
+2026-11-02 22:41:26,253 WARNING src.options_filter: CRAI: options data unavailable from all sources
+2026-11-02 22:41:43,237 WARNING src.options_filter: CTM: options data unavailable from all sources
+2026-11-02 22:41:57,498 WARNING src.options_filter: CULL: options data unavailable from all sources
+2026-11-02 22:42:02,028 WARNING src.options_filter: CVR: options data unavailable from all sources
+2026-11-02 22:42:56,044 WARNING src.options_filter: DRCT: options data unavailable from all sources
+2026-11-02 22:43:06,184 WARNING src.options_filter: DTI: options data unavailable from all sources
+2026-11-02 22:43:32,964 WARNING src.options_filter: ELUT: options data unavailable from all sources
+2026-11-02 22:43:56,212 WARNING src.options_filter: ERNA: options data unavailable from all sources
+2026-11-02 22:44:26,006 WARNING src.options_filter: EZRA: options data unavailable from all sources
+2026-11-02 22:45:32,647 WARNING src.options_filter: GAMI: options data unavailable from all sources
+2026-11-02 22:46:02,804 WARNING src.options_filter: GLIBA: options data unavailable from all sources
+2026-11-02 22:46:10,169 WARNING src.options_filter: GLXZ: options data unavailable from all sources
+2026-11-02 22:46:46,680 WARNING src.options_filter: GRVY: options data unavailable from all sources
+2026-11-02 22:47:10,690 WARNING src.options_filter: HDRN: options data unavailable from all sources
+2026-11-02 22:47:17,497 WARNING src.options_filter: HGBL: options data unavailable from all sources
+2026-11-02 22:47:33,471 WARNING src.options_filter: HMR: options data unavailable from all sources
+2026-11-02 22:47:45,168 WARNING src.options_filter: HRGN: options data unavailable from all sources
+2026-11-02 22:48:07,632 ERROR yfinance: $ICR PR A: No data found, symbol may be delisted
+2026-11-02 22:48:11,957 WARNING src.options_filter: ICR PR A: options data unavailable from all sources
+2026-11-02 22:48:27,978 WARNING src.options_filter: INBP: options data unavailable from all sources
+2026-11-02 22:49:04,797 WARNING src.options_filter: IQI: options data unavailable from all sources
+2026-11-02 22:49:09,260 WARNING src.options_filter: IQMX: options data unavailable from all sources
+2026-11-02 22:49:36,629 WARNING src.options_filter: KBDC: options data unavailable from all sources
+2026-11-02 22:49:57,438 WARNING src.options_filter: KPRX: options data unavailable from all sources
+2026-11-02 22:50:11,251 WARNING src.options_filter: KRT: options data unavailable from all sources
+2026-11-02 22:50:15,738 WARNING src.options_filter: KRUS: options data unavailable from all sources
+2026-11-02 22:50:36,096 WARNING src.options_filter: LBGJ: options data unavailable from all sources
+2026-11-02 22:50:46,131 WARNING src.options_filter: LCLN: options data unavailable from all sources
+2026-11-02 22:50:57,125 WARNING src.options_filter: LEAT: options data unavailable from all sources
+2026-11-02 22:51:04,862 WARNING src.options_filter: LIDR: options data unavailable from all sources
+2026-11-02 22:51:09,372 WARNING src.options_filter: LINK: options data unavailable from all sources
+2026-11-02 22:51:37,683 WARNING src.options_filter: LONA: options data unavailable from all sources
+2026-11-02 22:52:10,113 WARNING src.options_filter: MAIA: options data unavailable from all sources
+2026-11-02 22:52:21,157 WARNING src.options_filter: MAPS: options data unavailable from all sources
+2026-11-02 22:52:35,196 WARNING src.options_filter: MBIO: options data unavailable from all sources
+2026-11-02 22:53:06,300 WARNING src.options_filter: MJNA: options data unavailable from all sources
+2026-11-02 22:53:10,746 WARNING src.options_filter: MKTW: options data unavailable from all sources
+2026-11-02 22:53:15,230 WARNING src.options_filter: MLCI: options data unavailable from all sources
+2026-11-02 22:53:29,592 WARNING src.options_filter: MOBI: options data unavailable from all sources
+2026-11-02 22:53:44,485 WARNING src.options_filter: MSIF: options data unavailable from all sources
+2026-11-02 22:53:58,636 WARNING src.options_filter: NEN: options data unavailable from all sources
+2026-11-02 22:54:03,266 WARNING src.options_filter: NEPH: options data unavailable from all sources
+2026-11-02 22:54:14,586 WARNING src.options_filter: NIKA: options data unavailable from all sources
+2026-11-02 22:54:21,649 WARNING src.options_filter: NLCP: options data unavailable from all sources
+2026-11-02 22:54:58,891 WARNING src.options_filter: NUTX: options data unavailable from all sources
+2026-11-02 22:55:09,896 ERROR yfinance: $NVRI WI: No data found, symbol may be delisted
+2026-11-02 22:55:14,161 WARNING src.options_filter: NVRI WI: options data unavailable from all sources
+2026-11-02 22:55:21,457 WARNING src.options_filter: NWTG: options data unavailable from all sources
+2026-11-02 22:55:35,224 WARNING src.options_filter: OGEN: options data unavailable from all sources
+2026-11-02 22:55:39,773 WARNING src.options_filter: OIA: options data unavailable from all sources
+2026-11-02 22:56:49,805 ERROR yfinance: $PMVC: No data found, symbol may be delisted
+2026-11-02 22:56:54,219 WARNING src.options_filter: PMVC: options data unavailable from all sources
+2026-11-02 22:57:01,559 WARNING src.options_filter: PODC: options data unavailable from all sources
+2026-11-02 22:57:48,062 WARNING src.options_filter: PULM: options data unavailable from all sources
+2026-11-02 22:58:26,245 WARNING src.options_filter: RDGA: options data unavailable from all sources
+2026-11-02 22:58:49,881 WARNING src.options_filter: RKDA: options data unavailable from all sources
+2026-11-02 22:59:01,114 WARNING src.options_filter: RNGT: options data unavailable from all sources
+2026-11-02 22:59:05,536 WARNING src.options_filter: RNXT: options data unavailable from all sources
+2026-11-02 22:59:16,429 WARNING src.options_filter: RPID: options data unavailable from all sources
+2026-11-02 22:59:20,914 WARNING src.options_filter: RSSS: options data unavailable from all sources
+2026-11-02 22:59:28,265 WARNING src.options_filter: RYM: options data unavailable from all sources
+2026-11-02 22:59:44,971 WARNING src.options_filter: SBR: options data unavailable from all sources
+2026-11-02 22:59:52,412 WARNING src.options_filter: SDEV: options data unavailable from all sources
+2026-11-02 23:00:04,437 ERROR yfinance: $SHCO: No data found, symbol may be delisted
+2026-11-02 23:00:08,697 WARNING src.options_filter: SHCO: options data unavailable from all sources
+2026-11-02 23:00:16,917 WARNING src.options_filter: SI: options data unavailable from all sources
+2026-11-02 23:00:21,352 WARNING src.options_filter: SINT: options data unavailable from all sources
+2026-11-02 23:00:31,104 WARNING src.options_filter: SLNCF: options data unavailable from all sources
+2026-11-02 23:00:41,995 WARNING src.options_filter: SNGX: options data unavailable from all sources
+2026-11-02 23:01:22,379 WARNING src.options_filter: STAK: options data unavailable from all sources
+2026-11-02 23:01:45,367 WARNING src.options_filter: STRW: options data unavailable from all sources
+2026-11-02 23:01:52,761 WARNING src.options_filter: SUNE: options data unavailable from all sources
+2026-11-02 23:02:15,788 WARNING src.options_filter: TCBS: options data unavailable from all sources
+2026-11-02 23:03:02,459 WARNING src.options_filter: TISI: options data unavailable from all sources
+2026-11-02 23:03:47,264 WARNING src.options_filter: UBCP: options data unavailable from all sources
+2026-11-02 23:03:57,846 WARNING src.options_filter: UNTC: options data unavailable from all sources
+2026-11-02 23:04:17,780 WARNING src.options_filter: VGM: options data unavailable from all sources
+2026-11-02 23:04:22,249 WARNING src.options_filter: VHI: options data unavailable from all sources
+2026-11-02 23:04:33,790 WARNING src.options_filter: VKI: options data unavailable from all sources
+2026-11-02 23:04:38,336 WARNING src.options_filter: VLT: options data unavailable from all sources
+2026-11-02 23:04:46,013 WARNING src.options_filter: VPV: options data unavailable from all sources
+2026-11-02 23:05:00,038 WARNING src.options_filter: VTN: options data unavailable from all sources
+2026-11-02 23:05:08,159 WARNING src.options_filter: VXRT: options data unavailable from all sources
+2026-11-02 23:05:16,358 WARNING src.options_filter: WBHC: options data unavailable from all sources
+2026-11-02 23:05:58,185 WARNING src.options_filter: XCUR: options data unavailable from all sources
+2026-11-02 23:06:17,516 WARNING src.options_filter: ZSTK: options data unavailable from all sources
+2026-11-02 23:06:25,848 WARNING src.options_filter: AATC: options data unavailable from all sources
+2026-11-02 23:06:30,285 WARNING src.options_filter: AAUAF: options data unavailable from all sources
+2026-11-02 23:06:38,504 WARNING src.options_filter: ABCP: options data unavailable from all sources
+2026-11-02 23:06:49,957 WARNING src.options_filter: ACFN: options data unavailable from all sources
+2026-11-02 23:06:57,894 WARNING src.options_filter: ACMTA: options data unavailable from all sources
+2026-11-02 23:07:04,980 WARNING src.options_filter: ACRG: options data unavailable from all sources
+2026-11-02 23:07:11,840 WARNING src.options_filter: ACUT: options data unavailable from all sources
+2026-11-02 23:07:38,284 WARNING src.options_filter: AILLP: options data unavailable from all sources
+2026-11-02 23:07:42,709 WARNING src.options_filter: AKA: options data unavailable from all sources
+2026-11-02 23:07:50,741 WARNING src.options_filter: ALGS: options data unavailable from all sources
+2026-11-02 23:08:26,614 WARNING src.options_filter: APC: options data unavailable from all sources
+2026-11-02 23:08:38,409 WARNING src.options_filter: APVO: options data unavailable from all sources
+2026-11-02 23:08:54,882 WARNING src.options_filter: ARL: options data unavailable from all sources
+2026-11-02 23:09:52,268 WARNING src.options_filter: BHM: options data unavailable from all sources
+2026-11-02 23:10:09,047 WARNING src.options_filter: BKTI: options data unavailable from all sources
+2026-11-02 23:10:13,600 WARNING src.options_filter: BLFS: options data unavailable from all sources
+2026-11-02 23:10:20,916 WARNING src.options_filter: BOXL: options data unavailable from all sources
+2026-11-02 23:10:34,730 WARNING src.options_filter: BTMD: options data unavailable from all sources
+2026-11-02 23:10:53,966 WARNING src.options_filter: CAMP: options data unavailable from all sources
+2026-11-02 23:11:18,752 ERROR yfinance: $CDTX: No data found, symbol may be delisted
+2026-11-02 23:11:23,014 WARNING src.options_filter: CDTX: options data unavailable from all sources
+2026-11-02 23:11:49,011 WARNING src.options_filter: CIX: options data unavailable from all sources
+2026-11-02 23:11:59,892 WARNING src.options_filter: CNDA: options data unavailable from all sources
+2026-11-02 23:12:04,366 WARNING src.options_filter: COHN: options data unavailable from all sources
+2026-11-02 23:12:11,057 ERROR yfinance: $COLA: possibly delisted; no price data found  (period=1mo)
+2026-11-02 23:12:15,313 WARNING src.options_filter: COLA: options data unavailable from all sources
+2026-11-02 23:12:19,735 WARNING src.options_filter: COOK: options data unavailable from all sources
+2026-11-02 23:12:24,218 WARNING src.options_filter: COOT: options data unavailable from all sources
+2026-11-02 23:12:49,464 WARNING src.options_filter: CRIS: options data unavailable from all sources
+2026-11-02 23:12:56,254 ERROR yfinance: $CRNX: possibly delisted; no price data found  (period=1mo)
+2026-11-02 23:13:00,515 WARNING src.options_filter: CRNX: options data unavailable from all sources
+2026-11-02 23:13:27,110 WARNING src.options_filter: CWGL: options data unavailable from all sources
+2026-11-02 23:14:03,197 WARNING src.options_filter: DWTX: options data unavailable from all sources
+2026-11-02 23:14:10,154 WARNING src.options_filter: EACO: options data unavailable from all sources
+2026-11-02 23:14:14,703 WARNING src.options_filter: ECOR: options data unavailable from all sources
+2026-11-02 23:14:22,185 WARNING src.options_filter: ECX: options data unavailable from all sources
+2026-11-02 23:14:49,995 ERROR yfinance: $ESPR: No data found, symbol may be delisted
+2026-11-02 23:14:54,528 WARNING src.options_filter: ESPR: options data unavailable from all sources
+2026-11-02 23:15:13,008 WARNING src.options_filter: FATN: options data unavailable from all sources
+2026-11-02 23:15:51,086 WARNING src.options_filter: GBLI: options data unavailable from all sources
+2026-11-02 23:16:02,816 WARNING src.options_filter: GIGM: options data unavailable from all sources
+2026-11-02 23:16:53,211 ERROR yfinance: $HBI: No data found, symbol may be delisted
+2026-11-02 23:16:57,541 WARNING src.options_filter: HBI: options data unavailable from all sources
+2026-11-02 23:17:08,047 WARNING src.options_filter: HCMC: options data unavailable from all sources
+2026-11-02 23:17:12,479 WARNING src.options_filter: HMH: options data unavailable from all sources
+2026-11-02 23:17:39,191 WARNING src.options_filter: INAB: options data unavailable from all sources
+2026-11-02 23:17:43,852 WARNING src.options_filter: INM: options data unavailable from all sources
+2026-11-02 23:17:48,337 WARNING src.options_filter: INRE: options data unavailable from all sources
+2026-11-02 23:17:55,662 WARNING src.options_filter: INUV: options data unavailable from all sources
+2026-11-02 23:18:05,735 WARNING src.options_filter: IOR: options data unavailable from all sources
+2026-11-02 23:18:13,090 WARNING src.options_filter: IQST: options data unavailable from all sources
+2026-11-02 23:18:13,561 ERROR yfinance: $IRBT: No data found, symbol may be delisted
+2026-11-02 23:18:17,817 WARNING src.options_filter: IRBT: options data unavailable from all sources
+2026-11-02 23:18:25,285 WARNING src.options_filter: JACS: options data unavailable from all sources
+2026-11-02 23:19:17,963 WARNING src.options_filter: LPCN: options data unavailable from all sources
+2026-11-02 23:19:18,120 ERROR yfinance: $LPRO: possibly delisted; no price data found  (period=1mo)
+2026-11-02 23:19:22,378 WARNING src.options_filter: LPRO: options data unavailable from all sources
+2026-11-02 23:19:29,196 WARNING src.options_filter: LSTA: options data unavailable from all sources
+2026-11-02 23:20:05,030 WARNING src.options_filter: MDRR: options data unavailable from all sources
+2026-11-02 23:20:55,360 WARNING src.options_filter: MSC: options data unavailable from all sources
+2026-11-02 23:21:40,080 WARNING src.options_filter: NC: options data unavailable from all sources
+2026-11-02 23:21:44,660 WARNING src.options_filter: NCA: options data unavailable from all sources
+2026-11-02 23:21:52,854 ERROR yfinance: $NHPAP: possibly delisted; no price data found  (period=1mo)
+2026-11-02 23:21:57,120 WARNING src.options_filter: NHPAP: options data unavailable from all sources
+2026-11-02 23:22:11,513 WARNING src.options_filter: NNY: options data unavailable from all sources
+2026-11-02 23:22:20,522 WARNING src.options_filter: NRK: options data unavailable from all sources
+2026-11-02 23:22:31,035 WARNING src.options_filter: NTIP: options data unavailable from all sources
+2026-11-02 23:22:56,925 ERROR yfinance: $OLPX: possibly delisted; no price data found  (period=1mo)
+2026-11-02 23:23:01,265 WARNING src.options_filter: OLPX: options data unavailable from all sources
+2026-11-02 23:23:27,474 WARNING src.options_filter: OTF: options data unavailable from all sources
+2026-11-02 23:23:48,464 WARNING src.options_filter: PBHC: options data unavailable from all sources
+2026-11-02 23:23:59,881 WARNING src.options_filter: PCSA: options data unavailable from all sources
+2026-11-02 23:24:25,129 WARNING src.options_filter: PMTS: options data unavailable from all sources
+2026-11-02 23:24:53,864 WARNING src.options_filter: PSBD: options data unavailable from all sources
+2026-11-02 23:25:14,595 WARNING src.options_filter: QNRX: options data unavailable from all sources
+2026-11-02 23:25:28,996 WARNING src.options_filter: RAND: options data unavailable from all sources
+2026-11-02 23:25:55,209 WARNING src.options_filter: REVB: options data unavailable from all sources
+2026-11-02 23:26:02,555 WARNING src.options_filter: RFAI: options data unavailable from all sources
+2026-11-02 23:26:13,723 WARNING src.options_filter: RHCO: options data unavailable from all sources
+2026-11-02 23:27:09,930 WARNING src.options_filter: SCKT: options data unavailable from all sources
+2026-11-02 23:27:18,116 WARNING src.options_filter: SDHC: options data unavailable from all sources
+2026-11-02 23:27:37,301 ERROR yfinance: $SGMO: No data found, symbol may be delisted
+2026-11-02 23:27:41,564 WARNING src.options_filter: SGMO: options data unavailable from all sources
+2026-11-02 23:27:59,623 WARNING src.options_filter: SLNG: options data unavailable from all sources
+2026-11-02 23:28:06,938 WARNING src.options_filter: SLSN: options data unavailable from all sources
+2026-11-02 23:28:33,491 WARNING src.options_filter: SRNN: options data unavailable from all sources
+2026-11-02 23:28:33,493 ERROR yfinance: Failed to get ticker 'STAA' reason: Failed to perform, curl: (16) Error in the HTTP2 framing layer. See https://curl.se/libcurl/c/libcurl-errors.html first for more details.
+2026-11-02 23:28:36,820 ERROR yfinance: $STEL: No data found, symbol may be delisted
+2026-11-02 23:28:41,079 WARNING src.options_filter: STEL: options data unavailable from all sources
+2026-11-02 23:28:54,646 WARNING src.options_filter: SVCO: options data unavailable from all sources
+2026-11-02 23:28:58,801 ERROR yfinance: $TAPM: No data found, symbol may be delisted
+2026-11-02 23:29:03,059 WARNING src.options_filter: TAPM: options data unavailable from all sources
+2026-11-02 23:29:12,070 ERROR yfinance: $TBRG: No data found, symbol may be delisted
+2026-11-02 23:29:16,324 WARNING src.options_filter: TBRG: options data unavailable from all sources
+2026-11-02 23:29:20,770 WARNING src.options_filter: TCI: options data unavailable from all sources
+2026-11-02 23:29:55,910 ERROR yfinance: $TRTN PR A: No data found, symbol may be delisted
+2026-11-02 23:30:00,169 WARNING src.options_filter: TRTN PR A: options data unavailable from all sources
+2026-11-02 23:30:11,039 WARNING src.options_filter: TWFG: options data unavailable from all sources
+2026-11-02 23:30:18,388 WARNING src.options_filter: TYGO: options data unavailable from all sources
+2026-11-02 23:31:18,969 WARNING src.options_filter: VIVS: options data unavailable from all sources
+2026-11-02 23:31:41,794 WARNING src.options_filter: VTVT: options data unavailable from all sources
+2026-11-02 23:31:50,078 WARNING src.options_filter: WBD: options data unavailable from all sources
+2026-11-02 23:31:59,341 WARNING src.options_filter: WELNF: options data unavailable from all sources
+2026-11-02 23:32:03,824 WARNING src.options_filter: WELX: options data unavailable from all sources
+2026-11-02 23:32:08,284 WARNING src.options_filter: WHLR: options data unavailable from all sources
+2026-11-02 23:32:40,312 WARNING src.options_filter: XZO: options data unavailable from all sources
+2026-11-02 23:32:44,736 WARNING src.options_filter: YARW: options data unavailable from all sources
+2026-11-02 23:33:02,563 WARNING src.options_filter: ABHBY: options data unavailable from all sources
+2026-11-02 23:33:09,446 WARNING src.options_filter: ACVA: options data unavailable from all sources
+2026-11-02 23:33:47,869 WARNING src.options_filter: ALMR: options data unavailable from all sources
+2026-11-02 23:34:18,839 WARNING src.options_filter: AOMR: options data unavailable from all sources
+2026-11-02 23:34:49,214 ERROR yfinance: $AVNS: No data found, symbol may be delisted
+2026-11-02 23:34:53,472 WARNING src.options_filter: AVNS: options data unavailable from all sources
+2026-11-02 23:35:15,657 WARNING src.options_filter: BOLD: options data unavailable from all sources
+2026-11-02 23:35:20,074 WARNING src.options_filter: BOW: options data unavailable from all sources
+2026-11-02 23:35:26,070 ERROR yfinance: $BRY: No data found, symbol may be delisted
+2026-11-02 23:35:30,330 WARNING src.options_filter: BRY: options data unavailable from all sources
+2026-11-02 23:35:53,906 WARNING src.options_filter: CHSCP: options data unavailable from all sources
+2026-11-02 23:36:10,567 WARNING src.options_filter: CMT: options data unavailable from all sources
+2026-11-02 23:36:17,261 ERROR yfinance: $CNTA: No data found, symbol may be delisted
+2026-11-02 23:36:21,516 WARNING src.options_filter: CNTA: options data unavailable from all sources
+2026-11-02 23:36:29,323 ERROR yfinance: $CPRX: No data found, symbol may be delisted
+2026-11-02 23:36:33,579 WARNING src.options_filter: CPRX: options data unavailable from all sources
+2026-11-02 23:36:36,832 ERROR yfinance: $CTA PR A: No data found, symbol may be delisted
+2026-11-02 23:36:41,088 WARNING src.options_filter: CTA PR A: options data unavailable from all sources
+2026-11-02 23:36:57,612 WARNING src.options_filter: CYFL: options data unavailable from all sources
+2026-11-02 23:37:28,410 WARNING src.options_filter: DTSQ: options data unavailable from all sources
+2026-11-02 23:37:32,544 ERROR yfinance: $DVAX: No data found, symbol may be delisted
+2026-11-02 23:37:36,803 WARNING src.options_filter: DVAX: options data unavailable from all sources
+2026-11-02 23:37:42,987 ERROR yfinance: $EHAB: No data found, symbol may be delisted
+2026-11-02 23:37:47,246 WARNING src.options_filter: EHAB: options data unavailable from all sources
+2026-11-02 23:37:54,421 WARNING src.options_filter: ENGS: options data unavailable from all sources
+2026-11-02 23:37:58,837 WARNING src.options_filter: EROK: options data unavailable from all sources
+2026-11-02 23:38:20,130 WARNING src.options_filter: FALC: options data unavailable from all sources
+2026-11-02 23:38:20,286 ERROR yfinance: $FATAQ: possibly delisted; no price data found  (period=1mo)
+2026-11-02 23:38:24,540 WARNING src.options_filter: FATAQ: options data unavailable from all sources
+2026-11-02 23:38:44,459 ERROR yfinance: $FRGE: No data found, symbol may be delisted
+2026-11-02 23:38:48,721 WARNING src.options_filter: FRGE: options data unavailable from all sources
+2026-11-02 23:38:53,136 WARNING src.options_filter: FRPH: options data unavailable from all sources
+2026-11-02 23:39:01,146 WARNING src.options_filter: FTCO: options data unavailable from all sources
+2026-11-02 23:39:11,551 WARNING src.options_filter: FUND: options data unavailable from all sources
+2026-11-02 23:39:14,825 ERROR yfinance: $GBIO: No data found, symbol may be delisted
+2026-11-02 23:39:19,085 WARNING src.options_filter: GBIO: options data unavailable from all sources
+2026-11-02 23:39:23,575 WARNING src.options_filter: GDLC: options data unavailable from all sources
+2026-11-02 23:39:27,049 ERROR yfinance: $GHLD: No data found, symbol may be delisted
+2026-11-02 23:39:31,304 WARNING src.options_filter: GHLD: options data unavailable from all sources
+2026-11-02 23:45:49,294 WARNING src.options_filter: ALX: options data unavailable from all sources
+2026-11-02 23:45:56,872 WARNING src.options_filter: IAUX: options data unavailable from all sources
+2026-11-02 23:46:20,478 WARNING src.options_filter: NPK: options data unavailable from all sources
+2026-11-02 23:46:36,181 WARNING src.options_filter: RHLD: options data unavailable from all sources
+2026-11-02 23:47:01,450 ERROR yfinance: $CRD.A: No data found, symbol may be delisted
+2026-11-02 23:47:05,718 WARNING src.options_filter: CRD.A: options data unavailable from all sources
+2026-11-02 23:47:06,155 ERROR yfinance: $CRD.B: No data found, symbol may be delisted
+2026-11-02 23:47:10,492 WARNING src.options_filter: CRD.B: options data unavailable from all sources
+2026-11-02 23:47:14,943 WARNING src.options_filter: XFLT: options data unavailable from all sources
+2026-11-02 23:47:41,075 WARNING src.options_filter: TATT: options data unavailable from all sources
+2026-11-02 23:47:48,680 WARNING src.options_filter: URG: options data unavailable from all sources
+2026-11-02 23:48:04,902 WARNING src.options_filter: FISN: options data unavailable from all sources
+2026-11-02 23:48:17,455 WARNING src.options_filter: NCPL: options data unavailable from all sources
+2026-11-02 23:48:23,946 WARNING src.options_filter: GDC: options data unavailable from all sources
+2026-11-02 23:48:28,453 WARNING src.options_filter: MSS: options data unavailable from all sources
+2026-11-02 23:52:20,553 ERROR yfinance: $GEF.B: No data found, symbol may be delisted
+2026-11-02 23:52:25,090 WARNING src.options_filter: GEF.B: options data unavailable from all sources
+2026-11-02 23:52:33,122 WARNING src.options_filter: SEB: options data unavailable from all sources
+2026-11-02 23:53:05,704 WARNING src.options_filter: LBTYB: options data unavailable from all sources
+2026-11-02 23:54:03,044 WARNING src.options_filter: LIME: options data unavailable from all sources
+2026-11-02 23:54:54,330 WARNING src.options_filter: PXED: options data unavailable from all sources
+2026-11-02 23:55:44,283 WARNING src.options_filter: NCDL: options data unavailable from all sources
+2026-11-02 23:55:48,763 WARNING src.options_filter: WEYS: options data unavailable from all sources
+2026-11-02 23:55:53,232 WARNING src.options_filter: SSII: options data unavailable from all sources
+2026-11-02 23:56:07,022 WARNING src.options_filter: METCB: options data unavailable from all sources
+2026-11-02 23:56:11,512 WARNING src.options_filter: EPRX: options data unavailable from all sources
+2026-11-02 23:56:42,136 WARNING src.options_filter: LND: options data unavailable from all sources
+2026-11-02 23:56:54,587 WARNING src.options_filter: PAMT: options data unavailable from all sources
+2026-11-02 23:57:22,562 WARNING src.options_filter: GECC: options data unavailable from all sources
+2026-11-02 23:57:26,973 WARNING src.options_filter: ESYN: options data unavailable from all sources
+2026-11-02 23:57:31,387 WARNING src.options_filter: SCOR: options data unavailable from all sources
+2026-11-02 23:57:46,922 WARNING src.options_filter: DRK: options data unavailable from all sources
+2026-11-02 23:57:51,427 WARNING src.options_filter: AHT: options data unavailable from all sources
+2026-11-02 23:57:55,845 WARNING src.options_filter: AQB: options data unavailable from all sources
+2026-11-02 23:58:00,261 WARNING src.options_filter: LGVN: options data unavailable from all sources
+2026-11-02 23:58:04,742 WARNING src.options_filter: SNOA: options data unavailable from all sources
+2026-11-02 23:58:09,156 WARNING src.options_filter: XXII: options data unavailable from all sources
+2026-11-02 23:58:49,921 ERROR yfinance: $UHAL.B: No data found, symbol may be delisted
+2026-11-02 23:58:54,171 WARNING src.options_filter: UHAL.B: options data unavailable from all sources
+2026-11-02 23:58:58,259 ERROR yfinance: $BIO.B: No data found, symbol may be delisted
+2026-11-02 23:59:02,540 WARNING src.options_filter: BIO.B: options data unavailable from all sources
+2026-11-03 00:00:18,425 WARNING src.options_filter: AAUC: options data unavailable from all sources
+2026-11-03 00:00:50,664 WARNING src.options_filter: LYNX: options data unavailable from all sources
+2026-11-03 00:01:08,800 WARNING src.options_filter: DEC: options data unavailable from all sources
+2026-11-03 00:01:15,641 WARNING src.options_filter: SENEA: options data unavailable from all sources
+2026-11-03 00:01:20,052 WARNING src.options_filter: SENEB: options data unavailable from all sources
+2026-11-03 00:01:31,382 WARNING src.options_filter: ODTX: options data unavailable from all sources
+2026-11-03 00:02:10,707 WARNING src.options_filter: ITIC: options data unavailable from all sources
+2026-11-03 00:02:11,639 ERROR yfinance: $HVT.A: No data found, symbol may be delisted
+2026-11-03 00:02:15,892 WARNING src.options_filter: HVT.A: options data unavailable from all sources
+2026-11-03 00:02:34,579 WARNING src.options_filter: RCMT: options data unavailable from all sources
+2026-11-03 00:02:41,906 WARNING src.options_filter: ECBK: options data unavailable from all sources
+2026-11-03 00:03:17,325 WARNING src.options_filter: XPL: options data unavailable from all sources
+2026-11-03 00:03:32,018 WARNING src.options_filter: KG: options data unavailable from all sources
+2026-11-03 00:03:36,518 WARNING src.options_filter: NXTC: options data unavailable from all sources
+2026-11-03 00:03:41,019 WARNING src.options_filter: SST: options data unavailable from all sources
+2026-11-03 00:03:48,206 WARNING src.options_filter: CNTX: options data unavailable from all sources
+2026-11-03 00:03:54,355 WARNING src.options_filter: AUST: options data unavailable from all sources
+2026-11-03 00:03:58,783 WARNING src.options_filter: TPST: options data unavailable from all sources
+2026-11-03 00:04:03,275 WARNING src.options_filter: NXTT: options data unavailable from all sources
+2026-11-03 00:04:07,763 WARNING src.options_filter: SCPQ: options data unavailable from all sources
+2026-11-03 00:05:13,822 ERROR yfinance: $TAP.A: No data found, symbol may be delisted
+2026-11-03 00:05:18,084 WARNING src.options_filter: TAP.A: options data unavailable from all sources
+2026-11-03 00:06:16,188 WARNING src.options_filter: RZC: options data unavailable from all sources
+2026-11-03 00:06:36,123 WARNING src.options_filter: DMRA: options data unavailable from all sources
+2026-11-03 00:06:51,016 WARNING src.options_filter: OXLC: options data unavailable from all sources
+2026-11-03 00:06:55,521 WARNING src.options_filter: SGP: options data unavailable from all sources
+2026-11-03 00:07:23,982 WARNING src.options_filter: HSHP: options data unavailable from all sources
+2026-11-03 00:07:31,327 WARNING src.options_filter: EDN: options data unavailable from all sources
+2026-11-03 00:07:43,211 WARNING src.options_filter: KELYB: options data unavailable from all sources
+2026-11-03 00:07:53,386 WARNING src.options_filter: EVO: options data unavailable from all sources
+2026-11-03 00:08:12,763 WARNING src.options_filter: FVR: options data unavailable from all sources
+2026-11-03 00:08:26,679 WARNING src.options_filter: WRN: options data unavailable from all sources
+2026-11-03 00:08:31,116 WARNING src.options_filter: BRBI: options data unavailable from all sources
+2026-11-03 00:08:44,644 WARNING src.options_filter: RMBI: options data unavailable from all sources
+2026-11-03 00:08:55,037 WARNING src.options_filter: IPHA: options data unavailable from all sources
+2026-11-03 00:09:05,557 WARNING src.options_filter: MCN: options data unavailable from all sources
+2026-11-03 00:09:09,989 WARNING src.options_filter: SRFM: options data unavailable from all sources
+2026-11-03 00:09:14,411 WARNING src.options_filter: NYXH: options data unavailable from all sources
+2026-11-03 00:09:18,842 WARNING src.options_filter: OESX: options data unavailable from all sources
+2026-11-03 00:09:31,506 WARNING src.options_filter: RGS: options data unavailable from all sources
+2026-11-03 00:09:39,535 WARNING src.options_filter: CGTX: options data unavailable from all sources
+2026-11-03 00:09:43,989 WARNING src.options_filter: UG: options data unavailable from all sources
+2026-11-03 00:09:48,450 WARNING src.options_filter: BIRD: options data unavailable from all sources
+2026-11-03 00:09:52,867 WARNING src.options_filter: MSGM: options data unavailable from all sources
+2026-11-03 00:10:00,080 WARNING src.options_filter: INTS: options data unavailable from all sources
+2026-11-03 00:10:09,320 WARNING src.options_filter: CMMB: options data unavailable from all sources
+2026-11-03 00:10:13,736 WARNING src.options_filter: MTVA: options data unavailable from all sources
+2026-11-03 00:10:18,216 WARNING src.options_filter: VEEE: options data unavailable from all sources
+2026-11-03 00:10:18,768 ERROR yfinance: $BRK.A: No data found, symbol may be delisted
+2026-11-03 00:10:23,022 WARNING src.options_filter: BRK.A: options data unavailable from all sources
+2026-11-03 00:10:23,480 ERROR yfinance: $BRK.B: No data found, symbol may be delisted
+2026-11-03 00:10:27,733 WARNING src.options_filter: BRK.B: options data unavailable from all sources
+2026-11-03 00:10:39,386 WARNING src.options_filter: UI: options data unavailable from all sources
+2026-11-03 00:11:00,088 WARNING src.options_filter: BH: options data unavailable from all sources
+2026-11-03 00:11:36,041 WARNING src.options_filter: THM: options data unavailable from all sources
+2026-11-03 00:11:36,616 ERROR yfinance: $GTN.A: No data found, symbol may be delisted
+2026-11-03 00:11:40,875 WARNING src.options_filter: GTN.A: options data unavailable from all sources
+2026-11-03 00:11:45,282 WARNING src.options_filter: PBFS: options data unavailable from all sources
+2026-11-03 00:11:49,698 WARNING src.options_filter: NODK: options data unavailable from all sources
+2026-11-03 00:12:05,000 WARNING src.options_filter: GENK: options data unavailable from all sources
+2026-11-03 00:12:09,414 WARNING src.options_filter: SNWV: options data unavailable from all sources
+2026-11-03 00:12:13,934 WARNING src.options_filter: SNT: options data unavailable from all sources
+2026-11-03 00:12:18,358 WARNING src.options_filter: CRVO: options data unavailable from all sources
+2026-11-03 00:12:24,782 WARNING src.options_filter: QNTM: options data unavailable from all sources
+2026-11-03 00:12:29,212 WARNING src.options_filter: FUSE: options data unavailable from all sources
+2026-11-03 00:12:36,395 WARNING src.options_filter: AMST: options data unavailable from all sources
+2026-11-03 00:12:40,824 WARNING src.options_filter: CTNT: options data unavailable from all sources
+2026-11-03 00:12:45,241 WARNING src.options_filter: BJDX: options data unavailable from all sources
+2026-11-03 00:12:49,685 WARNING src.options_filter: PW: options data unavailable from all sources
+2026-11-03 00:12:50,144 ERROR yfinance: $UNKNOWN: No data found, symbol may be delisted
+2026-11-03 00:12:54,422 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-11-03 00:12:54,704 ERROR yfinance: $UNKNOWN: No data found, symbol may be delisted
+2026-11-03 00:12:58,972 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-11-03 00:12:59,255 ERROR yfinance: $UNKNOWN: No data found, symbol may be delisted
+2026-11-03 00:13:03,515 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-11-03 00:13:03,862 ERROR yfinance: $UNKNOWN: No data found, symbol may be delisted
+2026-11-03 00:13:08,110 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-11-03 00:13:08,328 ERROR yfinance: $UNKNOWN: No data found, symbol may be delisted
+2026-11-03 00:13:12,645 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-11-03 00:13:12,882 ERROR yfinance: $UNKNOWN: No data found, symbol may be delisted
+2026-11-03 00:13:17,146 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-11-03 00:13:17,434 ERROR yfinance: $UNKNOWN: No data found, symbol may be delisted
+2026-11-03 00:13:21,682 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-11-03 00:13:21,910 ERROR yfinance: $UNKNOWN: No data found, symbol may be delisted
+2026-11-03 00:13:26,159 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-11-03 00:13:26,446 ERROR yfinance: $UNKNOWN: No data found, symbol may be delisted
+2026-11-03 00:13:30,702 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-11-03 00:13:30,997 ERROR yfinance: $UNKNOWN: No data found, symbol may be delisted
+2026-11-03 00:13:35,257 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-11-03 00:13:35,549 ERROR yfinance: $UNKNOWN: No data found, symbol may be delisted
+2026-11-03 00:13:39,806 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-11-03 00:13:40,028 ERROR yfinance: $UNKNOWN: No data found, symbol may be delisted
+2026-11-03 00:13:44,285 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-11-03 00:13:44,946 ERROR yfinance: $UNKNOWN: No data found, symbol may be delisted
+2026-11-03 00:13:49,204 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-11-03 00:13:49,427 ERROR yfinance: $UNKNOWN: No data found, symbol may be delisted
+2026-11-03 00:13:53,820 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-11-03 00:13:54,112 ERROR yfinance: $UNKNOWN: No data found, symbol may be delisted
+2026-11-03 00:13:58,364 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-11-03 00:13:58,621 ERROR yfinance: $UNKNOWN: No data found, symbol may be delisted
+2026-11-03 00:14:02,884 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-11-03 00:14:03,139 ERROR yfinance: $UNKNOWN: No data found, symbol may be delisted
+2026-11-03 00:14:07,393 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-11-03 00:14:07,705 ERROR yfinance: $UNKNOWN: No data found, symbol may be delisted
+2026-11-03 00:14:11,952 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-11-03 00:14:12,178 ERROR yfinance: $UNKNOWN: No data found, symbol may be delisted
+2026-11-03 00:14:16,433 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-11-03 00:14:19,691 ERROR yfinance: $UNKNOWN: No data found, symbol may be delisted
+2026-11-03 00:14:23,948 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-11-03 00:14:24,172 ERROR yfinance: $UNKNOWN: No data found, symbol may be delisted
+2026-11-03 00:14:28,432 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-11-03 00:14:28,668 ERROR yfinance: $UNKNOWN: No data found, symbol may be delisted
+2026-11-03 00:14:32,954 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-11-03 00:14:33,176 ERROR yfinance: $UNKNOWN: No data found, symbol may be delisted
+2026-11-03 00:14:37,493 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-11-03 00:14:37,730 ERROR yfinance: $UNKNOWN: No data found, symbol may be delisted
+2026-11-03 00:14:41,983 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-11-03 00:14:42,220 ERROR yfinance: $UNKNOWN: No data found, symbol may be delisted
+2026-11-03 00:14:46,470 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-11-03 00:14:46,955 ERROR yfinance: $UNKNOWN: No data found, symbol may be delisted
+2026-11-03 00:14:51,205 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-11-03 00:14:51,537 ERROR yfinance: $UNKNOWN: No data found, symbol may be delisted
+2026-11-03 00:14:55,851 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-11-03 00:14:56,070 ERROR yfinance: $UNKNOWN: No data found, symbol may be delisted
+2026-11-03 00:15:00,382 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-11-03 00:15:00,669 ERROR yfinance: $UNKNOWN: No data found, symbol may be delisted
+2026-11-03 00:15:04,929 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-11-03 00:15:05,286 ERROR yfinance: $UNKNOWN: No data found, symbol may be delisted
+2026-11-03 00:15:09,619 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-11-03 00:15:13,124 ERROR yfinance: $UNKNOWN: No data found, symbol may be delisted
+2026-11-03 00:15:17,462 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-11-03 00:15:17,692 ERROR yfinance: $UNKNOWN: No data found, symbol may be delisted
+2026-11-03 00:15:21,949 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-11-03 00:15:22,331 ERROR yfinance: $UNKNOWN: No data found, symbol may be delisted
+2026-11-03 00:15:26,584 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-11-03 00:15:27,032 ERROR yfinance: $UNKNOWN: No data found, symbol may be delisted
+2026-11-03 00:15:31,369 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-11-03 00:15:35,845 WARNING src.options_filter: VAL-WT: options data unavailable from all sources
+2026-11-03 00:15:36,175 ERROR yfinance: $UNKNOWN: No data found, symbol may be delisted
+2026-11-03 00:15:40,495 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-11-03 00:15:40,777 ERROR yfinance: $UNKNOWN: No data found, symbol may be delisted
+2026-11-03 00:15:45,029 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-11-03 00:15:45,277 ERROR yfinance: $UNKNOWN: No data found, symbol may be delisted
+2026-11-03 00:15:49,526 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-11-03 00:15:49,816 ERROR yfinance: $UNKNOWN: No data found, symbol may be delisted
+2026-11-03 00:15:54,065 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-11-03 00:15:54,285 ERROR yfinance: $UNKNOWN: No data found, symbol may be delisted
+2026-11-03 00:15:58,536 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-11-03 00:15:58,767 ERROR yfinance: $UNKNOWN: No data found, symbol may be delisted
+2026-11-03 00:16:03,035 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-11-03 00:16:03,367 ERROR yfinance: $UNKNOWN: No data found, symbol may be delisted
+2026-11-03 00:16:07,619 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-11-03 00:16:07,846 ERROR yfinance: $UNKNOWN: No data found, symbol may be delisted
+2026-11-03 00:16:12,104 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-11-03 00:16:12,474 ERROR yfinance: $UNKNOWN: No data found, symbol may be delisted
+2026-11-03 00:16:16,723 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-11-03 00:16:16,949 ERROR yfinance: $UNKNOWN: No data found, symbol may be delisted
+2026-11-03 00:16:21,213 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-11-03 00:16:21,438 ERROR yfinance: $UNKNOWN: No data found, symbol may be delisted
+2026-11-03 00:16:25,686 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-11-03 00:16:25,975 ERROR yfinance: $UNKNOWN: No data found, symbol may be delisted
+2026-11-03 00:16:30,357 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-11-03 00:16:30,608 ERROR yfinance: $UNKNOWN: No data found, symbol may be delisted
+2026-11-03 00:16:34,859 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-11-03 00:16:35,242 ERROR yfinance: $UNKNOWN: No data found, symbol may be delisted
+2026-11-03 00:16:39,501 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-11-03 00:16:43,992 WARNING src.options_filter: IIPR-PB: options data unavailable from all sources
+2026-11-03 00:16:47,169 ERROR yfinance: $UNKNOWN: No data found, symbol may be delisted
+2026-11-03 00:16:51,434 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-11-03 00:16:51,723 ERROR yfinance: $UNKNOWN: No data found, symbol may be delisted
+2026-11-03 00:16:55,980 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-11-03 00:16:56,208 ERROR yfinance: $UNKNOWN: No data found, symbol may be delisted
+2026-11-03 00:17:00,501 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-11-03 00:17:00,979 ERROR yfinance: $UNKNOWN: No data found, symbol may be delisted
+2026-11-03 00:17:05,239 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-11-03 00:17:05,484 ERROR yfinance: $UNKNOWN: No data found, symbol may be delisted
+2026-11-03 00:17:09,740 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-11-03 00:17:10,027 ERROR yfinance: $UNKNOWN: No data found, symbol may be delisted
+2026-11-03 00:17:14,282 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-11-03 00:17:18,032 WARNING src.options_filter: AQB: options data unavailable from all sources
+2026-11-03 00:17:18,253 ERROR yfinance: $UNKNOWN: No data found, symbol may be delisted
+2026-11-03 00:17:22,503 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-11-03 00:17:22,792 ERROR yfinance: $UNKNOWN: No data found, symbol may be delisted
+2026-11-03 00:17:27,043 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-11-03 00:17:27,337 ERROR yfinance: $UNKNOWN: No data found, symbol may be delisted
+2026-11-03 00:17:31,651 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-11-03 00:17:35,705 ERROR yfinance: $UNKNOWN: No data found, symbol may be delisted
+2026-11-03 00:17:39,959 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-11-03 00:17:43,516 ERROR yfinance: $UNKNOWN: No data found, symbol may be delisted
+2026-11-03 00:17:47,834 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-11-03 00:17:48,097 ERROR yfinance: $UNKNOWN: No data found, symbol may be delisted
+2026-11-03 00:17:52,352 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-11-03 00:17:52,577 ERROR yfinance: $UNKNOWN: No data found, symbol may be delisted
+2026-11-03 00:17:56,833 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-11-03 00:17:57,118 ERROR yfinance: $UNKNOWN: No data found, symbol may be delisted
+2026-11-03 00:18:01,367 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-11-03 00:18:01,591 ERROR yfinance: $UNKNOWN: No data found, symbol may be delisted
+2026-11-03 00:18:05,840 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-11-03 00:18:06,056 ERROR yfinance: $UNKNOWN: No data found, symbol may be delisted
+2026-11-03 00:18:10,320 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-11-03 00:18:10,541 ERROR yfinance: $UNKNOWN: No data found, symbol may be delisted
+2026-11-03 00:18:14,804 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-11-03 00:18:15,211 ERROR yfinance: $UNKNOWN: No data found, symbol may be delisted
+2026-11-03 00:18:19,461 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-11-03 00:18:19,755 ERROR yfinance: $UNKNOWN: No data found, symbol may be delisted
+2026-11-03 00:18:24,003 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-11-03 00:18:27,226 ERROR yfinance: $UNKNOWN: No data found, symbol may be delisted
+2026-11-03 00:18:31,477 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-11-03 00:18:31,708 ERROR yfinance: $UNKNOWN: No data found, symbol may be delisted
+2026-11-03 00:18:36,034 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-11-03 00:18:36,307 ERROR yfinance: $UNKNOWN: No data found, symbol may be delisted
+2026-11-03 00:18:40,555 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-11-03 00:18:40,777 ERROR yfinance: $UNKNOWN: No data found, symbol may be delisted
+2026-11-03 00:18:45,033 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-11-03 00:18:45,380 ERROR yfinance: $UNKNOWN: No data found, symbol may be delisted
+2026-11-03 00:18:49,631 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-11-03 00:18:49,850 ERROR yfinance: $UNKNOWN: No data found, symbol may be delisted
+2026-11-03 00:18:54,237 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-11-03 00:18:54,506 ERROR yfinance: $UNKNOWN: No data found, symbol may be delisted
+2026-11-03 00:18:58,854 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-11-03 00:18:59,101 ERROR yfinance: $UNKNOWN: No data found, symbol may be delisted
+2026-11-03 00:19:03,349 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-11-03 00:19:03,565 ERROR yfinance: $UNKNOWN: No data found, symbol may be delisted
+2026-11-03 00:19:07,818 WARNING src.options_filter: UNKNOWN: options data unavailable from all sources
+2026-11-03 00:19:07,818 INFO run_daily: Passed options gate: 861 events
+2026-11-03 00:19:07,818 INFO run_daily: Step 7: enriching 861 events
+2026-11-03 00:21:48,967 INFO run_daily: Step 8: dedup
+2026-11-03 00:21:48,970 INFO run_daily: Step 9: ranking
+2026-11-03 00:21:48,971 INFO run_daily: Step 10: writing digest
+2026-11-03 00:21:49,063 INFO src.digest_writer: digest written: output/market_radar_2026-11-02.html
+2026-11-03 00:21:49,064 INFO run_daily: === Done: output/market_radar_2026-11-02.html ===
