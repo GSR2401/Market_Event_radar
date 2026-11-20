@@ -1,0 +1,3793 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Market Event Radar — November 20, 2026</title>
+<style>
+:root {
+  --blue:    #1f3864;
+  --blue-lt: #2e5395;
+  --green:   #1a6e3c;
+  --orange:  #b84c00;
+  --purple:  #5b2d8e;
+  --red:     #c0392b;
+  --bg:      #f4f6f9;
+  --card:    #ffffff;
+  --border:  #d8dde6;
+  --text:    #1a1a2e;
+  --muted:   #6b7280;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background: var(--bg); color: var(--text); font-size: 14px; line-height: 1.5;
+}
+a { color: var(--blue-lt); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* ── Header ── */
+.header { background: var(--blue); color: #fff; padding: 20px 24px 16px; }
+.header h1 { font-size: 22px; font-weight: 700; letter-spacing: .5px; }
+.header .sub { opacity: .75; font-size: 13px; margin-top: 2px; }
+.header-meta { display: flex; gap: 24px; margin-top: 12px; flex-wrap: wrap; }
+.header-meta span {
+  background: rgba(255,255,255,.12); border-radius: 4px; padding: 3px 10px; font-size: 12px;
+}
+
+/* ── Sticky Filter Bar ── */
+.filter-bar {
+  position: sticky; top: 0; z-index: 200;
+  background: #fff; border-bottom: 1px solid var(--border);
+  box-shadow: 0 2px 10px rgba(0,0,0,.07);
+  padding: 10px 24px;
+  display: flex; flex-direction: column; gap: 8px;
+}
+.filter-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.filter-label {
+  font-size: 10px; font-weight: 700; letter-spacing: .8px;
+  text-transform: uppercase; color: var(--muted); min-width: 38px;
+}
+.filter-sep { width: 1px; height: 22px; background: var(--border); margin: 0 4px; }
+
+.tb {
+  font-size: 11px; font-weight: 600; letter-spacing: .3px;
+  padding: 4px 12px; border-radius: 20px; border: 1px solid var(--border);
+  background: var(--bg); color: var(--muted); cursor: pointer;
+  transition: all .15s; white-space: nowrap;
+}
+.tb:hover { border-color: var(--blue-lt); color: var(--blue); }
+.tb.active { background: var(--blue); color: #fff; border-color: var(--blue); }
+
+.cb-wrap {
+  display: flex; align-items: center; gap: 5px;
+  font-size: 11px; font-weight: 600; cursor: pointer;
+  padding: 4px 10px; border-radius: 20px; border: 1px solid var(--border);
+  background: var(--bg); color: var(--muted);
+  transition: all .15s; user-select: none;
+}
+.cb-wrap input[type=checkbox] { width: 13px; height: 13px; accent-color: var(--blue); cursor: pointer; }
+.cb-wrap.confirmed { color: #065f46; border-color: #6ee7b7; background: #f0fdf4; }
+.cb-wrap.estimated { color: #92400e; border-color: #fcd34d; background: #fffbeb; }
+
+.mcap-wrap { display: flex; align-items: center; gap: 6px; }
+.mcap-input {
+  width: 72px; padding: 4px 8px; font-size: 11px; font-weight: 600;
+  border: 1px solid var(--border); border-radius: 20px;
+  background: var(--bg); color: var(--text); outline: none;
+  transition: border-color .15s; text-align: center;
+}
+.mcap-input:focus { border-color: var(--blue-lt); }
+.mcap-input::placeholder { color: var(--muted); font-weight: 400; }
+.mcap-dash { font-size: 11px; color: var(--muted); }
+
+.search-wrap { position: relative; flex: 1; max-width: 220px; }
+.search-icon {
+  position: absolute; left: 10px; top: 50%; transform: translateY(-50%);
+  font-size: 12px; color: var(--muted); pointer-events: none;
+}
+.search-input {
+  width: 100%; padding: 5px 10px 5px 28px; font-size: 12px;
+  border: 1px solid var(--border); border-radius: 20px;
+  background: var(--bg); color: var(--text); outline: none;
+  transition: border-color .15s;
+}
+.search-input:focus { border-color: var(--blue-lt); }
+
+.filter-count { font-size: 11px; color: var(--muted); white-space: nowrap; }
+
+/* Bin toggle button in filter bar */
+/* bin count badge in filter bar */
+#bin-count-badge {
+  margin-left: auto;
+  font-size: 11px; font-weight: 700;
+  padding: 3px 10px; border-radius: 20px;
+  border: 1px solid #fca5a5; background: #fff1f1; color: var(--red);
+  white-space: nowrap; display: none;
+}
+
+/* ── Layout ── */
+.container { max-width: 900px; margin: 0 auto; padding: 20px 16px 60px; }
+
+/* ── Section ── */
+.section { margin-bottom: 28px; }
+.section-title {
+  font-size: 13px; font-weight: 700; letter-spacing: 1px;
+  text-transform: uppercase; color: var(--blue);
+  border-bottom: 2px solid var(--blue);
+  padding-bottom: 6px; margin-bottom: 12px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.section-empty, .section-filter-empty {
+  color: var(--muted); font-style: italic; font-size: 13px; padding: 8px 0;
+}
+.section-filter-empty { display: none; }
+.section-error {
+  background: #fff3cd; border: 1px solid #ffc107;
+  border-radius: 6px; padding: 10px 14px; font-size: 13px;
+  color: #7c5f00; margin-bottom: 10px;
+}
+
+/* ── Event Card ── */
+.card {
+  background: var(--card); border: 1px solid var(--border);
+  border-left: 4px solid var(--blue); border-radius: 6px;
+  padding: 14px 16px; margin-bottom: 10px;
+  box-shadow: 0 1px 3px rgba(0,0,0,.04);
+  position: relative;                          /* needed for dismiss btn */
+  transition: transform .28s ease, opacity .28s ease, box-shadow .15s;
+  will-change: transform, opacity;
+}
+.card:hover { box-shadow: 0 3px 10px rgba(0,0,0,.09); }
+.card.earnings { border-left-color: var(--blue); }
+.card.ipo      { border-left-color: var(--green); }
+.card.eightk   { border-left-color: var(--orange); }
+.card.news     { border-left-color: var(--purple); }
+.card.prev-reported { opacity: .6; }
+
+/* card fly-out/in driven by inline styles in JS */
+
+/* ── Dismiss (X) button ── */
+.dismiss-btn {
+  position: absolute; top: 10px; right: 10px;
+  width: 22px; height: 22px; border-radius: 50%;
+  background: #fee2e2; color: #991b1b;
+  border: none; font-size: 12px; font-weight: 700;
+  cursor: pointer; line-height: 1;
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; transition: opacity .15s; z-index: 5;
+}
+.card:hover .dismiss-btn { opacity: 1; }
+/* Always slightly visible on touch screens */
+@media (hover: none) { .dismiss-btn { opacity: 0.25; } }
+
+/* ── Restore button (shown inside bin cards) ── */
+.restore-btn {
+  display: inline-flex; align-items: center; gap: 4px;
+  margin-top: 8px; padding: 4px 10px;
+  font-size: 11px; font-weight: 600;
+  background: #dbeafe; color: #1e40af;
+  border: 1px solid #93c5fd; border-radius: 4px; cursor: pointer;
+  transition: background .15s;
+}
+.restore-btn:hover { background: #bfdbfe; }
+
+/* ── Bin Panel ── */
+#bin-panel { display: block; }
+.bin-section-title {
+  color: var(--red) !important; border-color: var(--red) !important;
+}
+#clear-bin-btn {
+  font-size: 10px; font-weight: 600; padding: 3px 10px;
+  border: 1px solid #fca5a5; border-radius: 12px;
+  background: #fff1f1; color: var(--red); cursor: pointer;
+  transition: background .15s;
+}
+#clear-bin-btn:hover { background: #fee2e2; }
+#bin-empty-msg { color: var(--muted); font-style: italic; font-size: 13px; padding: 8px 0; }
+
+/* ── Card body (unchanged) ── */
+.card-top {
+  display: flex; align-items: flex-start;
+  justify-content: space-between; gap: 12px; flex-wrap: wrap;
+}
+.ticker-block { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.ticker { font-size: 17px; font-weight: 700; color: var(--blue); }
+.company { font-size: 13px; color: var(--muted); }
+
+.badge {
+  display: inline-block; border-radius: 3px;
+  font-size: 10px; font-weight: 700; letter-spacing: .4px;
+  padding: 2px 7px; text-transform: uppercase;
+}
+.badge-large         { background: #dbeafe; color: #1e40af; }
+.badge-mid           { background: #dcfce7; color: #166534; }
+.badge-small         { background: #fef9c3; color: #7c5f00; }
+.badge-confirmed     { background: #d1fae5; color: #065f46; }
+.badge-estimated     { background: #fef3c7; color: #92400e; border: 1px solid #fcd34d; }
+.badge-strong        { background: #fee2e2; color: #991b1b; }
+.badge-moderate      { background: #ffedd5; color: #9a3412; }
+.badge-single-source { background: #f3e8ff; color: #581c87; }
+.badge-prev          { background: #e5e7eb; color: #374151; }
+
+.card-body { margin-top: 10px; }
+.card-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 8px 16px; margin-top: 8px;
+}
+.metric-label { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: .5px; }
+.metric-value { font-size: 13px; font-weight: 600; color: var(--text); }
+.summary-text {
+  margin-top: 10px; font-size: 12px; color: var(--muted);
+  border-top: 1px solid var(--border); padding-top: 8px;
+}
+.sources-row { margin-top: 8px; display: flex; gap: 5px; flex-wrap: wrap; align-items: center; }
+.source-badge {
+  font-size: 10px; background: var(--bg); border: 1px solid var(--border);
+  border-radius: 3px; padding: 1px 6px; color: var(--muted);
+}
+.event-meta { text-align: right; }
+.event-date { font-size: 13px; font-weight: 600; }
+.days-away  { font-size: 11px; color: var(--muted); }
+
+/* ── Footer ── */
+.footer {
+  background: #fff; border: 1px solid var(--border);
+  border-radius: 6px; padding: 16px 18px; margin-top: 28px;
+}
+.footer h3 { font-size: 12px; text-transform: uppercase; letter-spacing: .8px; color: var(--muted); margin-bottom: 10px; }
+.footer-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.footer-item { font-size: 12px; }
+.footer-item strong { display: block; color: var(--text); }
+.unavailable-list { font-size: 12px; color: var(--red); margin-top: 6px; }
+
+/* ── Responsive ── */
+@media(max-width:640px) {
+  .filter-bar { padding: 8px 14px; }
+  .search-wrap { max-width: 100%; }
+  .card-top { flex-direction: column; }
+  .event-meta { text-align: left; }
+  .footer-grid { grid-template-columns: 1fr; }
+  .mcap-input { width: 60px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ══ HEADER ══════════════════════════════════════════════════════ -->
+<div class="header">
+  <h1>📡 Market Event Radar</h1>
+  <div class="sub">Weekly Catalyst Digest &nbsp;·&nbsp; US Equities (NYSE / NASDAQ)</div>
+  <div class="header-meta">
+    <span>Friday, November 20, 2026</span>
+    <span>75 events found</span>
+    <span>Next 7 days</span>
+    <span>Free data only</span>
+  </div>
+</div>
+
+<!-- ══ STICKY FILTER BAR ════════════════════════════════════════════ -->
+<div class="filter-bar">
+  <div class="filter-row">
+    <div class="search-wrap">
+      <span class="search-icon">🔍</span>
+      <input class="search-input" id="search-input" type="text"
+             placeholder="Search ticker or company…" autocomplete="off">
+    </div>
+    <div class="filter-sep"></div>
+    <span class="filter-label">Type</span>
+    <button class="tb active" data-type="all">All</button>
+    <button class="tb" data-type="earnings">Earnings</button>
+    <button class="tb" data-type="ipo">IPO</button>
+    <button class="tb" data-type="8k">8-K</button>
+    <button class="tb" data-type="news">News</button>
+    <div class="filter-sep"></div>
+    <span class="filter-label">Cap</span>
+    <button class="tb active" data-cap="all">All</button>
+    <button class="tb" data-cap="large">Large</button>
+    <button class="tb" data-cap="mid">Mid</button>
+    <button class="tb" data-cap="small">Small</button>
+    <span class="filter-count" id="filter-count">75 results</span>
+    <span id="bin-count-badge">🗑 Bin: <span id="bin-count-num">0</span></span>
+  </div>
+  <div class="filter-row">
+    <span class="filter-label">MCap</span>
+    <div class="mcap-wrap">
+      <input class="mcap-input" id="mcap-min" type="number" min="0" step="0.5" placeholder="Min $B">
+      <span class="mcap-dash">—</span>
+      <input class="mcap-input" id="mcap-max" type="number" min="0" step="0.5" placeholder="Max $B">
+    </div>
+    <div class="filter-sep"></div>
+    <span class="filter-label">Date</span>
+    <label class="cb-wrap confirmed">
+      <input type="checkbox" id="cb-confirmed" checked> Confirmed
+    </label>
+    <label class="cb-wrap estimated">
+      <input type="checkbox" id="cb-estimated" checked> Estimated
+    </label>
+  </div>
+</div>
+
+<div class="container">
+
+<!-- ══ SECTION A: EARNINGS ══════════════════════════════════════════ -->
+<div class="section" data-section="earnings">
+  <div class="section-title">A — Earnings This Week</div>
+  
+  
+  <div class="section-filter-empty">No earnings match your current filters.</div>
+
+  
+  
+  <div class="card earnings prev-reported"
+       data-type="earnings"
+       data-cap="large"
+       data-confirmation="confirmed"
+       data-ticker="BJ"
+       data-company="bj&#39;s wholesale club holdings, inc."
+       data-mcap="13.935"
+       data-card-id="BJ-earnings">
+    <div class="card-top">
+      <div class="ticker-block">
+        <span class="ticker">BJ</span>
+        <span class="company">BJ&#39;s Wholesale Club Holdings, Inc.</span>
+        <span class="badge badge-large">Large</span>
+        
+        <span class="badge badge-confirmed">Confirmed</span>
+        
+        
+        <span class="badge badge-prev">Previously Reported</span>
+        
+      </div>
+      <div class="event-meta">
+        <div class="event-date">Fri Nov 20 · BMO</div>
+        <div class="days-away">Today</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-grid">
+        <div><div class="metric-label">Market Cap</div><div class="metric-value">$13.9B</div></div>
+        <div><div class="metric-label">EPS Estimate</div><div class="metric-value">$1.24</div></div>
+        <div><div class="metric-label">Open Interest</div><div class="metric-value">20.7K</div></div>
+        <div><div class="metric-label">Options Vol Today</div><div class="metric-value">2.8K</div></div>
+        <div><div class="metric-label">Put/Call Ratio</div><div class="metric-value">0.80</div></div>
+        <div><div class="metric-label">Avg Stock Vol (20d)</div><div class="metric-value">$2M</div></div>
+      </div>
+      
+      <div class="sources-row">
+        <span style="font-size:10px;color:var(--muted)">Sources:</span>
+        <span class="source-badge">nasdaq</span><span class="source-badge">finnhub</span><span class="source-badge">yfinance</span>
+      </div>
+    </div>
+  </div>
+  
+  
+  <div class="card earnings prev-reported"
+       data-type="earnings"
+       data-cap="large"
+       data-confirmation="estimated"
+       data-ticker="BSP"
+       data-company="bsp"
+       data-mcap="26.979"
+       data-card-id="BSP-earnings">
+    <div class="card-top">
+      <div class="ticker-block">
+        <span class="ticker">BSP</span>
+        <span class="company">BSP</span>
+        <span class="badge badge-large">Large</span>
+        
+        <span class="badge badge-estimated">Estimated date</span>
+        
+        <span class="badge badge-prev">Previously Reported</span>
+        
+      </div>
+      <div class="event-meta">
+        <div class="event-date">Fri Nov 20 · BMO</div>
+        <div class="days-away">Today</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-grid">
+        <div><div class="metric-label">Market Cap</div><div class="metric-value">$27.0B</div></div>
+        <div><div class="metric-label">EPS Estimate</div><div class="metric-value">$0.32</div></div>
+        <div><div class="metric-label">Open Interest</div><div class="metric-value">78.2K</div></div>
+        <div><div class="metric-label">Options Vol Today</div><div class="metric-value">11.1K</div></div>
+        <div><div class="metric-label">Put/Call Ratio</div><div class="metric-value">2.65</div></div>
+        <div><div class="metric-label">Avg Stock Vol (20d)</div><div class="metric-value">$2M</div></div>
+      </div>
+      
+      <div class="sources-row">
+        <span style="font-size:10px;color:var(--muted)">Sources:</span>
+        <span class="source-badge">finnhub</span><span class="source-badge">yfinance</span>
+      </div>
+    </div>
+  </div>
+  
+  
+  <div class="card earnings prev-reported"
+       data-type="earnings"
+       data-cap="large"
+       data-confirmation="estimated"
+       data-ticker="FRO"
+       data-company="fro"
+       data-mcap="10.116"
+       data-card-id="FRO-earnings">
+    <div class="card-top">
+      <div class="ticker-block">
+        <span class="ticker">FRO</span>
+        <span class="company">FRO</span>
+        <span class="badge badge-large">Large</span>
+        
+        <span class="badge badge-estimated">Estimated date</span>
+        
+        <span class="badge badge-prev">Previously Reported</span>
+        
+      </div>
+      <div class="event-meta">
+        <div class="event-date">Fri Nov 20 · BMO</div>
+        <div class="days-away">Today</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-grid">
+        <div><div class="metric-label">Market Cap</div><div class="metric-value">$10.1B</div></div>
+        <div><div class="metric-label">EPS Estimate</div><div class="metric-value">$2.32</div></div>
+        <div><div class="metric-label">Open Interest</div><div class="metric-value">201.5K</div></div>
+        <div><div class="metric-label">Options Vol Today</div><div class="metric-value">87.8K</div></div>
+        <div><div class="metric-label">Put/Call Ratio</div><div class="metric-value">0.05</div></div>
+        <div><div class="metric-label">Avg Stock Vol (20d)</div><div class="metric-value">$4M</div></div>
+      </div>
+      
+      <div class="sources-row">
+        <span style="font-size:10px;color:var(--muted)">Sources:</span>
+        <span class="source-badge">finnhub</span><span class="source-badge">yfinance</span>
+      </div>
+    </div>
+  </div>
+  
+  
+  <div class="card earnings prev-reported"
+       data-type="earnings"
+       data-cap="mid"
+       data-confirmation="confirmed"
+       data-ticker="IESC"
+       data-company="ies holdings, inc."
+       data-mcap="6.618"
+       data-card-id="IESC-earnings">
+    <div class="card-top">
+      <div class="ticker-block">
+        <span class="ticker">IESC</span>
+        <span class="company">IES Holdings, Inc.</span>
+        <span class="badge badge-mid">Mid</span>
+        
+        <span class="badge badge-confirmed">Confirmed</span>
+        
+        
+        <span class="badge badge-prev">Previously Reported</span>
+        
+      </div>
+      <div class="event-meta">
+        <div class="event-date">Fri Nov 20 · BMO</div>
+        <div class="days-away">Today</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-grid">
+        <div><div class="metric-label">Market Cap</div><div class="metric-value">$6.6B</div></div>
+        <div><div class="metric-label">EPS Estimate</div><div class="metric-value">$2.87</div></div>
+        <div><div class="metric-label">Open Interest</div><div class="metric-value">10.0K</div></div>
+        <div><div class="metric-label">Options Vol Today</div><div class="metric-value">2.8K</div></div>
+        <div><div class="metric-label">Put/Call Ratio</div><div class="metric-value">0.30</div></div>
+        <div><div class="metric-label">Avg Stock Vol (20d)</div><div class="metric-value">572.0K</div></div>
+      </div>
+      
+      <div class="sources-row">
+        <span style="font-size:10px;color:var(--muted)">Sources:</span>
+        <span class="source-badge">finnhub</span><span class="source-badge">yfinance</span>
+      </div>
+    </div>
+  </div>
+  
+  
+  <div class="card earnings prev-reported"
+       data-type="earnings"
+       data-cap="small"
+       data-confirmation="confirmed"
+       data-ticker="WRD"
+       data-company="weride inc."
+       data-mcap="1.362"
+       data-card-id="WRD-earnings">
+    <div class="card-top">
+      <div class="ticker-block">
+        <span class="ticker">WRD</span>
+        <span class="company">WeRide Inc.</span>
+        <span class="badge badge-small">Small</span>
+        <span class="badge badge-confirmed">Confirmed</span>
+        
+        
+        <span class="badge badge-prev">Previously Reported</span>
+        
+      </div>
+      <div class="event-meta">
+        <div class="event-date">Fri Nov 20 · BMO</div>
+        <div class="days-away">Today</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-grid">
+        <div><div class="metric-label">Market Cap</div><div class="metric-value">$1.4B</div></div>
+        
+        <div><div class="metric-label">Open Interest</div><div class="metric-value">38.4K</div></div>
+        <div><div class="metric-label">Options Vol Today</div><div class="metric-value">1.3K</div></div>
+        <div><div class="metric-label">Put/Call Ratio</div><div class="metric-value">0.27</div></div>
+        <div><div class="metric-label">Avg Stock Vol (20d)</div><div class="metric-value">$2M</div></div>
+      </div>
+      
+      <div class="sources-row">
+        <span style="font-size:10px;color:var(--muted)">Sources:</span>
+        <span class="source-badge">nasdaq</span><span class="source-badge">finnhub</span><span class="source-badge">yfinance</span>
+      </div>
+    </div>
+  </div>
+  
+  
+  <div class="card earnings prev-reported"
+       data-type="earnings"
+       data-cap="micro"
+       data-confirmation="confirmed"
+       data-ticker="AREC"
+       data-company="american resources corporation"
+       data-mcap="0.11"
+       data-card-id="AREC-earnings">
+    <div class="card-top">
+      <div class="ticker-block">
+        <span class="ticker">AREC</span>
+        <span class="company">American Resources Corporation</span>
+        
+        <span class="badge badge-confirmed">Confirmed</span>
+        
+        
+        <span class="badge badge-prev">Previously Reported</span>
+        
+      </div>
+      <div class="event-meta">
+        <div class="event-date">Fri Nov 20</div>
+        <div class="days-away">Today</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-grid">
+        <div><div class="metric-label">Market Cap</div><div class="metric-value">$110M</div></div>
+        
+        <div><div class="metric-label">Open Interest</div><div class="metric-value">68.5K</div></div>
+        <div><div class="metric-label">Options Vol Today</div><div class="metric-value">4.3K</div></div>
+        <div><div class="metric-label">Put/Call Ratio</div><div class="metric-value">0.51</div></div>
+        <div><div class="metric-label">Avg Stock Vol (20d)</div><div class="metric-value">$2M</div></div>
+      </div>
+      
+      <div class="sources-row">
+        <span style="font-size:10px;color:var(--muted)">Sources:</span>
+        <span class="source-badge">nasdaq</span><span class="source-badge">cache</span>
+      </div>
+    </div>
+  </div>
+  
+  
+  <div class="card earnings prev-reported"
+       data-type="earnings"
+       data-cap="micro"
+       data-confirmation="confirmed"
+       data-ticker="SIDU"
+       data-company="sidus space, inc."
+       data-mcap="0.095"
+       data-card-id="SIDU-earnings">
+    <div class="card-top">
+      <div class="ticker-block">
+        <span class="ticker">SIDU</span>
+        <span class="company">Sidus Space, Inc.</span>
+        
+        <span class="badge badge-confirmed">Confirmed</span>
+        
+        
+        <span class="badge badge-prev">Previously Reported</span>
+        
+      </div>
+      <div class="event-meta">
+        <div class="event-date">Fri Nov 20</div>
+        <div class="days-away">Today</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-grid">
+        <div><div class="metric-label">Market Cap</div><div class="metric-value">$95M</div></div>
+        
+        <div><div class="metric-label">Open Interest</div><div class="metric-value">61.5K</div></div>
+        <div><div class="metric-label">Options Vol Today</div><div class="metric-value">1.1K</div></div>
+        <div><div class="metric-label">Put/Call Ratio</div><div class="metric-value">0.58</div></div>
+        <div><div class="metric-label">Avg Stock Vol (20d)</div><div class="metric-value">$4M</div></div>
+      </div>
+      
+      <div class="sources-row">
+        <span style="font-size:10px;color:var(--muted)">Sources:</span>
+        <span class="source-badge">nasdaq</span><span class="source-badge">cache</span>
+      </div>
+    </div>
+  </div>
+  
+  
+  <div class="card earnings prev-reported"
+       data-type="earnings"
+       data-cap="micro"
+       data-confirmation="confirmed"
+       data-ticker="COSM"
+       data-company="cosmos health inc."
+       data-mcap="0.015"
+       data-card-id="COSM-earnings">
+    <div class="card-top">
+      <div class="ticker-block">
+        <span class="ticker">COSM</span>
+        <span class="company">Cosmos Health Inc.</span>
+        
+        <span class="badge badge-confirmed">Confirmed</span>
+        
+        
+        <span class="badge badge-prev">Previously Reported</span>
+        
+      </div>
+      <div class="event-meta">
+        <div class="event-date">Fri Nov 20</div>
+        <div class="days-away">Today</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-grid">
+        <div><div class="metric-label">Market Cap</div><div class="metric-value">$15M</div></div>
+        
+        <div><div class="metric-label">Open Interest</div><div class="metric-value">19.5K</div></div>
+        <div><div class="metric-label">Options Vol Today</div><div class="metric-value">982</div></div>
+        <div><div class="metric-label">Put/Call Ratio</div><div class="metric-value">0.13</div></div>
+        <div><div class="metric-label">Avg Stock Vol (20d)</div><div class="metric-value">$2M</div></div>
+      </div>
+      
+      <div class="sources-row">
+        <span style="font-size:10px;color:var(--muted)">Sources:</span>
+        <span class="source-badge">nasdaq</span><span class="source-badge">yfinance</span>
+      </div>
+    </div>
+  </div>
+  
+  
+  <div class="card earnings prev-reported"
+       data-type="earnings"
+       data-cap="large"
+       data-confirmation="confirmed"
+       data-ticker="A"
+       data-company="agilent technologies, inc."
+       data-mcap="48.758"
+       data-card-id="A-earnings">
+    <div class="card-top">
+      <div class="ticker-block">
+        <span class="ticker">A</span>
+        <span class="company">Agilent Technologies, Inc.</span>
+        <span class="badge badge-large">Large</span>
+        
+        <span class="badge badge-confirmed">Confirmed</span>
+        
+        
+        <span class="badge badge-prev">Previously Reported</span>
+        
+      </div>
+      <div class="event-meta">
+        <div class="event-date">Mon Nov 23 · AMC</div>
+        <div class="days-away">3 days away</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-grid">
+        <div><div class="metric-label">Market Cap</div><div class="metric-value">$48.8B</div></div>
+        <div><div class="metric-label">EPS Estimate</div><div class="metric-value">$1.72</div></div>
+        <div><div class="metric-label">Open Interest</div><div class="metric-value">24.2K</div></div>
+        <div><div class="metric-label">Options Vol Today</div><div class="metric-value">4.1K</div></div>
+        <div><div class="metric-label">Put/Call Ratio</div><div class="metric-value">2.00</div></div>
+        <div><div class="metric-label">Avg Stock Vol (20d)</div><div class="metric-value">$2M</div></div>
+      </div>
+      
+      <div class="sources-row">
+        <span style="font-size:10px;color:var(--muted)">Sources:</span>
+        <span class="source-badge">nasdaq</span><span class="source-badge">finnhub</span><span class="source-badge">yfinance</span>
+      </div>
+    </div>
+  </div>
+  
+  
+  <div class="card earnings prev-reported"
+       data-type="earnings"
+       data-cap="large"
+       data-confirmation="confirmed"
+       data-ticker="HPE"
+       data-company="hewlett packard enterprise company"
+       data-mcap="61.82"
+       data-card-id="HPE-earnings">
+    <div class="card-top">
+      <div class="ticker-block">
+        <span class="ticker">HPE</span>
+        <span class="company">Hewlett Packard Enterprise Company</span>
+        <span class="badge badge-large">Large</span>
+        
+        <span class="badge badge-confirmed">Confirmed</span>
+        
+        
+        <span class="badge badge-prev">Previously Reported</span>
+        
+      </div>
+      <div class="event-meta">
+        <div class="event-date">Mon Nov 23 · AMC</div>
+        <div class="days-away">3 days away</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-grid">
+        <div><div class="metric-label">Market Cap</div><div class="metric-value">$61.8B</div></div>
+        <div><div class="metric-label">EPS Estimate</div><div class="metric-value">$1.18</div></div>
+        <div><div class="metric-label">Open Interest</div><div class="metric-value">265.4K</div></div>
+        <div><div class="metric-label">Options Vol Today</div><div class="metric-value">28.9K</div></div>
+        <div><div class="metric-label">Put/Call Ratio</div><div class="metric-value">0.71</div></div>
+        <div><div class="metric-label">Avg Stock Vol (20d)</div><div class="metric-value">$15M</div></div>
+      </div>
+      
+      <div class="sources-row">
+        <span style="font-size:10px;color:var(--muted)">Sources:</span>
+        <span class="source-badge">nasdaq</span><span class="source-badge">finnhub</span><span class="source-badge">yfinance</span>
+      </div>
+    </div>
+  </div>
+  
+  
+  <div class="card earnings prev-reported"
+       data-type="earnings"
+       data-cap="large"
+       data-confirmation="confirmed"
+       data-ticker="J"
+       data-company="jacobs solutions inc."
+       data-mcap="18.705"
+       data-card-id="J-earnings">
+    <div class="card-top">
+      <div class="ticker-block">
+        <span class="ticker">J</span>
+        <span class="company">Jacobs Solutions Inc.</span>
+        <span class="badge badge-large">Large</span>
+        
+        <span class="badge badge-confirmed">Confirmed</span>
+        
+        
+        <span class="badge badge-prev">Previously Reported</span>
+        
+      </div>
+      <div class="event-meta">
+        <div class="event-date">Mon Nov 23 · AMC</div>
+        <div class="days-away">3 days away</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-grid">
+        <div><div class="metric-label">Market Cap</div><div class="metric-value">$18.7B</div></div>
+        <div><div class="metric-label">EPS Estimate</div><div class="metric-value">$2.11</div></div>
+        <div><div class="metric-label">Open Interest</div><div class="metric-value">5.6K</div></div>
+        <div><div class="metric-label">Options Vol Today</div><div class="metric-value">1.1K</div></div>
+        <div><div class="metric-label">Put/Call Ratio</div><div class="metric-value">0.20</div></div>
+        <div><div class="metric-label">Avg Stock Vol (20d)</div><div class="metric-value">878.3K</div></div>
+      </div>
+      
+      <div class="sources-row">
+        <span style="font-size:10px;color:var(--muted)">Sources:</span>
+        <span class="source-badge">nasdaq</span><span class="source-badge">finnhub</span><span class="source-badge">yfinance</span>
+      </div>
+    </div>
+  </div>
+  
+  
+  <div class="card earnings prev-reported"
+       data-type="earnings"
+       data-cap="large"
+       data-confirmation="confirmed"
+       data-ticker="SYM"
+       data-company="symbotic inc."
+       data-mcap="20.752"
+       data-card-id="SYM-earnings">
+    <div class="card-top">
+      <div class="ticker-block">
+        <span class="ticker">SYM</span>
+        <span class="company">Symbotic Inc.</span>
+        <span class="badge badge-large">Large</span>
+        
+        <span class="badge badge-confirmed">Confirmed</span>
+        
+        
+        <span class="badge badge-prev">Previously Reported</span>
+        
+      </div>
+      <div class="event-meta">
+        <div class="event-date">Mon Nov 23 · AMC</div>
+        <div class="days-away">3 days away</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-grid">
+        <div><div class="metric-label">Market Cap</div><div class="metric-value">$20.8B</div></div>
+        <div><div class="metric-label">EPS Estimate</div><div class="metric-value">$0.08</div></div>
+        <div><div class="metric-label">Open Interest</div><div class="metric-value">33.0K</div></div>
+        <div><div class="metric-label">Options Vol Today</div><div class="metric-value">3.2K</div></div>
+        <div><div class="metric-label">Put/Call Ratio</div><div class="metric-value">0.55</div></div>
+        <div><div class="metric-label">Avg Stock Vol (20d)</div><div class="metric-value">$2M</div></div>
+      </div>
+      
+      <div class="sources-row">
+        <span style="font-size:10px;color:var(--muted)">Sources:</span>
+        <span class="source-badge">nasdaq</span><span class="source-badge">finnhub</span><span class="source-badge">yfinance</span>
+      </div>
+    </div>
+  </div>
+  
+  
+  <div class="card earnings prev-reported"
+       data-type="earnings"
+       data-cap="large"
+       data-confirmation="confirmed"
+       data-ticker="ZM"
+       data-company="zoom communications, inc."
+       data-mcap="28.064"
+       data-card-id="ZM-earnings">
+    <div class="card-top">
+      <div class="ticker-block">
+        <span class="ticker">ZM</span>
+        <span class="company">Zoom Communications, Inc.</span>
+        <span class="badge badge-large">Large</span>
+        
+        <span class="badge badge-confirmed">Confirmed</span>
+        
+        
+        <span class="badge badge-prev">Previously Reported</span>
+        
+      </div>
+      <div class="event-meta">
+        <div class="event-date">Mon Nov 23 · AMC</div>
+        <div class="days-away">3 days away</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-grid">
+        <div><div class="metric-label">Market Cap</div><div class="metric-value">$28.1B</div></div>
+        <div><div class="metric-label">EPS Estimate</div><div class="metric-value">$1.00</div></div>
+        <div><div class="metric-label">Open Interest</div><div class="metric-value">132.1K</div></div>
+        <div><div class="metric-label">Options Vol Today</div><div class="metric-value">12.6K</div></div>
+        <div><div class="metric-label">Put/Call Ratio</div><div class="metric-value">1.75</div></div>
+        <div><div class="metric-label">Avg Stock Vol (20d)</div><div class="metric-value">$3M</div></div>
+      </div>
+      
+      <div class="sources-row">
+        <span style="font-size:10px;color:var(--muted)">Sources:</span>
+        <span class="source-badge">nasdaq</span><span class="source-badge">finnhub</span><span class="source-badge">yfinance</span>
+      </div>
+    </div>
+  </div>
+  
+  
+  <div class="card earnings prev-reported"
+       data-type="earnings"
+       data-cap="large"
+       data-confirmation="confirmed"
+       data-ticker="TCOM"
+       data-company="trip.com group limited"
+       data-mcap="26.611"
+       data-card-id="TCOM-earnings">
+    <div class="card-top">
+      <div class="ticker-block">
+        <span class="ticker">TCOM</span>
+        <span class="company">Trip.com Group Limited</span>
+        <span class="badge badge-large">Large</span>
+        
+        <span class="badge badge-confirmed">Confirmed</span>
+        
+        
+        <span class="badge badge-prev">Previously Reported</span>
+        
+      </div>
+      <div class="event-meta">
+        <div class="event-date">Mon Nov 23</div>
+        <div class="days-away">3 days away</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-grid">
+        <div><div class="metric-label">Market Cap</div><div class="metric-value">$26.6B</div></div>
+        <div><div class="metric-label">EPS Estimate</div><div class="metric-value">$1.07</div></div>
+        <div><div class="metric-label">Open Interest</div><div class="metric-value">119.6K</div></div>
+        <div><div class="metric-label">Options Vol Today</div><div class="metric-value">3.6K</div></div>
+        <div><div class="metric-label">Put/Call Ratio</div><div class="metric-value">2.62</div></div>
+        <div><div class="metric-label">Avg Stock Vol (20d)</div><div class="metric-value">$3M</div></div>
+      </div>
+      
+      <div class="sources-row">
+        <span style="font-size:10px;color:var(--muted)">Sources:</span>
+        <span class="source-badge">nasdaq</span><span class="source-badge">cache</span>
+      </div>
+    </div>
+  </div>
+  
+  
+  <div class="card earnings prev-reported"
+       data-type="earnings"
+       data-cap="mid"
+       data-confirmation="confirmed"
+       data-ticker="AMTM"
+       data-company="amentum holdings, inc."
+       data-mcap="5.25"
+       data-card-id="AMTM-earnings">
+    <div class="card-top">
+      <div class="ticker-block">
+        <span class="ticker">AMTM</span>
+        <span class="company">Amentum Holdings, Inc.</span>
+        <span class="badge badge-mid">Mid</span>
+        
+        <span class="badge badge-confirmed">Confirmed</span>
+        
+        
+        <span class="badge badge-prev">Previously Reported</span>
+        
+      </div>
+      <div class="event-meta">
+        <div class="event-date">Mon Nov 23 · AMC</div>
+        <div class="days-away">3 days away</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-grid">
+        <div><div class="metric-label">Market Cap</div><div class="metric-value">$5.2B</div></div>
+        <div><div class="metric-label">EPS Estimate</div><div class="metric-value">$0.63</div></div>
+        <div><div class="metric-label">Open Interest</div><div class="metric-value">37.8K</div></div>
+        <div><div class="metric-label">Options Vol Today</div><div class="metric-value">4.0K</div></div>
+        <div><div class="metric-label">Put/Call Ratio</div><div class="metric-value">0.31</div></div>
+        <div><div class="metric-label">Avg Stock Vol (20d)</div><div class="metric-value">$2M</div></div>
+      </div>
+      
+      <div class="sources-row">
+        <span style="font-size:10px;color:var(--muted)">Sources:</span>
+        <span class="source-badge">nasdaq</span><span class="source-badge">finnhub</span><span class="source-badge">yfinance</span>
+      </div>
+    </div>
+  </div>
+  
+  
+  <div class="card earnings prev-reported"
+       data-type="earnings"
+       data-cap="mid"
+       data-confirmation="confirmed"
+       data-ticker="SMTC"
+       data-company="semtech corporation"
+       data-mcap="9.827"
+       data-card-id="SMTC-earnings">
+    <div class="card-top">
+      <div class="ticker-block">
+        <span class="ticker">SMTC</span>
+        <span class="company">Semtech Corporation</span>
+        <span class="badge badge-mid">Mid</span>
+        
+        <span class="badge badge-confirmed">Confirmed</span>
+        
+        
+        <span class="badge badge-prev">Previously Reported</span>
+        
+      </div>
+      <div class="event-meta">
+        <div class="event-date">Mon Nov 23 · AMC</div>
+        <div class="days-away">3 days away</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-grid">
+        <div><div class="metric-label">Market Cap</div><div class="metric-value">$9.8B</div></div>
+        <div><div class="metric-label">EPS Estimate</div><div class="metric-value">$0.92</div></div>
+        <div><div class="metric-label">Open Interest</div><div class="metric-value">40.2K</div></div>
+        <div><div class="metric-label">Options Vol Today</div><div class="metric-value">4.2K</div></div>
+        <div><div class="metric-label">Put/Call Ratio</div><div class="metric-value">0.36</div></div>
+        <div><div class="metric-label">Avg Stock Vol (20d)</div><div class="metric-value">$3M</div></div>
+      </div>
+      
+      <div class="sources-row">
+        <span style="font-size:10px;color:var(--muted)">Sources:</span>
+        <span class="source-badge">nasdaq</span><span class="source-badge">finnhub</span><span class="source-badge">yfinance</span>
+      </div>
+    </div>
+  </div>
+  
+  
+  <div class="card earnings prev-reported"
+       data-type="earnings"
+       data-cap="small"
+       data-confirmation="confirmed"
+       data-ticker="FLNC"
+       data-company="fluence energy, inc."
+       data-mcap="0.835"
+       data-card-id="FLNC-earnings">
+    <div class="card-top">
+      <div class="ticker-block">
+        <span class="ticker">FLNC</span>
+        <span class="company">Fluence Energy, Inc.</span>
+        <span class="badge badge-small">Small</span>
+        <span class="badge badge-confirmed">Confirmed</span>
+        
+        
+        <span class="badge badge-prev">Previously Reported</span>
+        
+      </div>
+      <div class="event-meta">
+        <div class="event-date">Mon Nov 23 · AMC</div>
+        <div class="days-away">3 days away</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-grid">
+        <div><div class="metric-label">Market Cap</div><div class="metric-value">$835M</div></div>
+        
+        <div><div class="metric-label">Open Interest</div><div class="metric-value">213.1K</div></div>
+        <div><div class="metric-label">Options Vol Today</div><div class="metric-value">13.3K</div></div>
+        <div><div class="metric-label">Put/Call Ratio</div><div class="metric-value">2.69</div></div>
+        <div><div class="metric-label">Avg Stock Vol (20d)</div><div class="metric-value">$7M</div></div>
+      </div>
+      
+      <div class="sources-row">
+        <span style="font-size:10px;color:var(--muted)">Sources:</span>
+        <span class="source-badge">nasdaq</span><span class="source-badge">finnhub</span><span class="source-badge">yfinance</span>
+      </div>
+    </div>
+  </div>
+  
+  
+  <div class="card earnings prev-reported"
+       data-type="earnings"
+       data-cap="micro"
+       data-confirmation="confirmed"
+       data-ticker="LX"
+       data-company="lexinfintech holdings ltd."
+       data-mcap="0.092"
+       data-card-id="LX-earnings">
+    <div class="card-top">
+      <div class="ticker-block">
+        <span class="ticker">LX</span>
+        <span class="company">LexinFintech Holdings Ltd.</span>
+        
+        <span class="badge badge-confirmed">Confirmed</span>
+        
+        
+        <span class="badge badge-prev">Previously Reported</span>
+        
+      </div>
+      <div class="event-meta">
+        <div class="event-date">Mon Nov 23</div>
+        <div class="days-away">3 days away</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-grid">
+        <div><div class="metric-label">Market Cap</div><div class="metric-value">$92M</div></div>
+        
+        <div><div class="metric-label">Open Interest</div><div class="metric-value">19.6K</div></div>
+        <div><div class="metric-label">Options Vol Today</div><div class="metric-value">3.0K</div></div>
+        <div><div class="metric-label">Put/Call Ratio</div><div class="metric-value">4.97</div></div>
+        <div><div class="metric-label">Avg Stock Vol (20d)</div><div class="metric-value">920.5K</div></div>
+      </div>
+      
+      <div class="sources-row">
+        <span style="font-size:10px;color:var(--muted)">Sources:</span>
+        <span class="source-badge">nasdaq</span><span class="source-badge">finnhub</span><span class="source-badge">yfinance</span>
+      </div>
+    </div>
+  </div>
+  
+  
+  <div class="card earnings prev-reported"
+       data-type="earnings"
+       data-cap="small"
+       data-confirmation="estimated"
+       data-ticker="WOOF"
+       data-company="woof"
+       data-mcap="0.791"
+       data-card-id="WOOF-earnings">
+    <div class="card-top">
+      <div class="ticker-block">
+        <span class="ticker">WOOF</span>
+        <span class="company">WOOF</span>
+        <span class="badge badge-small">Small</span>
+        <span class="badge badge-estimated">Estimated date</span>
+        
+        <span class="badge badge-prev">Previously Reported</span>
+        
+      </div>
+      <div class="event-meta">
+        <div class="event-date">Mon Nov 23</div>
+        <div class="days-away">3 days away</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-grid">
+        <div><div class="metric-label">Market Cap</div><div class="metric-value">$791M</div></div>
+        <div><div class="metric-label">EPS Estimate</div><div class="metric-value">$0.04</div></div>
+        <div><div class="metric-label">Open Interest</div><div class="metric-value">32.6K</div></div>
+        <div><div class="metric-label">Options Vol Today</div><div class="metric-value">3.0K</div></div>
+        <div><div class="metric-label">Put/Call Ratio</div><div class="metric-value">4.36</div></div>
+        <div><div class="metric-label">Avg Stock Vol (20d)</div><div class="metric-value">$4M</div></div>
+      </div>
+      
+      <div class="sources-row">
+        <span style="font-size:10px;color:var(--muted)">Sources:</span>
+        <span class="source-badge">finnhub</span><span class="source-badge">yfinance</span>
+      </div>
+    </div>
+  </div>
+  
+  
+  <div class="card earnings prev-reported"
+       data-type="earnings"
+       data-cap="small"
+       data-confirmation="confirmed"
+       data-ticker="VNET"
+       data-company="vnet group, inc."
+       data-mcap="0.625"
+       data-card-id="VNET-earnings">
+    <div class="card-top">
+      <div class="ticker-block">
+        <span class="ticker">VNET</span>
+        <span class="company">VNET Group, Inc.</span>
+        <span class="badge badge-small">Small</span>
+        <span class="badge badge-confirmed">Confirmed</span>
+        
+        
+        <span class="badge badge-prev">Previously Reported</span>
+        
+      </div>
+      <div class="event-meta">
+        <div class="event-date">Mon Nov 23 · BMO</div>
+        <div class="days-away">3 days away</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-grid">
+        <div><div class="metric-label">Market Cap</div><div class="metric-value">$625M</div></div>
+        <div><div class="metric-label">EPS Estimate</div><div class="metric-value">$0.53</div></div>
+        <div><div class="metric-label">Open Interest</div><div class="metric-value">94.6K</div></div>
+        <div><div class="metric-label">Options Vol Today</div><div class="metric-value">3.2K</div></div>
+        <div><div class="metric-label">Put/Call Ratio</div><div class="metric-value">1.30</div></div>
+        <div><div class="metric-label">Avg Stock Vol (20d)</div><div class="metric-value">$7M</div></div>
+      </div>
+      
+      <div class="sources-row">
+        <span style="font-size:10px;color:var(--muted)">Sources:</span>
+        <span class="source-badge">nasdaq</span><span class="source-badge">yfinance</span>
+      </div>
+    </div>
+  </div>
+  
+  
+  <div class="card earnings prev-reported"
+       data-type="earnings"
+       data-cap="large"
+       data-confirmation="confirmed"
+       data-ticker="ADI"
+       data-company="analog devices, inc."
+       data-mcap="185.913"
+       data-card-id="ADI-earnings">
+    <div class="card-top">
+      <div class="ticker-block">
+        <span class="ticker">ADI</span>
+        <span class="company">Analog Devices, Inc.</span>
+        <span class="badge badge-large">Large</span>
+        
+        <span class="badge badge-confirmed">Confirmed</span>
+        
+        
+        <span class="badge badge-prev">Previously Reported</span>
+        
+      </div>
+      <div class="event-meta">
+        <div class="event-date">Tue Nov 24 · BMO</div>
+        <div class="days-away">4 days away</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-grid">
+        <div><div class="metric-label">Market Cap</div><div class="metric-value">$185.9B</div></div>
+        <div><div class="metric-label">EPS Estimate</div><div class="metric-value">$3.89</div></div>
+        <div><div class="metric-label">Open Interest</div><div class="metric-value">67.3K</div></div>
+        <div><div class="metric-label">Options Vol Today</div><div class="metric-value">3.7K</div></div>
+        <div><div class="metric-label">Put/Call Ratio</div><div class="metric-value">0.97</div></div>
+        <div><div class="metric-label">Avg Stock Vol (20d)</div><div class="metric-value">$5M</div></div>
+      </div>
+      
+      <div class="sources-row">
+        <span style="font-size:10px;color:var(--muted)">Sources:</span>
+        <span class="source-badge">nasdaq</span><span class="source-badge">finnhub</span><span class="source-badge">cache</span>
+      </div>
+    </div>
+  </div>
+  
+  
+  <div class="card earnings prev-reported"
+       data-type="earnings"
+       data-cap="large"
+       data-confirmation="confirmed"
+       data-ticker="ADSK"
+       data-company="autodesk, inc."
+       data-mcap="53.341"
+       data-card-id="ADSK-earnings">
+    <div class="card-top">
+      <div class="ticker-block">
+        <span class="ticker">ADSK</span>
+        <span class="company">Autodesk, Inc.</span>
+        <span class="badge badge-large">Large</span>
+        
+        <span class="badge badge-confirmed">Confirmed</span>
+        
+        
+        <span class="badge badge-prev">Previously Reported</span>
+        
+      </div>
+      <div class="event-meta">
+        <div class="event-date">Tue Nov 24 · AMC</div>
+        <div class="days-away">4 days away</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-grid">
+        <div><div class="metric-label">Market Cap</div><div class="metric-value">$53.3B</div></div>
+        <div><div class="metric-label">EPS Estimate</div><div class="metric-value">$2.27</div></div>
+        <div><div class="metric-label">Open Interest</div><div class="metric-value">17.7K</div></div>
+        <div><div class="metric-label">Options Vol Today</div><div class="metric-value">4.1K</div></div>
+        <div><div class="metric-label">Put/Call Ratio</div><div class="metric-value">3.18</div></div>
+        <div><div class="metric-label">Avg Stock Vol (20d)</div><div class="metric-value">$2M</div></div>
+      </div>
+      
+      <div class="sources-row">
+        <span style="font-size:10px;color:var(--muted)">Sources:</span>
+        <span class="source-badge">nasdaq</span><span class="source-badge">finnhub</span><span class="source-badge">cache</span>
+      </div>
+    </div>
+  </div>
+  
+  
+  <div class="card earnings prev-reported"
+       data-type="earnings"
+       data-cap="large"
+       data-confirmation="confirmed"
+       data-ticker="BBY"
+       data-company="best buy co., inc."
+       data-mcap="20.637"
+       data-card-id="BBY-earnings">
+    <div class="card-top">
+      <div class="ticker-block">
+        <span class="ticker">BBY</span>
+        <span class="company">Best Buy Co., Inc.</span>
+        <span class="badge badge-large">Large</span>
+        
+        <span class="badge badge-confirmed">Confirmed</span>
+        
+        
+        <span class="badge badge-prev">Previously Reported</span>
+        
+      </div>
+      <div class="event-meta">
+        <div class="event-date">Tue Nov 24 · BMO</div>
+        <div class="days-away">4 days away</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-grid">
+        <div><div class="metric-label">Market Cap</div><div class="metric-value">$20.6B</div></div>
+        <div><div class="metric-label">EPS Estimate</div><div class="metric-value">$1.48</div></div>
+        <div><div class="metric-label">Open Interest</div><div class="metric-value">46.9K</div></div>
+        <div><div class="metric-label">Options Vol Today</div><div class="metric-value">6.1K</div></div>
+        <div><div class="metric-label">Put/Call Ratio</div><div class="metric-value">0.49</div></div>
+        <div><div class="metric-label">Avg Stock Vol (20d)</div><div class="metric-value">$3M</div></div>
+      </div>
+      
+      <div class="sources-row">
+        <span style="font-size:10px;color:var(--muted)">Sources:</span>
+        <span class="source-badge">nasdaq</span><span class="source-badge">finnhub</span><span class="source-badge">cache</span>
+      </div>
+    </div>
+  </div>
+  
+  
+  <div class="card earnings prev-reported"
+       data-type="earnings"
+       data-cap="large"
+       data-confirmation="confirmed"
+       data-ticker="DELL"
+       data-company="dell technologies inc."
+       data-mcap="205.234"
+       data-card-id="DELL-earnings">
+    <div class="card-top">
+      <div class="ticker-block">
+        <span class="ticker">DELL</span>
+        <span class="company">Dell Technologies Inc.</span>
+        <span class="badge badge-large">Large</span>
+        
+        <span class="badge badge-confirmed">Confirmed</span>
+        
+        
+        <span class="badge badge-prev">Previously Reported</span>
+        
+      </div>
+      <div class="event-meta">
+        <div class="event-date">Tue Nov 24 · AMC</div>
+        <div class="days-away">4 days away</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-grid">
+        <div><div class="metric-label">Market Cap</div><div class="metric-value">$205.2B</div></div>
+        <div><div class="metric-label">EPS Estimate</div><div class="metric-value">$6.55</div></div>
+        <div><div class="metric-label">Open Interest</div><div class="metric-value">301.9K</div></div>
+        <div><div class="metric-label">Options Vol Today</div><div class="metric-value">83.0K</div></div>
+        <div><div class="metric-label">Put/Call Ratio</div><div class="metric-value">1.32</div></div>
+        <div><div class="metric-label">Avg Stock Vol (20d)</div><div class="metric-value">$7M</div></div>
+      </div>
+      
+      <div class="sources-row">
+        <span style="font-size:10px;color:var(--muted)">Sources:</span>
+        <span class="source-badge">nasdaq</span><span class="source-badge">finnhub</span><span class="source-badge">yfinance</span><span class="source-badge">cache</span>
+      </div>
+    </div>
+  </div>
+  
+  
+  <div class="card earnings prev-reported"
+       data-type="earnings"
+       data-cap="large"
+       data-confirmation="confirmed"
+       data-ticker="HPQ"
+       data-company="hp inc."
+       data-mcap="25.89"
+       data-card-id="HPQ-earnings">
+    <div class="card-top">
+      <div class="ticker-block">
+        <span class="ticker">HPQ</span>
+        <span class="company">HP Inc.</span>
+        <span class="badge badge-large">Large</span>
+        
+        <span class="badge badge-confirmed">Confirmed</span>
+        
+        
+        <span class="badge badge-prev">Previously Reported</span>
+        
+      </div>
+      <div class="event-meta">
+        <div class="event-date">Tue Nov 24 · AMC</div>
+        <div class="days-away">4 days away</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-grid">
+        <div><div class="metric-label">Market Cap</div><div class="metric-value">$25.9B</div></div>
+        <div><div class="metric-label">EPS Estimate</div><div class="metric-value">$0.74</div></div>
+        <div><div class="metric-label">Open Interest</div><div class="metric-value">172.1K</div></div>
+        <div><div class="metric-label">Options Vol Today</div><div class="metric-value">15.4K</div></div>
+        <div><div class="metric-label">Put/Call Ratio</div><div class="metric-value">1.31</div></div>
+        <div><div class="metric-label">Avg Stock Vol (20d)</div><div class="metric-value">$13M</div></div>
+      </div>
+      
+      <div class="sources-row">
+        <span style="font-size:10px;color:var(--muted)">Sources:</span>
+        <span class="source-badge">nasdaq</span><span class="source-badge">finnhub</span><span class="source-badge">cache</span>
+      </div>
+    </div>
+  </div>
+  
+  
+  <div class="card earnings prev-reported"
+       data-type="earnings"
+       data-cap="large"
+       data-confirmation="confirmed"
+       data-ticker="MDT"
+       data-company="medtronic plc"
+       data-mcap="130.881"
+       data-card-id="MDT-earnings">
+    <div class="card-top">
+      <div class="ticker-block">
+        <span class="ticker">MDT</span>
+        <span class="company">Medtronic plc</span>
+        <span class="badge badge-large">Large</span>
+        
+        <span class="badge badge-confirmed">Confirmed</span>
+        
+        
+        <span class="badge badge-prev">Previously Reported</span>
+        
+      </div>
+      <div class="event-meta">
+        <div class="event-date">Tue Nov 24 · BMO</div>
+        <div class="days-away">4 days away</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-grid">
+        <div><div class="metric-label">Market Cap</div><div class="metric-value">$130.9B</div></div>
+        <div><div class="metric-label">EPS Estimate</div><div class="metric-value">$1.34</div></div>
+        <div><div class="metric-label">Open Interest</div><div class="metric-value">119.2K</div></div>
+        <div><div class="metric-label">Options Vol Today</div><div class="metric-value">4.3K</div></div>
+        <div><div class="metric-label">Put/Call Ratio</div><div class="metric-value">1.21</div></div>
+        <div><div class="metric-label">Avg Stock Vol (20d)</div><div class="metric-value">$8M</div></div>
+      </div>
+      
+      <div class="sources-row">
+        <span style="font-size:10px;color:var(--muted)">Sources:</span>
+        <span class="source-badge">nasdaq</span><span class="source-badge">finnhub</span><span class="source-badge">cache</span>
+      </div>
+    </div>
+  </div>
+  
+  
+  <div class="card earnings prev-reported"
+       data-type="earnings"
+       data-cap="large"
+       data-confirmation="confirmed"
+       data-ticker="NTNX"
+       data-company="nutanix, inc."
+       data-mcap="15.415"
+       data-card-id="NTNX-earnings">
+    <div class="card-top">
+      <div class="ticker-block">
+        <span class="ticker">NTNX</span>
+        <span class="company">Nutanix, Inc.</span>
+        <span class="badge badge-large">Large</span>
+        
+        <span class="badge badge-confirmed">Confirmed</span>
+        
+        
+        <span class="badge badge-prev">Previously Reported</span>
+        
+      </div>
+      <div class="event-meta">
+        <div class="event-date">Tue Nov 24 · AMC</div>
+        <div class="days-away">4 days away</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-grid">
+        <div><div class="metric-label">Market Cap</div><div class="metric-value">$15.4B</div></div>
+        <div><div class="metric-label">EPS Estimate</div><div class="metric-value">$0.29</div></div>
+        <div><div class="metric-label">Open Interest</div><div class="metric-value">41.9K</div></div>
+        <div><div class="metric-label">Options Vol Today</div><div class="metric-value">2.5K</div></div>
+        <div><div class="metric-label">Put/Call Ratio</div><div class="metric-value">0.54</div></div>
+        <div><div class="metric-label">Avg Stock Vol (20d)</div><div class="metric-value">$2M</div></div>
+      </div>
+      
+      <div class="sources-row">
+        <span style="font-size:10px;color:var(--muted)">Sources:</span>
+        <span class="source-badge">nasdaq</span><span class="source-badge">finnhub</span><span class="source-badge">cache</span>
+      </div>
+    </div>
+  </div>
+  
+  
+  <div class="card earnings prev-reported"
+       data-type="earnings"
+       data-cap="large"
+       data-confirmation="confirmed"
+       data-ticker="SJM"
+       data-company="the j.m. smucker company "
+       data-mcap="14.254"
+       data-card-id="SJM-earnings">
+    <div class="card-top">
+      <div class="ticker-block">
+        <span class="ticker">SJM</span>
+        <span class="company">The J.M. Smucker Company </span>
+        <span class="badge badge-large">Large</span>
+        
+        <span class="badge badge-confirmed">Confirmed</span>
+        
+        
+        <span class="badge badge-prev">Previously Reported</span>
+        
+      </div>
+      <div class="event-meta">
+        <div class="event-date">Tue Nov 24 · BMO</div>
+        <div class="days-away">4 days away</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-grid">
+        <div><div class="metric-label">Market Cap</div><div class="metric-value">$14.3B</div></div>
+        <div><div class="metric-label">EPS Estimate</div><div class="metric-value">$2.57</div></div>
+        <div><div class="metric-label">Open Interest</div><div class="metric-value">19.2K</div></div>
+        <div><div class="metric-label">Options Vol Today</div><div class="metric-value">2.7K</div></div>
+        <div><div class="metric-label">Put/Call Ratio</div><div class="metric-value">0.59</div></div>
+        <div><div class="metric-label">Avg Stock Vol (20d)</div><div class="metric-value">$1M</div></div>
+      </div>
+      
+      <div class="sources-row">
+        <span style="font-size:10px;color:var(--muted)">Sources:</span>
+        <span class="source-badge">nasdaq</span><span class="source-badge">finnhub</span><span class="source-badge">cache</span>
+      </div>
+    </div>
+  </div>
+  
+  
+  <div class="card earnings prev-reported"
+       data-type="earnings"
+       data-cap="large"
+       data-confirmation="confirmed"
+       data-ticker="WDAY"
+       data-company="workday, inc."
+       data-mcap="44.055"
+       data-card-id="WDAY-earnings">
+    <div class="card-top">
+      <div class="ticker-block">
+        <span class="ticker">WDAY</span>
+        <span class="company">Workday, Inc.</span>
+        <span class="badge badge-large">Large</span>
+        
+        <span class="badge badge-confirmed">Confirmed</span>
+        
+        
+        <span class="badge badge-prev">Previously Reported</span>
+        
+      </div>
+      <div class="event-meta">
+        <div class="event-date">Tue Nov 24 · AMC</div>
+        <div class="days-away">4 days away</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-grid">
+        <div><div class="metric-label">Market Cap</div><div class="metric-value">$44.1B</div></div>
+        <div><div class="metric-label">EPS Estimate</div><div class="metric-value">$1.28</div></div>
+        <div><div class="metric-label">Open Interest</div><div class="metric-value">46.9K</div></div>
+        <div><div class="metric-label">Options Vol Today</div><div class="metric-value">5.6K</div></div>
+        <div><div class="metric-label">Put/Call Ratio</div><div class="metric-value">1.08</div></div>
+        <div><div class="metric-label">Avg Stock Vol (20d)</div><div class="metric-value">$2M</div></div>
+      </div>
+      
+      <div class="sources-row">
+        <span style="font-size:10px;color:var(--muted)">Sources:</span>
+        <span class="source-badge">nasdaq</span><span class="source-badge">finnhub</span><span class="source-badge">cache</span>
+      </div>
+    </div>
+  </div>
+  
+  
+  <div class="card earnings prev-reported"
+       data-type="earnings"
+       data-cap="large"
+       data-confirmation="confirmed"
+       data-ticker="BURL"
+       data-company="burlington stores, inc."
+       data-mcap="14.772"
+       data-card-id="BURL-earnings">
+    <div class="card-top">
+      <div class="ticker-block">
+        <span class="ticker">BURL</span>
+        <span class="company">Burlington Stores, Inc.</span>
+        <span class="badge badge-large">Large</span>
+        
+        <span class="badge badge-confirmed">Confirmed</span>
+        
+        
+        <span class="badge badge-prev">Previously Reported</span>
+        
+      </div>
+      <div class="event-meta">
+        <div class="event-date">Tue Nov 24 · BMO</div>
+        <div class="days-away">4 days away</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-grid">
+        <div><div class="metric-label">Market Cap</div><div class="metric-value">$14.8B</div></div>
+        <div><div class="metric-label">EPS Estimate</div><div class="metric-value">$1.67</div></div>
+        <div><div class="metric-label">Open Interest</div><div class="metric-value">55.7K</div></div>
+        <div><div class="metric-label">Options Vol Today</div><div class="metric-value">6.1K</div></div>
+        <div><div class="metric-label">Put/Call Ratio</div><div class="metric-value">1.12</div></div>
+        <div><div class="metric-label">Avg Stock Vol (20d)</div><div class="metric-value">$1M</div></div>
+      </div>
+      
+      <div class="sources-row">
+        <span style="font-size:10px;color:var(--muted)">Sources:</span>
+        <span class="source-badge">nasdaq</span><span class="source-badge">finnhub</span><span class="source-badge">yfinance</span>
+      </div>
+    </div>
+  </div>
+  
+  
+  <div class="card earnings prev-reported"
+       data-type="earnings"
+       data-cap="large"
+       data-confirmation="confirmed"
+       data-ticker="DKS"
+       data-company="dick&#39;s sporting goods inc"
+       data-mcap="13.073"
+       data-card-id="DKS-earnings">
+    <div class="card-top">
+      <div class="ticker-block">
+        <span class="ticker">DKS</span>
+        <span class="company">Dick&#39;s Sporting Goods Inc</span>
+        <span class="badge badge-large">Large</span>
+        
+        <span class="badge badge-confirmed">Confirmed</span>
+        
+        
+        <span class="badge badge-prev">Previously Reported</span>
+        
+      </div>
+      <div class="event-meta">
+        <div class="event-date">Tue Nov 24 · BMO</div>
+        <div class="days-away">4 days away</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-grid">
+        <div><div class="metric-label">Market Cap</div><div class="metric-value">$13.1B</div></div>
+        <div><div class="metric-label">EPS Estimate</div><div class="metric-value">$1.38</div></div>
+        <div><div class="metric-label">Open Interest</div><div class="metric-value">60.8K</div></div>
+        <div><div class="metric-label">Options Vol Today</div><div class="metric-value">3.2K</div></div>
+        <div><div class="metric-label">Put/Call Ratio</div><div class="metric-value">0.77</div></div>
+        <div><div class="metric-label">Avg Stock Vol (20d)</div><div class="metric-value">$2M</div></div>
+      </div>
+      
+      <div class="sources-row">
+        <span style="font-size:10px;color:var(--muted)">Sources:</span>
+        <span class="source-badge">nasdaq</span><span class="source-badge">finnhub</span><span class="source-badge">yfinance</span>
+      </div>
+    </div>
+  </div>
+  
+  
+  <div class="card earnings "
+       data-type="earnings"
+       data-cap="large"
+       data-confirmation="confirmed"
+       data-ticker="BHP"
+       data-company="bhp group limited"
+       data-mcap="170.736"
+       data-card-id="BHP-earnings">
+    <div class="card-top">
+      <div class="ticker-block">
+        <span class="ticker">BHP</span>
+        <span class="company">BHP Group Limited</span>
+        <span class="badge badge-large">Large</span>
+        
+        <span class="badge badge-confirmed">Confirmed</span>
+        
+        
+        
+        
+      </div>
+      <div class="event-meta">
+        <div class="event-date">Tue Nov 24</div>
+        <div class="days-away">4 days away</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-grid">
+        <div><div class="metric-label">Market Cap</div><div class="metric-value">$170.7B</div></div>
+        
+        <div><div class="metric-label">Open Interest</div><div class="metric-value">150.8K</div></div>
+        <div><div class="metric-label">Options Vol Today</div><div class="metric-value">24.1K</div></div>
+        <div><div class="metric-label">Put/Call Ratio</div><div class="metric-value">0.71</div></div>
+        <div><div class="metric-label">Avg Stock Vol (20d)</div><div class="metric-value">$4M</div></div>
+      </div>
+      
+      <div class="sources-row">
+        <span style="font-size:10px;color:var(--muted)">Sources:</span>
+        <span class="source-badge">nasdaq</span><span class="source-badge">yfinance</span>
+      </div>
+    </div>
+  </div>
+  
+  
+  <div class="card earnings prev-reported"
+       data-type="earnings"
+       data-cap="large"
+       data-confirmation="confirmed"
+       data-ticker="DLTR"
+       data-company="dollar tree, inc."
+       data-mcap="26.726"
+       data-card-id="DLTR-earnings">
+    <div class="card-top">
+      <div class="ticker-block">
+        <span class="ticker">DLTR</span>
+        <span class="company">Dollar Tree, Inc.</span>
+        <span class="badge badge-large">Large</span>
+        
+        <span class="badge badge-confirmed">Confirmed</span>
+        
+        
+        <span class="badge badge-prev">Previously Reported</span>
+        
+      </div>
+      <div class="event-meta">
+        <div class="event-date">Tue Nov 24 · BMO</div>
+        <div class="days-away">4 days away</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-grid">
+        <div><div class="metric-label">Market Cap</div><div class="metric-value">$26.7B</div></div>
+        <div><div class="metric-label">EPS Estimate</div><div class="metric-value">$0.89</div></div>
+        <div><div class="metric-label">Open Interest</div><div class="metric-value">27.0K</div></div>
+        <div><div class="metric-label">Options Vol Today</div><div class="metric-value">2.4K</div></div>
+        <div><div class="metric-label">Put/Call Ratio</div><div class="metric-value">0.63</div></div>
+        <div><div class="metric-label">Avg Stock Vol (20d)</div><div class="metric-value">$2M</div></div>
+      </div>
+      
+      <div class="sources-row">
+        <span style="font-size:10px;color:var(--muted)">Sources:</span>
+        <span class="source-badge">nasdaq</span><span class="source-badge">yfinance</span>
+      </div>
+    </div>
+  </div>
+  
+  
+  <div class="card earnings prev-reported"
+       data-type="earnings"
+       data-cap="mid"
+       data-confirmation="confirmed"
+       data-ticker="AMBA"
+       data-company="ambarella, inc."
+       data-mcap="2.363"
+       data-card-id="AMBA-earnings">
+    <div class="card-top">
+      <div class="ticker-block">
+        <span class="ticker">AMBA</span>
+        <span class="company">Ambarella, Inc.</span>
+        <span class="badge badge-mid">Mid</span>
+        
+        <span class="badge badge-confirmed">Confirmed</span>
+        
+        
+        <span class="badge badge-prev">Previously Reported</span>
+        
+      </div>
+      <div class="event-meta">
+        <div class="event-date">Tue Nov 24 · AMC</div>
+        <div class="days-away">4 days away</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-grid">
+        <div><div class="metric-label">Market Cap</div><div class="metric-value">$2.4B</div></div>
+        
+        <div><div class="metric-label">Open Interest</div><div class="metric-value">42.1K</div></div>
+        <div><div class="metric-label">Options Vol Today</div><div class="metric-value">11.4K</div></div>
+        <div><div class="metric-label">Put/Call Ratio</div><div class="metric-value">0.27</div></div>
+        <div><div class="metric-label">Avg Stock Vol (20d)</div><div class="metric-value">$1M</div></div>
+      </div>
+      
+      <div class="sources-row">
+        <span style="font-size:10px;color:var(--muted)">Sources:</span>
+        <span class="source-badge">nasdaq</span><span class="source-badge">finnhub</span><span class="source-badge">cache</span>
+      </div>
+    </div>
+  </div>
+  
+  
+  <div class="card earnings prev-reported"
+       data-type="earnings"
+       data-cap="mid"
+       data-confirmation="confirmed"
+       data-ticker="BILI"
+       data-company="bilibili inc."
+       data-mcap="4.715"
+       data-card-id="BILI-earnings">
+    <div class="card-top">
+      <div class="ticker-block">
+        <span class="ticker">BILI</span>
+        <span class="company">Bilibili Inc.</span>
+        <span class="badge badge-mid">Mid</span>
+        
+        <span class="badge badge-confirmed">Confirmed</span>
+        
+        
+        <span class="badge badge-prev">Previously Reported</span>
+        
+      </div>
+      <div class="event-meta">
+        <div class="event-date">Tue Nov 24 · BMO</div>
+        <div class="days-away">4 days away</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-grid">
+        <div><div class="metric-label">Market Cap</div><div class="metric-value">$4.7B</div></div>
+        <div><div class="metric-label">EPS Estimate</div><div class="metric-value">$0.17</div></div>
+        <div><div class="metric-label">Open Interest</div><div class="metric-value">233.8K</div></div>
+        <div><div class="metric-label">Options Vol Today</div><div class="metric-value">9.9K</div></div>
+        <div><div class="metric-label">Put/Call Ratio</div><div class="metric-value">0.43</div></div>
+        <div><div class="metric-label">Avg Stock Vol (20d)</div><div class="metric-value">$3M</div></div>
+      </div>
+      
+      <div class="sources-row">
+        <span style="font-size:10px;color:var(--muted)">Sources:</span>
+        <span class="source-badge">nasdaq</span><span class="source-badge">finnhub</span><span class="source-badge">cache</span>
+      </div>
+    </div>
+  </div>
+  
+  
+  <div class="card earnings prev-reported"
+       data-type="earnings"
+       data-cap="mid"
+       data-confirmation="confirmed"
+       data-ticker="DY"
+       data-company="dycom industries, inc."
+       data-mcap="6.2"
+       data-card-id="DY-earnings">
+    <div class="card-top">
+      <div class="ticker-block">
+        <span class="ticker">DY</span>
+        <span class="company">Dycom Industries, Inc.</span>
+        <span class="badge badge-mid">Mid</span>
+        
+        <span class="badge badge-confirmed">Confirmed</span>
+        
+        
+        <span class="badge badge-prev">Previously Reported</span>
+        
+      </div>
+      <div class="event-meta">
+        <div class="event-date">Tue Nov 24 · BMO</div>
+        <div class="days-away">4 days away</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-grid">
+        <div><div class="metric-label">Market Cap</div><div class="metric-value">$6.2B</div></div>
+        <div><div class="metric-label">EPS Estimate</div><div class="metric-value">$4.33</div></div>
+        <div><div class="metric-label">Open Interest</div><div class="metric-value">17.4K</div></div>
+        <div><div class="metric-label">Options Vol Today</div><div class="metric-value">1.6K</div></div>
+        <div><div class="metric-label">Put/Call Ratio</div><div class="metric-value">0.69</div></div>
+        <div><div class="metric-label">Avg Stock Vol (20d)</div><div class="metric-value">554.8K</div></div>
+      </div>
+      
+      <div class="sources-row">
+        <span style="font-size:10px;color:var(--muted)">Sources:</span>
+        <span class="source-badge">nasdaq</span><span class="source-badge">finnhub</span><span class="source-badge">cache</span>
+      </div>
+    </div>
+  </div>
+  
+  
+  <div class="card earnings prev-reported"
+       data-type="earnings"
+       data-cap="mid"
+       data-confirmation="confirmed"
+       data-ticker="MMED"
+       data-company="minimed group, inc."
+       data-mcap="5.002"
+       data-card-id="MMED-earnings">
+    <div class="card-top">
+      <div class="ticker-block">
+        <span class="ticker">MMED</span>
+        <span class="company">MiniMed Group, Inc.</span>
+        <span class="badge badge-mid">Mid</span>
+        
+        <span class="badge badge-confirmed">Confirmed</span>
+        
+        
+        <span class="badge badge-prev">Previously Reported</span>
+        
+      </div>
+      <div class="event-meta">
+        <div class="event-date">Tue Nov 24 · BMO</div>
+        <div class="days-away">4 days away</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-grid">
+        <div><div class="metric-label">Market Cap</div><div class="metric-value">$5.0B</div></div>
+        <div><div class="metric-label">EPS Estimate</div><div class="metric-value">$0.10</div></div>
+        <div><div class="metric-label">Open Interest</div><div class="metric-value">61.3K</div></div>
+        <div><div class="metric-label">Options Vol Today</div><div class="metric-value">7.0K</div></div>
+        <div><div class="metric-label">Put/Call Ratio</div><div class="metric-value">0.09</div></div>
+        <div><div class="metric-label">Avg Stock Vol (20d)</div><div class="metric-value">$7M</div></div>
+      </div>
+      
+      <div class="sources-row">
+        <span style="font-size:10px;color:var(--muted)">Sources:</span>
+        <span class="source-badge">nasdaq</span><span class="source-badge">finnhub</span><span class="source-badge">cache</span>
+      </div>
+    </div>
+  </div>
+  
+  
+  <div class="card earnings prev-reported"
+       data-type="earnings"
+       data-cap="mid"
+       data-confirmation="estimated"
+       data-ticker="XP"
+       data-company="xp"
+       data-mcap="6.971"
+       data-card-id="XP-earnings">
+    <div class="card-top">
+      <div class="ticker-block">
+        <span class="ticker">XP</span>
+        <span class="company">XP</span>
+        <span class="badge badge-mid">Mid</span>
+        
+        <span class="badge badge-estimated">Estimated date</span>
+        
+        <span class="badge badge-prev">Previously Reported</span>
+        
+      </div>
+      <div class="event-meta">
+        <div class="event-date">Tue Nov 24</div>
+        <div class="days-away">4 days away</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-grid">
+        <div><div class="metric-label">Market Cap</div><div class="metric-value">$7.0B</div></div>
+        <div><div class="metric-label">EPS Estimate</div><div class="metric-value">$2.86</div></div>
+        <div><div class="metric-label">Open Interest</div><div class="metric-value">755.3K</div></div>
+        <div><div class="metric-label">Options Vol Today</div><div class="metric-value">24.0K</div></div>
+        <div><div class="metric-label">Put/Call Ratio</div><div class="metric-value">3.45</div></div>
+        <div><div class="metric-label">Avg Stock Vol (20d)</div><div class="metric-value">$19M</div></div>
+      </div>
+      
+      <div class="sources-row">
+        <span style="font-size:10px;color:var(--muted)">Sources:</span>
+        <span class="source-badge">finnhub</span><span class="source-badge">yfinance</span>
+      </div>
+    </div>
+  </div>
+  
+  
+  <div class="card earnings prev-reported"
+       data-type="earnings"
+       data-cap="mid"
+       data-confirmation="confirmed"
+       data-ticker="ANF"
+       data-company="abercrombie &amp; fitch company"
+       data-mcap="6.186"
+       data-card-id="ANF-earnings">
+    <div class="card-top">
+      <div class="ticker-block">
+        <span class="ticker">ANF</span>
+        <span class="company">Abercrombie &amp; Fitch Company</span>
+        <span class="badge badge-mid">Mid</span>
+        
+        <span class="badge badge-confirmed">Confirmed</span>
+        
+        
+        <span class="badge badge-prev">Previously Reported</span>
+        
+      </div>
+      <div class="event-meta">
+        <div class="event-date">Tue Nov 24 · BMO</div>
+        <div class="days-away">4 days away</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-grid">
+        <div><div class="metric-label">Market Cap</div><div class="metric-value">$6.2B</div></div>
+        <div><div class="metric-label">EPS Estimate</div><div class="metric-value">$3.14</div></div>
+        <div><div class="metric-label">Open Interest</div><div class="metric-value">29.8K</div></div>
+        <div><div class="metric-label">Options Vol Today</div><div class="metric-value">2.9K</div></div>
+        <div><div class="metric-label">Put/Call Ratio</div><div class="metric-value">1.98</div></div>
+        <div><div class="metric-label">Avg Stock Vol (20d)</div><div class="metric-value">991.4K</div></div>
+      </div>
+      
+      <div class="sources-row">
+        <span style="font-size:10px;color:var(--muted)">Sources:</span>
+        <span class="source-badge">nasdaq</span><span class="source-badge">finnhub</span><span class="source-badge">yfinance</span>
+      </div>
+    </div>
+  </div>
+  
+  
+  <div class="card earnings prev-reported"
+       data-type="earnings"
+       data-cap="mid"
+       data-confirmation="confirmed"
+       data-ticker="KSS"
+       data-company="kohl&#39;s corporation"
+       data-mcap="2.65"
+       data-card-id="KSS-earnings">
+    <div class="card-top">
+      <div class="ticker-block">
+        <span class="ticker">KSS</span>
+        <span class="company">Kohl&#39;s Corporation</span>
+        <span class="badge badge-mid">Mid</span>
+        
+        <span class="badge badge-confirmed">Confirmed</span>
+        
+        
+        <span class="badge badge-prev">Previously Reported</span>
+        
+      </div>
+      <div class="event-meta">
+        <div class="event-date">Tue Nov 24 · BMO</div>
+        <div class="days-away">4 days away</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-grid">
+        <div><div class="metric-label">Market Cap</div><div class="metric-value">$2.6B</div></div>
+        
+        <div><div class="metric-label">Open Interest</div><div class="metric-value">56.5K</div></div>
+        <div><div class="metric-label">Options Vol Today</div><div class="metric-value">6.5K</div></div>
+        <div><div class="metric-label">Put/Call Ratio</div><div class="metric-value">0.90</div></div>
+        <div><div class="metric-label">Avg Stock Vol (20d)</div><div class="metric-value">$4M</div></div>
+      </div>
+      
+      <div class="sources-row">
+        <span style="font-size:10px;color:var(--muted)">Sources:</span>
+        <span class="source-badge">nasdaq</span><span class="source-badge">finnhub</span><span class="source-badge">yfinance</span>
+      </div>
+    </div>
+  </div>
+  
+  
+  <div class="card earnings prev-reported"
+       data-type="earnings"
+       data-cap="mid"
+       data-confirmation="confirmed"
+       data-ticker="URBN"
+       data-company="urban outfitters, inc."
+       data-mcap="7.158"
+       data-card-id="URBN-earnings">
+    <div class="card-top">
+      <div class="ticker-block">
+        <span class="ticker">URBN</span>
+        <span class="company">Urban Outfitters, Inc.</span>
+        <span class="badge badge-mid">Mid</span>
+        
+        <span class="badge badge-confirmed">Confirmed</span>
+        
+        
+        <span class="badge badge-prev">Previously Reported</span>
+        
+      </div>
+      <div class="event-meta">
+        <div class="event-date">Tue Nov 24 · AMC</div>
+        <div class="days-away">4 days away</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-grid">
+        <div><div class="metric-label">Market Cap</div><div class="metric-value">$7.2B</div></div>
+        <div><div class="metric-label">EPS Estimate</div><div class="metric-value">$1.53</div></div>
+        <div><div class="metric-label">Open Interest</div><div class="metric-value">4.8K</div></div>
+        <div><div class="metric-label">Options Vol Today</div><div class="metric-value">2.9K</div></div>
+        <div><div class="metric-label">Put/Call Ratio</div><div class="metric-value">1.45</div></div>
+        <div><div class="metric-label">Avg Stock Vol (20d)</div><div class="metric-value">965.3K</div></div>
+      </div>
+      
+      <div class="sources-row">
+        <span style="font-size:10px;color:var(--muted)">Sources:</span>
+        <span class="source-badge">nasdaq</span><span class="source-badge">finnhub</span><span class="source-badge">yfinance</span>
+      </div>
+    </div>
+  </div>
+  
+  
+  <div class="card earnings prev-reported"
+       data-type="earnings"
+       data-cap="mid"
+       data-confirmation="confirmed"
+       data-ticker="VIPS"
+       data-company="vipshop holdings limited"
+       data-mcap="5.996"
+       data-card-id="VIPS-earnings">
+    <div class="card-top">
+      <div class="ticker-block">
+        <span class="ticker">VIPS</span>
+        <span class="company">Vipshop Holdings Limited</span>
+        <span class="badge badge-mid">Mid</span>
+        
+        <span class="badge badge-confirmed">Confirmed</span>
+        
+        
+        <span class="badge badge-prev">Previously Reported</span>
+        
+      </div>
+      <div class="event-meta">
+        <div class="event-date">Tue Nov 24 · BMO</div>
+        <div class="days-away">4 days away</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-grid">
+        <div><div class="metric-label">Market Cap</div><div class="metric-value">$6.0B</div></div>
+        <div><div class="metric-label">EPS Estimate</div><div class="metric-value">$0.31</div></div>
+        <div><div class="metric-label">Open Interest</div><div class="metric-value">11.6K</div></div>
+        <div><div class="metric-label">Options Vol Today</div><div class="metric-value">1.5K</div></div>
+        <div><div class="metric-label">Put/Call Ratio</div><div class="metric-value">0.30</div></div>
+        <div><div class="metric-label">Avg Stock Vol (20d)</div><div class="metric-value">$2M</div></div>
+      </div>
+      
+      <div class="sources-row">
+        <span style="font-size:10px;color:var(--muted)">Sources:</span>
+        <span class="source-badge">nasdaq</span><span class="source-badge">yfinance</span>
+      </div>
+    </div>
+  </div>
+  
+  
+  <div class="card earnings prev-reported"
+       data-type="earnings"
+       data-cap="mid"
+       data-confirmation="confirmed"
+       data-ticker="CMBT"
+       data-company="cmb.tech nv"
+       data-mcap="4.823"
+       data-card-id="CMBT-earnings">
+    <div class="card-top">
+      <div class="ticker-block">
+        <span class="ticker">CMBT</span>
+        <span class="company">CMB.TECH NV</span>
+        <span class="badge badge-mid">Mid</span>
+        
+        <span class="badge badge-confirmed">Confirmed</span>
+        
+        
+        <span class="badge badge-prev">Previously Reported</span>
+        
+      </div>
+      <div class="event-meta">
+        <div class="event-date">Tue Nov 24 · BMO</div>
+        <div class="days-away">4 days away</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-grid">
+        <div><div class="metric-label">Market Cap</div><div class="metric-value">$4.8B</div></div>
+        
+        <div><div class="metric-label">Open Interest</div><div class="metric-value">18.7K</div></div>
+        <div><div class="metric-label">Options Vol Today</div><div class="metric-value">2.5K</div></div>
+        <div><div class="metric-label">Put/Call Ratio</div><div class="metric-value">0.30</div></div>
+        <div><div class="metric-label">Avg Stock Vol (20d)</div><div class="metric-value">847.5K</div></div>
+      </div>
+      
+      <div class="sources-row">
+        <span style="font-size:10px;color:var(--muted)">Sources:</span>
+        <span class="source-badge">nasdaq</span><span class="source-badge">yfinance</span>
+      </div>
+    </div>
+  </div>
+  
+  
+  <div class="card earnings prev-reported"
+       data-type="earnings"
+       data-cap="mid"
+       data-confirmation="confirmed"
+       data-ticker="GGAL"
+       data-company="grupo financiero galicia s.a."
+       data-mcap="4.707"
+       data-card-id="GGAL-earnings">
+    <div class="card-top">
+      <div class="ticker-block">
+        <span class="ticker">GGAL</span>
+        <span class="company">Grupo Financiero Galicia S.A.</span>
+        <span class="badge badge-mid">Mid</span>
+        
+        <span class="badge badge-confirmed">Confirmed</span>
+        
+        
+        <span class="badge badge-prev">Previously Reported</span>
+        
+      </div>
+      <div class="event-meta">
+        <div class="event-date">Tue Nov 24</div>
+        <div class="days-away">4 days away</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-grid">
+        <div><div class="metric-label">Market Cap</div><div class="metric-value">$4.7B</div></div>
+        <div><div class="metric-label">EPS Estimate</div><div class="metric-value">$1.05</div></div>
+        <div><div class="metric-label">Open Interest</div><div class="metric-value">62.8K</div></div>
+        <div><div class="metric-label">Options Vol Today</div><div class="metric-value">10.1K</div></div>
+        <div><div class="metric-label">Put/Call Ratio</div><div class="metric-value">2.31</div></div>
+        <div><div class="metric-label">Avg Stock Vol (20d)</div><div class="metric-value">$1M</div></div>
+      </div>
+      
+      <div class="sources-row">
+        <span style="font-size:10px;color:var(--muted)">Sources:</span>
+        <span class="source-badge">nasdaq</span><span class="source-badge">yfinance</span>
+      </div>
+    </div>
+  </div>
+  
+  
+  <div class="card earnings prev-reported"
+       data-type="earnings"
+       data-cap="small"
+       data-confirmation="confirmed"
+       data-ticker="CLSK"
+       data-company="cleanspark, inc."
+       data-mcap="1.595"
+       data-card-id="CLSK-earnings">
+    <div class="card-top">
+      <div class="ticker-block">
+        <span class="ticker">CLSK</span>
+        <span class="company">CleanSpark, Inc.</span>
+        <span class="badge badge-small">Small</span>
+        <span class="badge badge-confirmed">Confirmed</span>
+        
+        
+        <span class="badge badge-prev">Previously Reported</span>
+        
+      </div>
+      <div class="event-meta">
+        <div class="event-date">Tue Nov 24</div>
+        <div class="days-away">4 days away</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-grid">
+        <div><div class="metric-label">Market Cap</div><div class="metric-value">$1.6B</div></div>
+        
+        <div><div class="metric-label">Open Interest</div><div class="metric-value">272.7K</div></div>
+        <div><div class="metric-label">Options Vol Today</div><div class="metric-value">33.2K</div></div>
+        <div><div class="metric-label">Put/Call Ratio</div><div class="metric-value">0.28</div></div>
+        <div><div class="metric-label">Avg Stock Vol (20d)</div><div class="metric-value">$19M</div></div>
+      </div>
+      
+      <div class="sources-row">
+        <span style="font-size:10px;color:var(--muted)">Sources:</span>
+        <span class="source-badge">nasdaq</span><span class="source-badge">finnhub</span><span class="source-badge">yfinance</span>
+      </div>
+    </div>
+  </div>
+  
+  
+  <div class="card earnings "
+       data-type="earnings"
+       data-cap="small"
+       data-confirmation="estimated"
+       data-ticker="DRTS"
+       data-company="drts"
+       data-mcap="1.237"
+       data-card-id="DRTS-earnings">
+    <div class="card-top">
+      <div class="ticker-block">
+        <span class="ticker">DRTS</span>
+        <span class="company">DRTS</span>
+        <span class="badge badge-small">Small</span>
+        <span class="badge badge-estimated">Estimated date</span>
+        
+        
+        
+      </div>
+      <div class="event-meta">
+        <div class="event-date">Tue Nov 24</div>
+        <div class="days-away">4 days away</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-grid">
+        <div><div class="metric-label">Market Cap</div><div class="metric-value">$1.2B</div></div>
+        <div><div class="metric-label">EPS Estimate</div><div class="metric-value">$-0.15</div></div>
+        <div><div class="metric-label">Open Interest</div><div class="metric-value">40.9K</div></div>
+        <div><div class="metric-label">Options Vol Today</div><div class="metric-value">2.8K</div></div>
+        <div><div class="metric-label">Put/Call Ratio</div><div class="metric-value">1.20</div></div>
+        <div><div class="metric-label">Avg Stock Vol (20d)</div><div class="metric-value">636.3K</div></div>
+      </div>
+      
+      <div class="sources-row">
+        <span style="font-size:10px;color:var(--muted)">Sources:</span>
+        <span class="source-badge">finnhub</span><span class="source-badge">yfinance</span>
+      </div>
+    </div>
+  </div>
+  
+  
+  <div class="card earnings prev-reported"
+       data-type="earnings"
+       data-cap="small"
+       data-confirmation="confirmed"
+       data-ticker="KC"
+       data-company="kingsoft cloud holdings limited"
+       data-mcap="1.892"
+       data-card-id="KC-earnings">
+    <div class="card-top">
+      <div class="ticker-block">
+        <span class="ticker">KC</span>
+        <span class="company">Kingsoft Cloud Holdings Limited</span>
+        <span class="badge badge-small">Small</span>
+        <span class="badge badge-confirmed">Confirmed</span>
+        
+        
+        <span class="badge badge-prev">Previously Reported</span>
+        
+      </div>
+      <div class="event-meta">
+        <div class="event-date">Tue Nov 24 · BMO</div>
+        <div class="days-away">4 days away</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-grid">
+        <div><div class="metric-label">Market Cap</div><div class="metric-value">$1.9B</div></div>
+        
+        <div><div class="metric-label">Open Interest</div><div class="metric-value">23.5K</div></div>
+        <div><div class="metric-label">Options Vol Today</div><div class="metric-value">925</div></div>
+        <div><div class="metric-label">Put/Call Ratio</div><div class="metric-value">0.59</div></div>
+        <div><div class="metric-label">Avg Stock Vol (20d)</div><div class="metric-value">$2M</div></div>
+      </div>
+      
+      <div class="sources-row">
+        <span style="font-size:10px;color:var(--muted)">Sources:</span>
+        <span class="source-badge">nasdaq</span><span class="source-badge">finnhub</span><span class="source-badge">cache</span>
+      </div>
+    </div>
+  </div>
+  
+  
+  <div class="card earnings prev-reported"
+       data-type="earnings"
+       data-cap="small"
+       data-confirmation="confirmed"
+       data-ticker="QFIN"
+       data-company="qfin holdings, inc. "
+       data-mcap="0.568"
+       data-card-id="QFIN-earnings">
+    <div class="card-top">
+      <div class="ticker-block">
+        <span class="ticker">QFIN</span>
+        <span class="company">Qfin Holdings, Inc. </span>
+        <span class="badge badge-small">Small</span>
+        <span class="badge badge-confirmed">Confirmed</span>
+        
+        
+        <span class="badge badge-prev">Previously Reported</span>
+        
+      </div>
+      <div class="event-meta">
+        <div class="event-date">Tue Nov 24 · AMC</div>
+        <div class="days-away">4 days away</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-grid">
+        <div><div class="metric-label">Market Cap</div><div class="metric-value">$568M</div></div>
+        <div><div class="metric-label">EPS Estimate</div><div class="metric-value">$0.46</div></div>
+        <div><div class="metric-label">Open Interest</div><div class="metric-value">56.3K</div></div>
+        <div><div class="metric-label">Options Vol Today</div><div class="metric-value">2.6K</div></div>
+        <div><div class="metric-label">Put/Call Ratio</div><div class="metric-value">0.10</div></div>
+        <div><div class="metric-label">Avg Stock Vol (20d)</div><div class="metric-value">$2M</div></div>
+      </div>
+      
+      <div class="sources-row">
+        <span style="font-size:10px;color:var(--muted)">Sources:</span>
+        <span class="source-badge">nasdaq</span><span class="source-badge">finnhub</span><span class="source-badge">cache</span>
+      </div>
+    </div>
+  </div>
+  
+  
+  <div class="card earnings prev-reported"
+       data-type="earnings"
+       data-cap="micro"
+       data-confirmation="confirmed"
+       data-ticker="AVXL"
+       data-company="anavex life sciences corp."
+       data-mcap="0.076"
+       data-card-id="AVXL-earnings">
+    <div class="card-top">
+      <div class="ticker-block">
+        <span class="ticker">AVXL</span>
+        <span class="company">Anavex Life Sciences Corp.</span>
+        
+        <span class="badge badge-confirmed">Confirmed</span>
+        
+        
+        <span class="badge badge-prev">Previously Reported</span>
+        
+      </div>
+      <div class="event-meta">
+        <div class="event-date">Tue Nov 24</div>
+        <div class="days-away">4 days away</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-grid">
+        <div><div class="metric-label">Market Cap</div><div class="metric-value">$76M</div></div>
+        
+        <div><div class="metric-label">Open Interest</div><div class="metric-value">26.0K</div></div>
+        <div><div class="metric-label">Options Vol Today</div><div class="metric-value">980</div></div>
+        <div><div class="metric-label">Put/Call Ratio</div><div class="metric-value">0.56</div></div>
+        <div><div class="metric-label">Avg Stock Vol (20d)</div><div class="metric-value">$1M</div></div>
+      </div>
+      
+      <div class="sources-row">
+        <span style="font-size:10px;color:var(--muted)">Sources:</span>
+        <span class="source-badge">nasdaq</span><span class="source-badge">finnhub</span><span class="source-badge">yfinance</span>
+      </div>
+    </div>
+  </div>
+  
+  
+  <div class="card earnings prev-reported"
+       data-type="earnings"
+       data-cap="micro"
+       data-confirmation="confirmed"
+       data-ticker="JFIN"
+       data-company="jiayin group inc."
+       data-mcap="0.071"
+       data-card-id="JFIN-earnings">
+    <div class="card-top">
+      <div class="ticker-block">
+        <span class="ticker">JFIN</span>
+        <span class="company">Jiayin Group Inc.</span>
+        
+        <span class="badge badge-confirmed">Confirmed</span>
+        
+        
+        <span class="badge badge-prev">Previously Reported</span>
+        
+      </div>
+      <div class="event-meta">
+        <div class="event-date">Tue Nov 24</div>
+        <div class="days-away">4 days away</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-grid">
+        <div><div class="metric-label">Market Cap</div><div class="metric-value">$71M</div></div>
+        
+        <div><div class="metric-label">Open Interest</div><div class="metric-value">2.4K</div></div>
+        <div><div class="metric-label">Options Vol Today</div><div class="metric-value">2.1K</div></div>
+        <div><div class="metric-label">Put/Call Ratio</div><div class="metric-value">0.00</div></div>
+        <div><div class="metric-label">Avg Stock Vol (20d)</div><div class="metric-value">540.1K</div></div>
+      </div>
+      
+      <div class="sources-row">
+        <span style="font-size:10px;color:var(--muted)">Sources:</span>
+        <span class="source-badge">nasdaq</span><span class="source-badge">finnhub</span><span class="source-badge">yfinance</span>
+      </div>
+    </div>
+  </div>
+  
+  
+  <div class="card earnings prev-reported"
+       data-type="earnings"
+       data-cap="small"
+       data-confirmation="confirmed"
+       data-ticker="BBAR"
+       data-company="banco bbva argentina s.a."
+       data-mcap="1.993"
+       data-card-id="BBAR-earnings">
+    <div class="card-top">
+      <div class="ticker-block">
+        <span class="ticker">BBAR</span>
+        <span class="company">Banco BBVA Argentina S.A.</span>
+        <span class="badge badge-small">Small</span>
+        <span class="badge badge-confirmed">Confirmed</span>
+        
+        
+        <span class="badge badge-prev">Previously Reported</span>
+        
+      </div>
+      <div class="event-meta">
+        <div class="event-date">Tue Nov 24 · AMC</div>
+        <div class="days-away">4 days away</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-grid">
+        <div><div class="metric-label">Market Cap</div><div class="metric-value">$2.0B</div></div>
+        <div><div class="metric-label">EPS Estimate</div><div class="metric-value">$0.41</div></div>
+        <div><div class="metric-label">Open Interest</div><div class="metric-value">25.4K</div></div>
+        <div><div class="metric-label">Options Vol Today</div><div class="metric-value">1.7K</div></div>
+        <div><div class="metric-label">Put/Call Ratio</div><div class="metric-value">2.86</div></div>
+        <div><div class="metric-label">Avg Stock Vol (20d)</div><div class="metric-value">595.9K</div></div>
+      </div>
+      
+      <div class="sources-row">
+        <span style="font-size:10px;color:var(--muted)">Sources:</span>
+        <span class="source-badge">nasdaq</span><span class="source-badge">yfinance</span>
+      </div>
+    </div>
+  </div>
+  
+  
+  <div class="card earnings prev-reported"
+       data-type="earnings"
+       data-cap="small"
+       data-confirmation="confirmed"
+       data-ticker="DRVN"
+       data-company="driven brands holdings inc."
+       data-mcap="1.787"
+       data-card-id="DRVN-earnings">
+    <div class="card-top">
+      <div class="ticker-block">
+        <span class="ticker">DRVN</span>
+        <span class="company">Driven Brands Holdings Inc.</span>
+        <span class="badge badge-small">Small</span>
+        <span class="badge badge-confirmed">Confirmed</span>
+        
+        
+        <span class="badge badge-prev">Previously Reported</span>
+        
+      </div>
+      <div class="event-meta">
+        <div class="event-date">Tue Nov 24</div>
+        <div class="days-away">4 days away</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-grid">
+        <div><div class="metric-label">Market Cap</div><div class="metric-value">$1.8B</div></div>
+        <div><div class="metric-label">EPS Estimate</div><div class="metric-value">$0.27</div></div>
+        <div><div class="metric-label">Open Interest</div><div class="metric-value">58.5K</div></div>
+        <div><div class="metric-label">Options Vol Today</div><div class="metric-value">564</div></div>
+        <div><div class="metric-label">Put/Call Ratio</div><div class="metric-value">2.00</div></div>
+        <div><div class="metric-label">Avg Stock Vol (20d)</div><div class="metric-value">$1M</div></div>
+      </div>
+      
+      <div class="sources-row">
+        <span style="font-size:10px;color:var(--muted)">Sources:</span>
+        <span class="source-badge">nasdaq</span><span class="source-badge">yfinance</span>
+      </div>
+    </div>
+  </div>
+  
+  
+  <div class="card earnings prev-reported"
+       data-type="earnings"
+       data-cap="small"
+       data-confirmation="confirmed"
+       data-ticker="PD"
+       data-company="pagerduty, inc."
+       data-mcap="1.243"
+       data-card-id="PD-earnings">
+    <div class="card-top">
+      <div class="ticker-block">
+        <span class="ticker">PD</span>
+        <span class="company">PagerDuty, Inc.</span>
+        <span class="badge badge-small">Small</span>
+        <span class="badge badge-confirmed">Confirmed</span>
+        
+        
+        <span class="badge badge-prev">Previously Reported</span>
+        
+      </div>
+      <div class="event-meta">
+        <div class="event-date">Tue Nov 24</div>
+        <div class="days-away">4 days away</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-grid">
+        <div><div class="metric-label">Market Cap</div><div class="metric-value">$1.2B</div></div>
+        <div><div class="metric-label">EPS Estimate</div><div class="metric-value">$0.19</div></div>
+        <div><div class="metric-label">Open Interest</div><div class="metric-value">18.9K</div></div>
+        <div><div class="metric-label">Options Vol Today</div><div class="metric-value">3.5K</div></div>
+        <div><div class="metric-label">Put/Call Ratio</div><div class="metric-value">1.11</div></div>
+        <div><div class="metric-label">Avg Stock Vol (20d)</div><div class="metric-value">$1M</div></div>
+      </div>
+      
+      <div class="sources-row">
+        <span style="font-size:10px;color:var(--muted)">Sources:</span>
+        <span class="source-badge">nasdaq</span><span class="source-badge">yfinance</span>
+      </div>
+    </div>
+  </div>
+  
+  
+  <div class="card earnings prev-reported"
+       data-type="earnings"
+       data-cap="small"
+       data-confirmation="confirmed"
+       data-ticker="TIGR"
+       data-company="up fintech holding limited"
+       data-mcap="0.638"
+       data-card-id="TIGR-earnings">
+    <div class="card-top">
+      <div class="ticker-block">
+        <span class="ticker">TIGR</span>
+        <span class="company">UP Fintech Holding Limited</span>
+        <span class="badge badge-small">Small</span>
+        <span class="badge badge-confirmed">Confirmed</span>
+        
+        
+        <span class="badge badge-prev">Previously Reported</span>
+        
+      </div>
+      <div class="event-meta">
+        <div class="event-date">Tue Nov 24 · BMO</div>
+        <div class="days-away">4 days away</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-grid">
+        <div><div class="metric-label">Market Cap</div><div class="metric-value">$638M</div></div>
+        
+        <div><div class="metric-label">Open Interest</div><div class="metric-value">16.0K</div></div>
+        <div><div class="metric-label">Options Vol Today</div><div class="metric-value">1.6K</div></div>
+        <div><div class="metric-label">Put/Call Ratio</div><div class="metric-value">0.47</div></div>
+        <div><div class="metric-label">Avg Stock Vol (20d)</div><div class="metric-value">$3M</div></div>
+      </div>
+      
+      <div class="sources-row">
+        <span style="font-size:10px;color:var(--muted)">Sources:</span>
+        <span class="source-badge">nasdaq</span><span class="source-badge">yfinance</span>
+      </div>
+    </div>
+  </div>
+  
+  
+  <div class="card earnings prev-reported"
+       data-type="earnings"
+       data-cap="micro"
+       data-confirmation="confirmed"
+       data-ticker="ZENA"
+       data-company="zenatech, inc."
+       data-mcap="0.12"
+       data-card-id="ZENA-earnings">
+    <div class="card-top">
+      <div class="ticker-block">
+        <span class="ticker">ZENA</span>
+        <span class="company">ZenaTech, Inc.</span>
+        
+        <span class="badge badge-confirmed">Confirmed</span>
+        
+        
+        <span class="badge badge-prev">Previously Reported</span>
+        
+      </div>
+      <div class="event-meta">
+        <div class="event-date">Tue Nov 24</div>
+        <div class="days-away">4 days away</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-grid">
+        <div><div class="metric-label">Market Cap</div><div class="metric-value">$120M</div></div>
+        
+        <div><div class="metric-label">Open Interest</div><div class="metric-value">55.5K</div></div>
+        <div><div class="metric-label">Options Vol Today</div><div class="metric-value">1.6K</div></div>
+        <div><div class="metric-label">Put/Call Ratio</div><div class="metric-value">1.69</div></div>
+        <div><div class="metric-label">Avg Stock Vol (20d)</div><div class="metric-value">$2M</div></div>
+      </div>
+      
+      <div class="sources-row">
+        <span style="font-size:10px;color:var(--muted)">Sources:</span>
+        <span class="source-badge">nasdaq</span><span class="source-badge">yfinance</span>
+      </div>
+    </div>
+  </div>
+  
+  
+  <div class="card earnings prev-reported"
+       data-type="earnings"
+       data-cap="large"
+       data-confirmation="confirmed"
+       data-ticker="DE"
+       data-company="deere &amp; company"
+       data-mcap="173.841"
+       data-card-id="DE-earnings">
+    <div class="card-top">
+      <div class="ticker-block">
+        <span class="ticker">DE</span>
+        <span class="company">Deere &amp; Company</span>
+        <span class="badge badge-large">Large</span>
+        
+        <span class="badge badge-confirmed">Confirmed</span>
+        
+        
+        <span class="badge badge-prev">Previously Reported</span>
+        
+      </div>
+      <div class="event-meta">
+        <div class="event-date">Wed Nov 25 · BMO</div>
+        <div class="days-away">5 days away</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-grid">
+        <div><div class="metric-label">Market Cap</div><div class="metric-value">$173.8B</div></div>
+        <div><div class="metric-label">EPS Estimate</div><div class="metric-value">$4.07</div></div>
+        <div><div class="metric-label">Open Interest</div><div class="metric-value">26.3K</div></div>
+        <div><div class="metric-label">Options Vol Today</div><div class="metric-value">5.3K</div></div>
+        <div><div class="metric-label">Put/Call Ratio</div><div class="metric-value">0.90</div></div>
+        <div><div class="metric-label">Avg Stock Vol (20d)</div><div class="metric-value">$1M</div></div>
+      </div>
+      
+      <div class="sources-row">
+        <span style="font-size:10px;color:var(--muted)">Sources:</span>
+        <span class="source-badge">nasdaq</span><span class="source-badge">finnhub</span><span class="source-badge">yfinance</span>
+      </div>
+    </div>
+  </div>
+  
+  
+  <div class="card earnings prev-reported"
+       data-type="earnings"
+       data-cap="large"
+       data-confirmation="confirmed"
+       data-ticker="LI"
+       data-company="li auto inc."
+       data-mcap="10.985"
+       data-card-id="LI-earnings">
+    <div class="card-top">
+      <div class="ticker-block">
+        <span class="ticker">LI</span>
+        <span class="company">Li Auto Inc.</span>
+        <span class="badge badge-large">Large</span>
+        
+        <span class="badge badge-confirmed">Confirmed</span>
+        
+        
+        <span class="badge badge-prev">Previously Reported</span>
+        
+      </div>
+      <div class="event-meta">
+        <div class="event-date">Wed Nov 25 · BMO</div>
+        <div class="days-away">5 days away</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-grid">
+        <div><div class="metric-label">Market Cap</div><div class="metric-value">$11.0B</div></div>
+        
+        <div><div class="metric-label">Open Interest</div><div class="metric-value">44.5K</div></div>
+        <div><div class="metric-label">Options Vol Today</div><div class="metric-value">1.8K</div></div>
+        <div><div class="metric-label">Put/Call Ratio</div><div class="metric-value">1.61</div></div>
+        <div><div class="metric-label">Avg Stock Vol (20d)</div><div class="metric-value">$3M</div></div>
+      </div>
+      
+      <div class="sources-row">
+        <span style="font-size:10px;color:var(--muted)">Sources:</span>
+        <span class="source-badge">nasdaq</span><span class="source-badge">cache</span>
+      </div>
+    </div>
+  </div>
+  
+  
+  <div class="card earnings prev-reported"
+       data-type="earnings"
+       data-cap="mid"
+       data-confirmation="confirmed"
+       data-ticker="BZ"
+       data-company="kanzhun limited"
+       data-mcap="5.832"
+       data-card-id="BZ-earnings">
+    <div class="card-top">
+      <div class="ticker-block">
+        <span class="ticker">BZ</span>
+        <span class="company">KANZHUN LIMITED</span>
+        <span class="badge badge-mid">Mid</span>
+        
+        <span class="badge badge-confirmed">Confirmed</span>
+        
+        
+        <span class="badge badge-prev">Previously Reported</span>
+        
+      </div>
+      <div class="event-meta">
+        <div class="event-date">Wed Nov 25 · BMO</div>
+        <div class="days-away">5 days away</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-grid">
+        <div><div class="metric-label">Market Cap</div><div class="metric-value">$5.8B</div></div>
+        <div><div class="metric-label">EPS Estimate</div><div class="metric-value">$0.11</div></div>
+        <div><div class="metric-label">Open Interest</div><div class="metric-value">41.7K</div></div>
+        <div><div class="metric-label">Options Vol Today</div><div class="metric-value">2.0K</div></div>
+        <div><div class="metric-label">Put/Call Ratio</div><div class="metric-value">1.14</div></div>
+        <div><div class="metric-label">Avg Stock Vol (20d)</div><div class="metric-value">$6M</div></div>
+      </div>
+      
+      <div class="sources-row">
+        <span style="font-size:10px;color:var(--muted)">Sources:</span>
+        <span class="source-badge">nasdaq</span><span class="source-badge">finnhub</span><span class="source-badge">yfinance</span>
+      </div>
+    </div>
+  </div>
+  
+  
+  <div class="card earnings prev-reported"
+       data-type="earnings"
+       data-cap="mid"
+       data-confirmation="confirmed"
+       data-ticker="GDS"
+       data-company="gds holdings limited"
+       data-mcap="2.958"
+       data-card-id="GDS-earnings">
+    <div class="card-top">
+      <div class="ticker-block">
+        <span class="ticker">GDS</span>
+        <span class="company">GDS Holdings Limited</span>
+        <span class="badge badge-mid">Mid</span>
+        
+        <span class="badge badge-confirmed">Confirmed</span>
+        
+        
+        <span class="badge badge-prev">Previously Reported</span>
+        
+      </div>
+      <div class="event-meta">
+        <div class="event-date">Wed Nov 25 · BMO</div>
+        <div class="days-away">5 days away</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-grid">
+        <div><div class="metric-label">Market Cap</div><div class="metric-value">$3.0B</div></div>
+        <div><div class="metric-label">EPS Estimate</div><div class="metric-value">$1.31</div></div>
+        <div><div class="metric-label">Open Interest</div><div class="metric-value">117.4K</div></div>
+        <div><div class="metric-label">Options Vol Today</div><div class="metric-value">10.7K</div></div>
+        <div><div class="metric-label">Put/Call Ratio</div><div class="metric-value">2.68</div></div>
+        <div><div class="metric-label">Avg Stock Vol (20d)</div><div class="metric-value">$3M</div></div>
+      </div>
+      
+      <div class="sources-row">
+        <span style="font-size:10px;color:var(--muted)">Sources:</span>
+        <span class="source-badge">nasdaq</span><span class="source-badge">cache</span>
+      </div>
+    </div>
+  </div>
+  
+  
+  <div class="card earnings prev-reported"
+       data-type="earnings"
+       data-cap="micro"
+       data-confirmation="confirmed"
+       data-ticker="DSX"
+       data-company="diana shipping inc."
+       data-mcap="0.28"
+       data-card-id="DSX-earnings">
+    <div class="card-top">
+      <div class="ticker-block">
+        <span class="ticker">DSX</span>
+        <span class="company">Diana Shipping inc.</span>
+        
+        <span class="badge badge-confirmed">Confirmed</span>
+        
+        
+        <span class="badge badge-prev">Previously Reported</span>
+        
+      </div>
+      <div class="event-meta">
+        <div class="event-date">Wed Nov 25 · BMO</div>
+        <div class="days-away">5 days away</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-grid">
+        <div><div class="metric-label">Market Cap</div><div class="metric-value">$280M</div></div>
+        
+        <div><div class="metric-label">Open Interest</div><div class="metric-value">8.6K</div></div>
+        <div><div class="metric-label">Options Vol Today</div><div class="metric-value">689</div></div>
+        <div><div class="metric-label">Put/Call Ratio</div><div class="metric-value">0.52</div></div>
+        <div><div class="metric-label">Avg Stock Vol (20d)</div><div class="metric-value">639.1K</div></div>
+      </div>
+      
+      <div class="sources-row">
+        <span style="font-size:10px;color:var(--muted)">Sources:</span>
+        <span class="source-badge">nasdaq</span><span class="source-badge">finnhub</span><span class="source-badge">yfinance</span>
+      </div>
+    </div>
+  </div>
+  
+  
+  <div class="card earnings prev-reported"
+       data-type="earnings"
+       data-cap="small"
+       data-confirmation="confirmed"
+       data-ticker="FINV"
+       data-company="finvolution group"
+       data-mcap="0.616"
+       data-card-id="FINV-earnings">
+    <div class="card-top">
+      <div class="ticker-block">
+        <span class="ticker">FINV</span>
+        <span class="company">FinVolution Group</span>
+        <span class="badge badge-small">Small</span>
+        <span class="badge badge-confirmed">Confirmed</span>
+        
+        
+        <span class="badge badge-prev">Previously Reported</span>
+        
+      </div>
+      <div class="event-meta">
+        <div class="event-date">Wed Nov 25 · AMC</div>
+        <div class="days-away">5 days away</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-grid">
+        <div><div class="metric-label">Market Cap</div><div class="metric-value">$616M</div></div>
+        
+        <div><div class="metric-label">Open Interest</div><div class="metric-value">12.4K</div></div>
+        <div><div class="metric-label">Options Vol Today</div><div class="metric-value">1.2K</div></div>
+        <div><div class="metric-label">Put/Call Ratio</div><div class="metric-value">49.61</div></div>
+        <div><div class="metric-label">Avg Stock Vol (20d)</div><div class="metric-value">906.6K</div></div>
+      </div>
+      
+      <div class="sources-row">
+        <span style="font-size:10px;color:var(--muted)">Sources:</span>
+        <span class="source-badge">nasdaq</span><span class="source-badge">finnhub</span><span class="source-badge">yfinance</span>
+      </div>
+    </div>
+  </div>
+  
+  
+  <div class="card earnings prev-reported"
+       data-type="earnings"
+       data-cap="micro"
+       data-confirmation="confirmed"
+       data-ticker="NNOX"
+       data-company="nano-x imaging ltd"
+       data-mcap="0.018"
+       data-card-id="NNOX-earnings">
+    <div class="card-top">
+      <div class="ticker-block">
+        <span class="ticker">NNOX</span>
+        <span class="company">NANO-X IMAGING LTD</span>
+        
+        <span class="badge badge-confirmed">Confirmed</span>
+        
+        
+        <span class="badge badge-prev">Previously Reported</span>
+        
+      </div>
+      <div class="event-meta">
+        <div class="event-date">Wed Nov 25 · BMO</div>
+        <div class="days-away">5 days away</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-grid">
+        <div><div class="metric-label">Market Cap</div><div class="metric-value">$18M</div></div>
+        
+        <div><div class="metric-label">Open Interest</div><div class="metric-value">45.0K</div></div>
+        <div><div class="metric-label">Options Vol Today</div><div class="metric-value">764</div></div>
+        <div><div class="metric-label">Put/Call Ratio</div><div class="metric-value">0.46</div></div>
+        <div><div class="metric-label">Avg Stock Vol (20d)</div><div class="metric-value">$5M</div></div>
+      </div>
+      
+      <div class="sources-row">
+        <span style="font-size:10px;color:var(--muted)">Sources:</span>
+        <span class="source-badge">nasdaq</span><span class="source-badge">finnhub</span><span class="source-badge">yfinance</span>
+      </div>
+    </div>
+  </div>
+  
+  
+  <div class="card earnings prev-reported"
+       data-type="earnings"
+       data-cap="micro"
+       data-confirmation="confirmed"
+       data-ticker="EH"
+       data-company="ehang holdings limited"
+       data-mcap="0.216"
+       data-card-id="EH-earnings">
+    <div class="card-top">
+      <div class="ticker-block">
+        <span class="ticker">EH</span>
+        <span class="company">EHang Holdings Limited</span>
+        
+        <span class="badge badge-confirmed">Confirmed</span>
+        
+        
+        <span class="badge badge-prev">Previously Reported</span>
+        
+      </div>
+      <div class="event-meta">
+        <div class="event-date">Wed Nov 25</div>
+        <div class="days-away">5 days away</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-grid">
+        <div><div class="metric-label">Market Cap</div><div class="metric-value">$216M</div></div>
+        
+        <div><div class="metric-label">Open Interest</div><div class="metric-value">233.5K</div></div>
+        <div><div class="metric-label">Options Vol Today</div><div class="metric-value">5.4K</div></div>
+        <div><div class="metric-label">Put/Call Ratio</div><div class="metric-value">0.07</div></div>
+        <div><div class="metric-label">Avg Stock Vol (20d)</div><div class="metric-value">708.0K</div></div>
+      </div>
+      
+      <div class="sources-row">
+        <span style="font-size:10px;color:var(--muted)">Sources:</span>
+        <span class="source-badge">nasdaq</span><span class="source-badge">cache</span>
+      </div>
+    </div>
+  </div>
+  
+  
+  <div class="card earnings prev-reported"
+       data-type="earnings"
+       data-cap="micro"
+       data-confirmation="confirmed"
+       data-ticker="PLG"
+       data-company="platinum group metals ltd."
+       data-mcap="0.11"
+       data-card-id="PLG-earnings">
+    <div class="card-top">
+      <div class="ticker-block">
+        <span class="ticker">PLG</span>
+        <span class="company">Platinum Group Metals Ltd.</span>
+        
+        <span class="badge badge-confirmed">Confirmed</span>
+        
+        
+        <span class="badge badge-prev">Previously Reported</span>
+        
+      </div>
+      <div class="event-meta">
+        <div class="event-date">Wed Nov 25</div>
+        <div class="days-away">5 days away</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-grid">
+        <div><div class="metric-label">Market Cap</div><div class="metric-value">$110M</div></div>
+        
+        <div><div class="metric-label">Open Interest</div><div class="metric-value">7.7K</div></div>
+        <div><div class="metric-label">Options Vol Today</div><div class="metric-value">583</div></div>
+        <div><div class="metric-label">Put/Call Ratio</div><div class="metric-value">1.36</div></div>
+        <div><div class="metric-label">Avg Stock Vol (20d)</div><div class="metric-value">$1M</div></div>
+      </div>
+      
+      <div class="sources-row">
+        <span style="font-size:10px;color:var(--muted)">Sources:</span>
+        <span class="source-badge">nasdaq</span><span class="source-badge">cache</span>
+      </div>
+    </div>
+  </div>
+  
+  
+  <div class="card earnings prev-reported"
+       data-type="earnings"
+       data-cap="small"
+       data-confirmation="estimated"
+       data-ticker="NAT"
+       data-company="nat"
+       data-mcap="1.309"
+       data-card-id="NAT-earnings">
+    <div class="card-top">
+      <div class="ticker-block">
+        <span class="ticker">NAT</span>
+        <span class="company">NAT</span>
+        <span class="badge badge-small">Small</span>
+        <span class="badge badge-estimated">Estimated date</span>
+        
+        <span class="badge badge-prev">Previously Reported</span>
+        
+      </div>
+      <div class="event-meta">
+        <div class="event-date">Thu Nov 26 · BMO</div>
+        <div class="days-away">6 days away</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-grid">
+        <div><div class="metric-label">Market Cap</div><div class="metric-value">$1.3B</div></div>
+        <div><div class="metric-label">EPS Estimate</div><div class="metric-value">$0.18</div></div>
+        <div><div class="metric-label">Open Interest</div><div class="metric-value">66.3K</div></div>
+        <div><div class="metric-label">Options Vol Today</div><div class="metric-value">5.4K</div></div>
+        <div><div class="metric-label">Put/Call Ratio</div><div class="metric-value">1.25</div></div>
+        <div><div class="metric-label">Avg Stock Vol (20d)</div><div class="metric-value">$4M</div></div>
+      </div>
+      
+      <div class="sources-row">
+        <span style="font-size:10px;color:var(--muted)">Sources:</span>
+        <span class="source-badge">finnhub</span><span class="source-badge">cache</span>
+      </div>
+    </div>
+  </div>
+  
+  
+  <div class="card earnings "
+       data-type="earnings"
+       data-cap="small"
+       data-confirmation="confirmed"
+       data-ticker="HUBG"
+       data-company="hub group, inc."
+       data-mcap="1.504"
+       data-card-id="HUBG-earnings">
+    <div class="card-top">
+      <div class="ticker-block">
+        <span class="ticker">HUBG</span>
+        <span class="company">Hub Group, Inc.</span>
+        <span class="badge badge-small">Small</span>
+        <span class="badge badge-confirmed">Confirmed</span>
+        
+        
+        
+        
+      </div>
+      <div class="event-meta">
+        <div class="event-date">Thu Nov 26</div>
+        <div class="days-away">6 days away</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-grid">
+        <div><div class="metric-label">Market Cap</div><div class="metric-value">$1.5B</div></div>
+        <div><div class="metric-label">EPS Estimate</div><div class="metric-value">$0.26</div></div>
+        <div><div class="metric-label">Open Interest</div><div class="metric-value">29.6K</div></div>
+        <div><div class="metric-label">Options Vol Today</div><div class="metric-value">6.5K</div></div>
+        <div><div class="metric-label">Put/Call Ratio</div><div class="metric-value">0.22</div></div>
+        <div><div class="metric-label">Avg Stock Vol (20d)</div><div class="metric-value">841.3K</div></div>
+      </div>
+      
+      <div class="sources-row">
+        <span style="font-size:10px;color:var(--muted)">Sources:</span>
+        <span class="source-badge">nasdaq</span><span class="source-badge">yfinance</span>
+      </div>
+    </div>
+  </div>
+  
+  
+  <div class="card earnings "
+       data-type="earnings"
+       data-cap="micro"
+       data-confirmation="confirmed"
+       data-ticker="BZAI"
+       data-company="blaize holdings, inc."
+       data-mcap="0.023"
+       data-card-id="BZAI-earnings">
+    <div class="card-top">
+      <div class="ticker-block">
+        <span class="ticker">BZAI</span>
+        <span class="company">Blaize Holdings, Inc.</span>
+        
+        <span class="badge badge-confirmed">Confirmed</span>
+        
+        
+        
+        
+      </div>
+      <div class="event-meta">
+        <div class="event-date">Thu Nov 26</div>
+        <div class="days-away">6 days away</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-grid">
+        <div><div class="metric-label">Market Cap</div><div class="metric-value">$23M</div></div>
+        
+        <div><div class="metric-label">Open Interest</div><div class="metric-value">75.9K</div></div>
+        <div><div class="metric-label">Options Vol Today</div><div class="metric-value">729</div></div>
+        <div><div class="metric-label">Put/Call Ratio</div><div class="metric-value">0.33</div></div>
+        <div><div class="metric-label">Avg Stock Vol (20d)</div><div class="metric-value">$2M</div></div>
+      </div>
+      
+      <div class="sources-row">
+        <span style="font-size:10px;color:var(--muted)">Sources:</span>
+        <span class="source-badge">nasdaq</span><span class="source-badge">yfinance</span>
+      </div>
+    </div>
+  </div>
+  
+</div>
+
+<!-- ══ SECTION B: IPOs ═══════════════════════════════════════════════ -->
+<div class="section" data-section="ipo">
+  <div class="section-title">B — Upcoming IPOs &amp; New Listings</div>
+  
+  <div class="section-empty">No upcoming IPOs found for the next 7 days.</div>
+  <div class="section-filter-empty">No IPOs match your current filters.</div>
+
+  
+</div>
+
+<!-- ══ SECTION C: 8-K ════════════════════════════════════════════════ -->
+<div class="section" data-section="8k">
+  <div class="section-title">C — SEC 8-K Material Events</div>
+  
+  
+  <div class="section-filter-empty">No 8-K filings match your current filters.</div>
+
+  
+  
+  <div class="card eightk prev-reported"
+       data-type="8k"
+       data-cap="large"
+       data-confirmation=""
+       data-ticker="NXPI"
+       data-company=""
+       data-mcap="63.457"
+       data-card-id="NXPI-8k">
+    <div class="card-top">
+      <div class="ticker-block">
+        <span class="ticker">NXPI</span>
+        <span class="company"></span>
+        
+        <span class="badge badge-prev">Previously Reported</span>
+      </div>
+      <div class="event-meta">
+        <div class="event-date">Thu Nov 19</div>
+        <div class="days-away">Filed 1d ago</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="summary-text">NXP Semiconductors N.V. (NASDAQ:NXPI) Shareholders to Get $1.01 Quarterly Dividend. NXP Semiconductors N.V. (NASDAQ:NXPI) declared a quarterly dividend on Thursday, November 19th. Investors of record on W</div>
+      <div class="sources-row"><a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;company=&amp;type=8-K&amp;dateb=&amp;owner=include&amp;count=10" target="_blank" rel="noopener" style="font-size:12px;">View on EDGAR →</a></div>
+      <div class="sources-row">
+        <span style="font-size:10px;color:var(--muted)">Sources:</span>
+        <span class="source-badge">edgar</span><span class="source-badge">cache</span><span class="source-badge">newsdata</span>
+      </div>
+    </div>
+  </div>
+  
+  
+  <div class="card eightk prev-reported"
+       data-type="8k"
+       data-cap="large"
+       data-confirmation=""
+       data-ticker="EW"
+       data-company=""
+       data-mcap="59.731"
+       data-card-id="EW-8k">
+    <div class="card-top">
+      <div class="ticker-block">
+        <span class="ticker">EW</span>
+        <span class="company"></span>
+        
+        <span class="badge badge-prev">Previously Reported</span>
+      </div>
+      <div class="event-meta">
+        <div class="event-date">Thu Nov 19</div>
+        <div class="days-away">Filed 1d ago</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="summary-text">Earnings call transcript: Babcock International lifts H1 profit, shares rise 7.7% | H1 2026. Earnings call transcript: Babcock International lifts H1 profit, shares rise 7.7% | H1 2026</div>
+      <div class="sources-row"><a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;company=&amp;type=8-K&amp;dateb=&amp;owner=include&amp;count=10" target="_blank" rel="noopener" style="font-size:12px;">View on EDGAR →</a></div>
+      <div class="sources-row">
+        <span style="font-size:10px;color:var(--muted)">Sources:</span>
+        <span class="source-badge">edgar</span><span class="source-badge">cache</span><span class="source-badge">newsdata</span>
+      </div>
+    </div>
+  </div>
+  
+  
+  <div class="card eightk prev-reported"
+       data-type="8k"
+       data-cap="large"
+       data-confirmation=""
+       data-ticker="TGT"
+       data-company=""
+       data-mcap="76.077"
+       data-card-id="TGT-8k">
+    <div class="card-top">
+      <div class="ticker-block">
+        <span class="ticker">TGT</span>
+        <span class="company"></span>
+        
+        <span class="badge badge-prev">Previously Reported</span>
+      </div>
+      <div class="event-meta">
+        <div class="event-date">Wed Nov 18</div>
+        <div class="days-away">Filed 2d ago</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="summary-text">Target (NYSE: TGT) raises 2026 sales outlook, though tariff refunds lift profit. What happened Target Corporation (NYSE: TGT) raised its full-year sales outlook after third-quarter net sales rose 7.1%</div>
+      <div class="sources-row"><a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;company=&amp;type=8-K&amp;dateb=&amp;owner=include&amp;count=10" target="_blank" rel="noopener" style="font-size:12px;">View on EDGAR →</a></div>
+      <div class="sources-row">
+        <span style="font-size:10px;color:var(--muted)">Sources:</span>
+        <span class="source-badge">edgar</span><span class="source-badge">yfinance</span><span class="source-badge">newsdata</span>
+      </div>
+    </div>
+  </div>
+  
+  
+  <div class="card eightk prev-reported"
+       data-type="8k"
+       data-cap="large"
+       data-confirmation=""
+       data-ticker="QSR"
+       data-company=""
+       data-mcap="33.065"
+       data-card-id="QSR-8k">
+    <div class="card-top">
+      <div class="ticker-block">
+        <span class="ticker">QSR</span>
+        <span class="company"></span>
+        
+        <span class="badge badge-prev">Previously Reported</span>
+      </div>
+      <div class="event-meta">
+        <div class="event-date">Wed Nov 18</div>
+        <div class="days-away">Filed 2d ago</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="summary-text">Walmart (WMT) Q3 2027 Earnings Call Transcript. Walmart&#39;s digital push and raised outlook highlight a shifting profit mix</div>
+      <div class="sources-row"><a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;company=&amp;type=8-K&amp;dateb=&amp;owner=include&amp;count=10" target="_blank" rel="noopener" style="font-size:12px;">View on EDGAR →</a></div>
+      <div class="sources-row">
+        <span style="font-size:10px;color:var(--muted)">Sources:</span>
+        <span class="source-badge">edgar</span><span class="source-badge">cache</span><span class="source-badge">newsdata</span>
+      </div>
+    </div>
+  </div>
+  
+  
+  <div class="card eightk prev-reported"
+       data-type="8k"
+       data-cap="large"
+       data-confirmation=""
+       data-ticker="QSR"
+       data-company=""
+       data-mcap="33.065"
+       data-card-id="QSR-8k">
+    <div class="card-top">
+      <div class="ticker-block">
+        <span class="ticker">QSR</span>
+        <span class="company"></span>
+        
+        <span class="badge badge-prev">Previously Reported</span>
+      </div>
+      <div class="event-meta">
+        <div class="event-date">Wed Nov 18</div>
+        <div class="days-away">Filed 2d ago</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="summary-text">Walmart (WMT) Q3 2027 Earnings Call Transcript. Walmart&#39;s digital push and raised outlook highlight a shifting profit mix</div>
+      <div class="sources-row"><a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;company=&amp;type=8-K&amp;dateb=&amp;owner=include&amp;count=10" target="_blank" rel="noopener" style="font-size:12px;">View on EDGAR →</a></div>
+      <div class="sources-row">
+        <span style="font-size:10px;color:var(--muted)">Sources:</span>
+        <span class="source-badge">edgar</span><span class="source-badge">cache</span><span class="source-badge">newsdata</span>
+      </div>
+    </div>
+  </div>
+  
+  
+  <div class="card eightk prev-reported"
+       data-type="8k"
+       data-cap="mid"
+       data-confirmation=""
+       data-ticker="ESTC"
+       data-company=""
+       data-mcap="7.926"
+       data-card-id="ESTC-8k">
+    <div class="card-top">
+      <div class="ticker-block">
+        <span class="ticker">ESTC</span>
+        <span class="company"></span>
+        
+        <span class="badge badge-prev">Previously Reported</span>
+      </div>
+      <div class="event-meta">
+        <div class="event-date">Thu Nov 19</div>
+        <div class="days-away">Filed 1d ago</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="summary-text">What Elastic (ESTC) Said on Its Q2 Earnings Call. Elastic (NYSE:ESTC) reported 17% revenue growth for its fiscal 2027 second quarter as strong customer consumption and de</div>
+      <div class="sources-row"><a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;company=&amp;type=8-K&amp;dateb=&amp;owner=include&amp;count=10" target="_blank" rel="noopener" style="font-size:12px;">View on EDGAR →</a></div>
+      <div class="sources-row">
+        <span style="font-size:10px;color:var(--muted)">Sources:</span>
+        <span class="source-badge">edgar</span><span class="source-badge">yfinance</span><span class="source-badge">newsdata</span>
+      </div>
+    </div>
+  </div>
+  
+  
+  <div class="card eightk prev-reported"
+       data-type="8k"
+       data-cap="mid"
+       data-confirmation=""
+       data-ticker="CPB"
+       data-company=""
+       data-mcap="6.981"
+       data-card-id="CPB-8k">
+    <div class="card-top">
+      <div class="ticker-block">
+        <span class="ticker">CPB</span>
+        <span class="company"></span>
+        
+        <span class="badge badge-prev">Previously Reported</span>
+      </div>
+      <div class="event-meta">
+        <div class="event-date">Wed Nov 18</div>
+        <div class="days-away">Filed 2d ago</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="summary-text">Campbell&#39;s (NASDAQ:CPB) Stock Falls 5.5% - Time to Sell?. Campbell&#39;s (NASDAQ:CPB) Shares Down 5.5% - Here&#39;s What Happened</div>
+      <div class="sources-row"><a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;company=&amp;type=8-K&amp;dateb=&amp;owner=include&amp;count=10" target="_blank" rel="noopener" style="font-size:12px;">View on EDGAR →</a></div>
+      <div class="sources-row">
+        <span style="font-size:10px;color:var(--muted)">Sources:</span>
+        <span class="source-badge">edgar</span><span class="source-badge">cache</span><span class="source-badge">newsdata</span>
+      </div>
+    </div>
+  </div>
+  
+  
+  <div class="card eightk prev-reported"
+       data-type="8k"
+       data-cap="small"
+       data-confirmation=""
+       data-ticker="UTI"
+       data-company=""
+       data-mcap="1.111"
+       data-card-id="UTI-8k">
+    <div class="card-top">
+      <div class="ticker-block">
+        <span class="ticker">UTI</span>
+        <span class="company"></span>
+        
+        <span class="badge badge-prev">Previously Reported</span>
+      </div>
+      <div class="event-meta">
+        <div class="event-date">Wed Nov 18</div>
+        <div class="days-away">Filed 2d ago</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="summary-text">Urban Company shares dip 4% after ₹2,500 crore fundraising; opportunity to buy on the dip? Target, stop-loss. Urban Company shares fell over 4% despite completing a ₹2,500 crore QIP that attracted bids exceeding ₹15,000 crore. The</div>
+      <div class="sources-row"><a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;company=&amp;type=8-K&amp;dateb=&amp;owner=include&amp;count=10" target="_blank" rel="noopener" style="font-size:12px;">View on EDGAR →</a></div>
+      <div class="sources-row">
+        <span style="font-size:10px;color:var(--muted)">Sources:</span>
+        <span class="source-badge">edgar</span><span class="source-badge">yfinance</span><span class="source-badge">newsdata</span>
+      </div>
+    </div>
+  </div>
+  
+</div>
+
+<!-- ══ SECTION D: NEWS ══════════════════════════════════════════════ -->
+<div class="section" data-section="news">
+  <div class="section-title">D — News Catalysts</div>
+  
+  <div class="section-empty">No keyword-matched news catalysts found.</div>
+  <div class="section-filter-empty">No news catalysts match your current filters.</div>
+
+  
+</div>
+
+<!-- ══ BIN PANEL ════════════════════════════════════════════════════ -->
+<div id="bin-panel">
+  <div class="section">
+    <div class="section-title bin-section-title">
+      <span>🗑 Bin — Dismissed Today</span>
+      <button id="clear-bin-btn">Clear All</button>
+    </div>
+    <div id="bin-empty-msg">Nothing in the bin yet.</div>
+    <div id="bin-cards"></div>
+  </div>
+</div>
+
+<!-- ══ FOOTER ════════════════════════════════════════════════════════ -->
+<div class="footer">
+  <h3>Diagnostics</h3>
+  <div class="footer-grid">
+    <div class="footer-item">
+      <strong>Source Activity</strong>
+      
+        <div>nasdaq: 60 events</div><div>finnhub: 46 events</div><div>yfinance: 48 events</div><div>cache: 28 events</div><div>edgar: 8 events</div><div>newsdata: 8 events</div>
+      
+    </div>
+    <div class="footer-item">
+      <strong>Data Unavailable</strong>
+      
+        <div class="unavailable-list">Options data missing for: ICON, AAME, WELNF, GDC, NWSLL, FSI, ASII, RBNE, LEE, CZBT, BRTX, ORIB, DIDIY, BASA, EIM, VBIO, ICG, IPST, FSCO, ANTA, BURU, FMTO, MTR, BWLP, PRSI, ATXG, SHPH, AWF, XCUR, DTSS, WORX, ZSTK, HIO, NWCL, LEXX, VMAR, CRGO, AMSS, MCRAA, GITS, EOCN, EVV, DBGI, BNAI, GES, INTG, FUFU, CURR, XWEL, LITB, EONR, DRCT, LIMN, ALAR, CUEN, HSPOF, AACG, OLOX, VALN, DSNY, TPCS, BEGI, HDL, WILC, LOT, WALD, SCLX, SOAR, SOWG, UNKNOWN, TMRC, ASBP, MOG.A, CHA, SOND, MIRA, SER, LOCL, OLB, RSTRF, FLX, DSC, CENN, SJ, SNT, PRT, TCRT, SUNE, OMSE, ALCO, GDEV, YGMZ, PHBI, ZSQR, HPE-PC, NORD, ADXN, PSHG, EOI, AHRO, SONM, CIRC, CNXX, FGNV, HTLM, AFJK</div>
+      
+    </div>
+  </div>
+  <div style="margin-top:12px;font-size:11px;color:var(--muted);">
+    Generated 2026-11-20 · Free data sources only ·
+    <a href="archive.html">Past digests</a> ·
+    Events are factual only — no price predictions or trade recommendations.
+  </div>
+</div>
+
+</div><!-- /container -->
+
+<!-- ══ JAVASCRIPT ════════════════════════════════════════════════════ -->
+<script>
+(function () {
+'use strict';
+
+/* ════════════════════════════════════════════════════════════════════
+   FILTER SYSTEM
+   ════════════════════════════════════════════════════════════════════ */
+
+var allCards    = Array.from(document.querySelectorAll('.card'));
+var countEl     = document.getElementById('filter-count');
+var activeType  = 'all';
+var activeCap   = 'all';
+var showConf    = true;
+var showEst     = true;
+var minMcap     = null;
+var maxMcap     = null;
+var searchQ     = '';
+
+function applyFilters() {
+  var visible = 0;
+
+  allCards.forEach(function (card) {
+    // Binned cards are never in the main sections — skip
+    if (card.closest('#bin-cards')) return;
+
+    var type    = card.dataset.type;
+    var cap     = card.dataset.cap;
+    var conf    = card.dataset.confirmation;
+    var ticker  = card.dataset.ticker || '';
+    var company = card.dataset.company || '';
+    var mcapRaw = card.dataset.mcap;
+    var mcap    = mcapRaw !== '' ? parseFloat(mcapRaw) : null;
+    var show    = true;
+
+    if (activeType !== 'all' && type !== activeType) show = false;
+    if (show && activeCap !== 'all' && cap !== activeCap) show = false;
+    if (show && conf) {
+      if (conf === 'confirmed' && !showConf) show = false;
+      if (conf === 'estimated' && !showEst)  show = false;
+    }
+    if (show && mcap !== null) {
+      if (minMcap !== null && mcap < minMcap) show = false;
+      if (maxMcap !== null && mcap > maxMcap) show = false;
+    }
+    if (show && searchQ) {
+      var hit = ticker.toLowerCase().indexOf(searchQ) !== -1 ||
+                company.indexOf(searchQ) !== -1;
+      if (!hit) show = false;
+    }
+
+    card.style.display = show ? '' : 'none';
+    if (show) visible++;
+  });
+
+  // Per-section empty/hidden states
+  document.querySelectorAll('.section[data-section]').forEach(function (sec) {
+    var secType    = sec.dataset.section;
+    var cards      = Array.from(sec.querySelectorAll('.card'));
+    var visInSec   = cards.filter(function (c) { return c.style.display !== 'none'; }).length;
+    var filterMsg  = sec.querySelector('.section-filter-empty');
+    var typeHidden = activeType !== 'all' && secType !== activeType;
+    sec.style.display = typeHidden ? 'none' : '';
+    if (!typeHidden && filterMsg) {
+      /* show only when cards exist but all are filtered out (not when all were binned) */
+      filterMsg.style.display = (cards.length > 0 && visInSec === 0) ? 'block' : 'none';
+    }
+  });
+
+  if (countEl) countEl.textContent = visible + ' result' + (visible !== 1 ? 's' : '');
+}
+
+document.querySelectorAll('[data-type]').forEach(function (btn) {
+  btn.addEventListener('click', function () {
+    document.querySelectorAll('[data-type]').forEach(function (b) { b.classList.remove('active'); });
+    btn.classList.add('active');
+    activeType = btn.dataset.type;
+    applyFilters();
+  });
+});
+document.querySelectorAll('[data-cap]').forEach(function (btn) {
+  btn.addEventListener('click', function () {
+    document.querySelectorAll('[data-cap]').forEach(function (b) { b.classList.remove('active'); });
+    btn.classList.add('active');
+    activeCap = btn.dataset.cap;
+    applyFilters();
+  });
+});
+document.getElementById('cb-confirmed').addEventListener('change', function (e) { showConf = e.target.checked; applyFilters(); });
+document.getElementById('cb-estimated').addEventListener('change', function (e) { showEst  = e.target.checked; applyFilters(); });
+(function () {
+  function readMcap() {
+    var mn = parseFloat(document.getElementById('mcap-min').value);
+    var mx = parseFloat(document.getElementById('mcap-max').value);
+    minMcap = isNaN(mn) ? null : mn;
+    maxMcap = isNaN(mx) ? null : mx;
+    applyFilters();
+  }
+  document.getElementById('mcap-min').addEventListener('input', readMcap);
+  document.getElementById('mcap-max').addEventListener('input', readMcap);
+})();
+document.getElementById('search-input').addEventListener('input', function (e) {
+  searchQ = e.target.value.trim().toLowerCase();
+  applyFilters();
+});
+
+/* ════════════════════════════════════════════════════════════════════
+   BIN SYSTEM — Swipe-to-Bin daily triage
+   ════════════════════════════════════════════════════════════════════ */
+
+var TODAY_KEY      = 'bin-' + new Date().toISOString().slice(0, 10);
+var binCards       = document.getElementById('bin-cards');
+var binEmptyMsg    = document.getElementById('bin-empty-msg');
+var clearBinBtn    = document.getElementById('clear-bin-btn');
+var binCountBadge  = document.getElementById('bin-count-badge');
+var binCountNum    = document.getElementById('bin-count-num');
+
+/* ── Storage ── */
+function purgeStale() {
+  try {
+    Object.keys(localStorage).forEach(function (k) {
+      if (k.slice(0, 4) === 'bin-' && k !== TODAY_KEY) localStorage.removeItem(k);
+    });
+  } catch (e) {}
+}
+function readBin() {
+  try { return JSON.parse(localStorage.getItem(TODAY_KEY) || '[]'); } catch (e) { return []; }
+}
+function saveBin(list) {
+  try { localStorage.setItem(TODAY_KEY, JSON.stringify(list)); } catch (e) {}
+}
+function addToStorage(id)      { var l = readBin(); if (l.indexOf(id) === -1) { l.push(id); saveBin(l); } }
+function removeFromStorage(id) { saveBin(readBin().filter(function (x) { return x !== id; })); }
+
+/* ── UI sync ── */
+function syncBin() {
+  var n = binCards.querySelectorAll('.card').length;
+  binEmptyMsg.style.display  = n === 0 ? 'block' : 'none';
+  binCountBadge.style.display = n > 0  ? ''      : 'none';
+  if (binCountNum) binCountNum.textContent = n;
+}
+
+/* ── Animate a card flying left (into bin) ── */
+function flyOut(card, cb) {
+  var done = false;
+  function finish() {
+    if (done) return;
+    done = true;
+    card.style.transition = '';
+    card.style.transform  = '';
+    card.style.opacity    = '';
+    cb();
+  }
+  card.style.transition = 'transform .2s ease, opacity .2s ease';
+  card.style.transform  = 'translateX(-110%)';
+  card.style.opacity    = '0';
+  card.addEventListener('transitionend', finish, { once: true });
+  setTimeout(finish, 300);   /* fallback if transitionend never fires */
+}
+
+/* ── Animate a card sliding in from right (restore) ── */
+function flyIn(card) {
+  card.style.transition = 'none';
+  card.style.transform  = 'translateX(60px)';
+  card.style.opacity    = '0';
+  requestAnimationFrame(function () {
+    requestAnimationFrame(function () {
+      card.style.transition = 'transform .28s ease, opacity .28s ease';
+      card.style.transform  = '';
+      card.style.opacity    = '';
+    });
+  });
+}
+
+/* ── Add a Restore button to a card ── */
+function addRestoreBtn(card) {
+  if (card.querySelector('.restore-btn')) return;
+  var btn = document.createElement('button');
+  btn.className   = 'restore-btn';
+  btn.textContent = '↩ Restore';
+  btn.addEventListener('click', function () { unBinCard(card); });
+  var body = card.querySelector('.card-body');
+  if (body) body.appendChild(btn); else card.appendChild(btn);
+}
+
+/* ── Move card TO bin ── */
+function binCard(card) {
+  var id = card.dataset.cardId;
+  if (!id) return;
+
+  // Record home section before we move it
+  var homeSection = card.closest('.section[data-section]');
+  if (homeSection) card.dataset.homeSection = homeSection.dataset.section;
+
+  flyOut(card, function () {
+    addRestoreBtn(card);
+    binCards.appendChild(card);
+    card.style.display = '';
+    addToStorage(id);
+    syncBin();
+    applyFilters();
+  });
+}
+
+/* ── Move card FROM bin back to its section ── */
+function unBinCard(card) {
+  var id = card.dataset.cardId;
+  var homeSection = card.dataset.homeSection;
+
+  // Remove restore button
+  var btn = card.querySelector('.restore-btn');
+  if (btn) btn.remove();
+
+  // Find destination section
+  var dest = homeSection
+    ? document.querySelector('.section[data-section="' + homeSection + '"]')
+    : null;
+
+  if (dest) {
+    dest.appendChild(card);
+  } else {
+    document.getElementById('bin-panel').parentNode.insertBefore(card, document.getElementById('bin-panel'));
+  }
+
+  flyIn(card);
+  removeFromStorage(id);
+  syncBin();
+  applyFilters();
+}
+
+/* ── Wire dismiss X button onto every card ── */
+allCards.forEach(function (card) {
+  var xBtn = document.createElement('button');
+  xBtn.className = 'dismiss-btn';
+  xBtn.setAttribute('aria-label', 'Dismiss');
+  xBtn.textContent = '✕';
+  xBtn.addEventListener('click', function (e) {
+    e.stopPropagation();
+    binCard(card);
+  });
+  card.appendChild(xBtn);
+
+  /* ── Touch swipe-left ── */
+  var startX = 0, startY = 0, swiping = false;
+
+  card.addEventListener('touchstart', function (e) {
+    startX   = e.touches[0].clientX;
+    startY   = e.touches[0].clientY;
+    swiping  = false;
+    card.style.transition = 'none';
+  }, { passive: true });
+
+  card.addEventListener('touchmove', function (e) {
+    var dx = e.touches[0].clientX - startX;
+    var dy = e.touches[0].clientY - startY;
+    if (!swiping && Math.abs(dx) > 8 && Math.abs(dx) > Math.abs(dy) * 1.2) swiping = true;
+    if (swiping && dx < 0) {
+      card.style.transform = 'translateX(' + dx + 'px)';
+      card.style.opacity   = String(Math.max(0, 1 + dx / 160));
+    }
+  }, { passive: true });
+
+  card.addEventListener('touchend', function (e) {
+    var dx = e.changedTouches[0].clientX - startX;
+    card.style.transition = '';
+    if (swiping && dx < -75) {
+      binCard(card);
+    } else {
+      card.style.transform = '';
+      card.style.opacity   = '';
+    }
+    swiping = false;
+  });
+});
+
+/* ── Clear All ── */
+clearBinBtn.addEventListener('click', function () {
+  Array.from(binCards.querySelectorAll('.card')).forEach(function (card) {
+    var btn = card.querySelector('.restore-btn');
+    if (btn) btn.remove();
+    var dest = card.dataset.homeSection
+      ? document.querySelector('.section[data-section="' + card.dataset.homeSection + '"]')
+      : null;
+    if (dest) dest.appendChild(card);
+  });
+  saveBin([]);
+  syncBin();
+  applyFilters();
+});
+
+/* ── Apply stored bin state on page load ── */
+purgeStale();
+readBin().forEach(function (id) {
+  var card = document.querySelector('.card[data-card-id="' + id + '"]');
+  if (!card) return;
+  var homeSection = card.closest('.section[data-section]');
+  if (homeSection) card.dataset.homeSection = homeSection.dataset.section;
+  addRestoreBtn(card);
+  binCards.appendChild(card);
+});
+syncBin();
+applyFilters();
+
+})();
+</script>
+</body>
+</html>
